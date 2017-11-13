@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ namespace TVSimulator
             InitializeComponent();
         }
 
+       
         private void chooseFolderBtn_Click(object sender, RoutedEventArgs e)
         {
             using (var folderDialog = new FolderBrowserDialog())
@@ -25,16 +27,11 @@ namespace TVSimulator
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     folderPathTextbox.Text = folderDialog.SelectedPath;
+
+                    var files = Directory.EnumerateFiles("C:\\path", "*.*", SearchOption.AllDirectories)
+                    .Where(s => s.EndsWith(".mp3") || s.EndsWith(".jpg"));
                 }
             }
-        }
-
-        private void stopBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if ( !(Directory.Exists(folderPathTextbox.Text)))
-                return;
-            
-
         }
 
         private void selectFileBtn_Click(object sender, RoutedEventArgs e)
@@ -47,6 +44,19 @@ namespace TVSimulator
                 folderPathTextbox.Text = ofd.FileName;
             }
         }
+
+
+        #region Media player functions
+
+        private void stopBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if ( !(Directory.Exists(folderPathTextbox.Text)))
+                return;
+            
+
+        }
+
+        
 
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -73,5 +83,8 @@ namespace TVSimulator
             mediaPlayer.Stop();
 
         }
+
+        #endregion Media player functions
+
     }
 }
