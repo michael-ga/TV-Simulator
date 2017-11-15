@@ -55,7 +55,13 @@ namespace TVSimulator
                 {
                     MessageBox.Show("its a movie!\n" + fileInfo.Name);
                 }
+                //..............................................
+                Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
+                if(TVSeriesRegex.IsMatch(fileInfo.Name))
+                {
+                    MessageBox.Show("its a TV Series!\n" + fileInfo.Name);
 
+                }
 
             }
         }
