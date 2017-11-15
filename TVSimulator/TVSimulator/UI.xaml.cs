@@ -29,7 +29,7 @@ namespace TVSimulator
                 {
                     FileImporter fm = new FileImporter();
                     fm.getAllMediaFromDirectory(folderDialog.SelectedPath);
-                    fm.sortToTypes();
+                    //fm.sortToTypes();
                 }
             }
         }

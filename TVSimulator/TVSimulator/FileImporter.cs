@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace TVSimulator
 {
@@ -29,7 +30,10 @@ namespace TVSimulator
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
-
+            for (int i = 0; i < 5; i++)
+            {
+                sortToTypes(allPathes[i]);
+            }
         }
 
         // check file type(movie/music/tv series)  :: (String filePath) 
@@ -38,14 +42,22 @@ namespace TVSimulator
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath)); // holds fileName and extenstion
             
             // query to check if file is movie type
-            var strings = new List<string> { "mkv", "avi", "wmv", "mp4" };
+            var strings = new List<string> { ".mkv", ".avi", ".wmv", ".mp4" };
             bool contains = strings.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
             if (contains) // if the extension is of A video file we go here
             {
                 filePath.Replace(".", " ");filePath.Replace("-", " ");
                 // TODO : identify if it A movie or other video.
+                // movie regex : ([\.\w']+?)(\.[0-9]{4}\..*)
+                Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
+
+                if (movieRegex.IsMatch(fileInfo.Name))
+                {
+                    MessageBox.Show("its a movie!\n" + fileInfo.Name);
+                }
+
+
             }
-            //FileInfo f = new FileInfo(fileName);
         }
 
 
@@ -54,13 +66,7 @@ namespace TVSimulator
         // 
 
         #region Helper Methods
-        // return file name from path
-        private string getFileName(string path)
-        {
-            string[] pathArr = path.Split('\\');
-            string[] fileArr = pathArr.Last().Split('.');
-            return fileArr.Last().ToString();
-        }
+
         #endregion Helper Methods
     }
 }
