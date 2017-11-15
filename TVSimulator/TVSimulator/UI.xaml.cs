@@ -24,12 +24,12 @@ namespace TVSimulator
         {
             using (var folderDialog = new FolderBrowserDialog())
             {
+                
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    folderPathTextbox.Text = folderDialog.SelectedPath;
-
-                    var files = Directory.EnumerateFiles("C:\\path", "*.*", SearchOption.AllDirectories)
-                    .Where(s => s.EndsWith(".mp3") || s.EndsWith(".jpg"));
+                    FileImporter fm = new FileImporter();
+                    fm.getAllMediaFromDirectory(folderDialog.SelectedPath);
+                    fm.sortToTypes();
                 }
             }
         }
