@@ -53,14 +53,29 @@ namespace TVSimulator
 
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
-                    MessageBox.Show("its a movie!\n" + fileInfo.Name);
+                    // TO DO: EXTRCT SPECIFIC MOVIE NAME
+                    if (fileInfo.Name.Contains("201") )
+                    {
+                        int x = fileInfo.Name.IndexOf("201");
+                        string movieName = fileInfo.Name.Substring(0, x);
+                        movieName = movieName.Replace(".", " ");
+                        movieName = movieName.Replace("-", " ");
+                        MessageBox.Show("its a movie!\n" + movieName);
+
+                    }
                 }
                 //..............................................
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
-                if(TVSeriesRegex.IsMatch(fileInfo.Name))
+                if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
-                    MessageBox.Show("its a TV Series!\n" + fileInfo.Name);
-
+                    if (fileInfo.Name.Contains("S0"))
+                    {
+                        int x = fileInfo.Name.IndexOf("S0");
+                        string TvSeriesName = fileInfo.Name.Substring(0, x);
+                        TvSeriesName = TvSeriesName.Replace(".", " ");
+                        TvSeriesName = TvSeriesName.Replace("-", " ");
+                        MessageBox.Show("its a TV Series!\n" + TvSeriesName);
+                    }
                 }
 
             }
