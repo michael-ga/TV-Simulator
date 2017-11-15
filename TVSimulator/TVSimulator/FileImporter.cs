@@ -5,18 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
-
+using TMDbLib;
 namespace TVSimulator
 {
     class FileImporter
     {
-
+        private const string OMDB_API_KEY = "77f17a4d";
         List<String> allPathes;
         
         public FileImporter()
         {
             allPathes = new List<string>();
         }
+
+        public object Hasseware { get; private set; }
 
         // get files paths from folder List<string>(folder path) 
         public void getAllMediaFromDirectory(String path)
@@ -50,18 +52,18 @@ namespace TVSimulator
                 // TODO : identify if it A movie or other video.
                 // movie regex : ([\.\w']+?)(\.[0-9]{4}\..*)
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
-
+                //..........................................................
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
-                    // TO DO: EXTRCT SPECIFIC MOVIE NAME
                     if (fileInfo.Name.Contains("201") )
                     {
                         int x = fileInfo.Name.IndexOf("201");
                         string movieName = fileInfo.Name.Substring(0, x);
                         movieName = movieName.Replace(".", " ");
                         movieName = movieName.Replace("-", " ");
+                        //TODO: write movieName.Replace(x, " "); with all potential chars - find LINQ solution
                         MessageBox.Show("its a movie!\n" + movieName);
-
+                        extentMovieInfo(movieName);
                     }
                 }
                 //..............................................
@@ -81,7 +83,15 @@ namespace TVSimulator
             }
         }
 
+        private async void extentMovieInfo(string movieName)
+        {
+            //string apiKEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMGM1NWU0ODgzMDkwMTg4NDYyMTJlYTRlMzk2MjNjZiIsInN1YiI6IjVhMGI5ZDhhOTI1MTQxNGRmMzAwMWVmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EDkzdAnMmvCEhx4RhrkSRdBzi3hXmNrtSv8YIqwIU8w";
+            //TMDbLib.Client.TMDbClient client = new TMDbLib.Client.TMDbClient(apiKEY);
+            //var x = await client.SearchKeywordAsync(movieName);
+            //TMDbLib.Objects.Authentication.
 
+
+        }
         // create file object by type and call save to DB 
 
         // 
