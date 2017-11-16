@@ -24,7 +24,6 @@ namespace TVSimulator
         {
             using (var folderDialog = new FolderBrowserDialog())
             {
-                
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     FileImporter fm = new FileImporter();

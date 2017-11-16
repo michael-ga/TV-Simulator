@@ -18,7 +18,6 @@ namespace TVSimulator
             allPathes = new List<string>();
         }
 
-        public object Hasseware { get; private set; }
 
         // get files paths from folder List<string>(folder path) 
         public void getAllMediaFromDirectory(String path)
@@ -85,12 +84,8 @@ namespace TVSimulator
 
         private async void extentMovieInfo(string movieName)
         {
-            //string apiKEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzMGM1NWU0ODgzMDkwMTg4NDYyMTJlYTRlMzk2MjNjZiIsInN1YiI6IjVhMGI5ZDhhOTI1MTQxNGRmMzAwMWVmZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EDkzdAnMmvCEhx4RhrkSRdBzi3hXmNrtSv8YIqwIU8w";
-            //TMDbLib.Client.TMDbClient client = new TMDbLib.Client.TMDbClient(apiKEY);
-            //var x = await client.SearchKeywordAsync(movieName);
-            //TMDbLib.Objects.Authentication.
-
-
+            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(OMDB_API_KEY,false);
+            var x = await client.GetItemByTitle(movieName);
         }
         // create file object by type and call save to DB 
 
