@@ -23,15 +23,15 @@ namespace TVSimulator
         public void getAllMediaFromDirectory(String path)
         {
             String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv" ,".mp4",".mp3",".flac",".wav"};    // put here all file possible extensions
-
+            String[] fileListArr;
             foreach (String extension in extensions)
             {
-                String[] fileListArr = Directory.GetFiles(path, extension);
+                fileListArr = Directory.GetFiles(path, extension);
 
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++) //TEST : check function sortToType
             {
                 sortToTypes(allPathes[i]);
             }
@@ -43,15 +43,15 @@ namespace TVSimulator
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath)); // holds fileName and extenstion
             
             // query to check if file is movie type
-            var strings = new List<string> { ".mkv", ".avi", ".wmv", ".mp4" };
-            bool contains = strings.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
+            var movieExt = new List<string> { ".mkv", ".avi", ".wmv", ".mp4" };  //  need to change from list to array
+            bool contains = movieExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
             if (contains) // if the extension is of A video file we go here
             {
-                filePath.Replace(".", " ");filePath.Replace("-", " ");
-                // TODO : identify if it A movie or other video.
                 // movie regex : ([\.\w']+?)(\.[0-9]{4}\..*)
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
                 //..........................................................
+
+                //TODO : edge case if name are not recognized 
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
                     if (fileInfo.Name.Contains("201") )
