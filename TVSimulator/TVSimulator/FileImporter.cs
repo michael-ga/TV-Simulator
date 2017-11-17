@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text.RegularExpressions;
-using System.Windows;
-using TMDbLib;
+
 namespace TVSimulator
 {
     class FileImporter
     {
-        private const string OMDB_API_KEY = "77f17a4d";
         List<String> allPathes;
         
         public FileImporter()
@@ -71,17 +70,8 @@ namespace TVSimulator
 
             }
         }
-
-        private async void extentMovieInfo(string movieName)
-        {
-            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(OMDB_API_KEY,false);
-            var x = await client.GetItemByTitle(movieName);
-        }
-        // create file object by type and call save to DB 
-
-        // 
-
-        #region Helper Methods
+        
+        #region sorted media handlers
         // extract name, extends info and call save to db
         private void movieHandler(FileInfo fileInfo)
         {
@@ -120,6 +110,16 @@ namespace TVSimulator
             extentMovieInfo(seriesName);// need to check if contains data
         }
 
+        #endregion sorted media handlers
+
+
+        #region database functions
+        // create file object by type and call save to DB 
+        #endregion database functions
+
+
+
+        #region Helper Methods
         // generic function to extract video specific name
         private string extractVideoName(string fullName,string compareArg,string type)
         {
@@ -134,7 +134,13 @@ namespace TVSimulator
                 return movieName;
             }
             return "";
+        }
 
+        private async void extentMovieInfo(string movieName)
+        {
+            ResourceManager rm = new ResourceManager("items", Assembly.GetExecutingAssembly());
+            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(rm.GetString("OMDB_APIKEY"), false);
+            var x = await client.GetItemByTitle(movieName);
         }
         #endregion Helper Methods
     }
