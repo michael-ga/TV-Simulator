@@ -1,25 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MediaClasses
 {
-    public class Movie
+    public class Video
     {
 
-        private string name;
-        private string year;
-        private string gnere;
-        private string descryption;
-        private string director;
-        private string imdbRating;
+        protected string name;
+        protected string year;
+        protected string gnere;
+        protected string descryption;
+        protected string director;
+        protected string imdbRating;
+        protected string type;
         TimeSpan duaration;
 
-        public Movie()
+        public Video()
         {
 
         }
-        public Movie(string name, string year = "", string gnere = "", string descryption = "", string director = "", string duaration ="",string imdbRating ="")
+        public Video(string name, string type,string year = "", string gnere = "", string descryption = "", string director = "", string duaration = "", string imdbRating = "")
         {
             this.name = name;
+            this.type = type;
             this.year = year;
             this.gnere = gnere;
             this.descryption = descryption;
@@ -35,5 +39,8 @@ namespace MediaClasses
         public TimeSpan Duaration { get => duaration; set => duaration = value; }
         public string Director { get => director; set => director = value; }
         public string ImdbRating { get => imdbRating; set => imdbRating = value; }
+        protected string Type { get => type; set => type = value; }
     }
 }
+
+

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace TVSimulator
 {
@@ -80,7 +81,7 @@ namespace TVSimulator
         
         #region sorted media handlers
         // extract name, extends info and call save to db
-        private void videoHandler(FileInfo fileInfo,string type)
+        private async void videoHandler(FileInfo fileInfo,string type)
         {
             string[] potentialMovieVals = { "201", "200", "199", "198", "197", "196", "195" };
             string[] potentialTvVals = { "S0", "S1", "S2" };
@@ -112,7 +113,14 @@ namespace TVSimulator
                 // movie or series name not found -- should be impossible if regex accepted
 
             }
-            extendVideoInfo(videoName,type);
+            Video video = await extendVideoInfo(videoName,type);
+            if(video.GetType().Equals(TVSERIES))
+            {
+                string[] data = getSeasonAndEpisode(fileInfo.Name);
+                TvSeries tv;
+                if (data != null)
+                tv = new TvSeries(video, data[0],data[1]);
+            }
         }
 
        
@@ -142,13 +150,24 @@ namespace TVSimulator
             return "";
         }
 
-        private async void extendVideoInfo(string videoName,string type)
+        private async Task<Video> extendVideoInfo(string videoName,string type)
         {
             OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(OMDB_APIKEY, false);
             var x = await client.GetItemByTitle(videoName);
-            Movie movie;
-            if (type.Equals(MOVIE))
-             movie = new Movie(x.Title, x.Year, x.Genre, x.Plot, x.Director, x.Runtime,x.imdbRating);
+            return new Video(x.Title, type,x.Year, x.Genre, x.Plot, x.Director, x.Runtime,x.imdbRating);
+        }
+
+        private string[] getSeasonAndEpisode(string fullName)
+        {
+            if (fullName.Contains("S0"))
+            {
+                int x = fullName.IndexOf("S0");
+                string season = fullName.Substring(x + 1, x + 3);
+                string episode = fullName.Substring(x + 4, x + 6);
+                string[] res = { season, episode };
+                return res;
+            }
+            return null;
         }
         #endregion Helper Methods
     }
