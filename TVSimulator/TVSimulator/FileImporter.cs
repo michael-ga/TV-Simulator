@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediaClasses;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,8 +9,14 @@ using System.Text.RegularExpressions;
 
 namespace TVSimulator
 {
+
     class FileImporter
     {
+        private const string OMDB_APIKEY = "77f17a4d";
+        private const string MOVIE = "movie";
+        private const string TVSERIES = "TVseries";
+
+
         List<String> allPathes;
         
         public FileImporter()
@@ -57,13 +64,13 @@ namespace TVSimulator
                 //..........................................................
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
-                    movieHandler(fileInfo);
+                    videoHandler(fileInfo,MOVIE);
                 }
                 //..............................................
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
                 if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
-                    tvSeriesHandler(fileInfo);
+                    videoHandler(fileInfo,TVSERIES);
                 }
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
@@ -73,42 +80,42 @@ namespace TVSimulator
         
         #region sorted media handlers
         // extract name, extends info and call save to db
-        private void movieHandler(FileInfo fileInfo)
+        private void videoHandler(FileInfo fileInfo,string type)
         {
-            string[] potentialYearVals = { "201", "200", "199", "198", "197", "196", "195" };
-            string movieName="";
-            foreach (string val in potentialYearVals)
+            string[] potentialMovieVals = { "201", "200", "199", "198", "197", "196", "195" };
+            string[] potentialTvVals = { "S0", "S1", "S2" };
+            string videoName ="";
+            //...................
+            if(type.Equals(MOVIE))
             {
-                movieName = extractVideoName(fileInfo.Name, val, "Movie"); 
-                if ( !(movieName.Equals("")) )
-                    break;
+                foreach (string val in potentialMovieVals)
+                {
+                    videoName = extractVideoName(fileInfo.Name, val); 
+                    if ( !(videoName.Equals("")) )
+                        break;
+                }
             }
-            if(movieName.Equals(""))
+            //........................
+            if(type.Equals(TVSERIES))
             {
-                // movie name not found -- should be impossible if regex accepted
+                foreach (string val in potentialTvVals)
+                {
+                    videoName = extractVideoName(fileInfo.Name, val);
+                    if (!(videoName.Equals("")))
+                        break;
+                }
+            }
+            //..........................................................
+            
+            if (videoName.Equals(""))
+            {
+                // movie or series name not found -- should be impossible if regex accepted
 
             }
-            extentMovieInfo(movieName);
+            extendVideoInfo(videoName,type);
         }
 
-        // extract name, extends info and call save to db
-        private void tvSeriesHandler(FileInfo fileInfo)
-        {
-            string[] potentialVals = { "S0", "S1", "S2" };
-            string seriesName = "";
-             foreach (string val in potentialVals)
-            {
-                seriesName = extractVideoName(fileInfo.Name, val, "Movie");
-                if (!(seriesName.Equals("")))
-                    break;
-            }
-            if (seriesName.Equals(""))
-            {
-                // series name not found -- should be impossible if regex accepted
-
-            }
-            extentMovieInfo(seriesName);// need to check if contains data
-        }
+       
 
         #endregion sorted media handlers
 
@@ -121,26 +128,27 @@ namespace TVSimulator
 
         #region Helper Methods
         // generic function to extract video specific name
-        private string extractVideoName(string fullName,string compareArg,string type)
+        private string extractVideoName(string fullName,string compareArg)
         {
             if (fullName.Contains(compareArg))
             {
                 int x = fullName.IndexOf(compareArg);
-                string movieName = fullName.Substring(0, x);
-                movieName = movieName.Replace(".", " ");
-                movieName = movieName.Replace("-", " ");
+                string videoName = fullName.Substring(0, x);
+                videoName = videoName.Replace(".", " ");
+                videoName = videoName.Replace("-", " ");
                 //TODO: write movieName.Replace(x, " "); with all potential chars - find LINQ solution
-                extentMovieInfo(movieName);
-                return movieName;
+                return videoName;
             }
             return "";
         }
 
-        private async void extentMovieInfo(string movieName)
+        private async void extendVideoInfo(string videoName,string type)
         {
-            ResourceManager rm = new ResourceManager("items", Assembly.GetExecutingAssembly());
-            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(rm.GetString("OMDB_APIKEY"), false);
-            var x = await client.GetItemByTitle(movieName);
+            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(OMDB_APIKEY, false);
+            var x = await client.GetItemByTitle(videoName);
+            Movie movie;
+            if (type.Equals(MOVIE))
+             movie = new Movie(x.Title, x.Year, x.Genre, x.Plot, x.Director, x.Runtime,x.imdbRating);
         }
         #endregion Helper Methods
     }

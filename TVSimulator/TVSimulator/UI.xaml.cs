@@ -27,7 +27,7 @@ namespace TVSimulator
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     FileImporter fm = new FileImporter();
-                    fm.getAllMediaFromDirectory(folderDialog.SelectedPath);
+                    fm.getAllMediaFromDirectory(folderDialog.SelectedPath,true);
                     //fm.sortToTypes();
                 }
             }
