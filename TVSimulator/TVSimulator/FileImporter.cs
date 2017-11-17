@@ -20,14 +20,21 @@ namespace TVSimulator
 
 
         // get files paths from folder List<string>(folder path) 
-        public void getAllMediaFromDirectory(String path)
+        public void getAllMediaFromDirectory(String path,bool isIncludeSubfolders)
         {
             String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv" ,".mp4",".mp3",".flac",".wav"};    // put here all file possible extensions
             String[] fileListArr;
             foreach (String extension in extensions)
             {
-                fileListArr = Directory.GetFiles(path, extension);
-
+                if(isIncludeSubfolders)
+                {
+                     fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);
+                }
+                else
+                {
+                    fileListArr = Directory.GetFiles(path, extension);
+                }
+    
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
@@ -47,37 +54,20 @@ namespace TVSimulator
             bool contains = movieExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
             if (contains) // if the extension is of A video file we go here
             {
-                // movie regex : ([\.\w']+?)(\.[0-9]{4}\..*)
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
                 //..........................................................
-
-                //TODO : edge case if name are not recognized 
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
-                    if (fileInfo.Name.Contains("201") )
-                    {
-                        int x = fileInfo.Name.IndexOf("201");
-                        string movieName = fileInfo.Name.Substring(0, x);
-                        movieName = movieName.Replace(".", " ");
-                        movieName = movieName.Replace("-", " ");
-                        //TODO: write movieName.Replace(x, " "); with all potential chars - find LINQ solution
-                        MessageBox.Show("its a movie!\n" + movieName);
-                        extentMovieInfo(movieName);
-                    }
+                    movieHandler(fileInfo);
                 }
                 //..............................................
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
                 if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
-                    if (fileInfo.Name.Contains("S0"))
-                    {
-                        int x = fileInfo.Name.IndexOf("S0");
-                        string TvSeriesName = fileInfo.Name.Substring(0, x);
-                        TvSeriesName = TvSeriesName.Replace(".", " ");
-                        TvSeriesName = TvSeriesName.Replace("-", " ");
-                        MessageBox.Show("its a TV Series!\n" + TvSeriesName);
-                    }
+                    tvSeriesHandler(fileInfo);
                 }
+                //TODO : edge cases if name are not recognized 
+                // 1. movie name is number. - match a regex to this scenario and handler
 
             }
         }
@@ -92,7 +82,60 @@ namespace TVSimulator
         // 
 
         #region Helper Methods
+        // extract name, extends info and call save to db
+        private void movieHandler(FileInfo fileInfo)
+        {
+            string[] potentialYearVals = { "201", "200", "199", "198", "197", "196", "195" };
+            string movieName="";
+            foreach (string val in potentialYearVals)
+            {
+                movieName = extractVideoName(fileInfo.Name, val, "Movie"); 
+                if ( !(movieName.Equals("")) )
+                    break;
+            }
+            if(movieName.Equals(""))
+            {
+                // movie name not found -- should be impossible if regex accepted
 
+            }
+            extentMovieInfo(movieName);
+        }
+
+        // extract name, extends info and call save to db
+        private void tvSeriesHandler(FileInfo fileInfo)
+        {
+            string[] potentialVals = { "S0", "S1", "S2" };
+            string seriesName = "";
+             foreach (string val in potentialVals)
+            {
+                seriesName = extractVideoName(fileInfo.Name, val, "Movie");
+                if (!(seriesName.Equals("")))
+                    break;
+            }
+            if (seriesName.Equals(""))
+            {
+                // series name not found -- should be impossible if regex accepted
+
+            }
+            extentMovieInfo(seriesName);// need to check if contains data
+        }
+
+        // generic function to extract video specific name
+        private string extractVideoName(string fullName,string compareArg,string type)
+        {
+            if (fullName.Contains(compareArg))
+            {
+                int x = fullName.IndexOf(compareArg);
+                string movieName = fullName.Substring(0, x);
+                movieName = movieName.Replace(".", " ");
+                movieName = movieName.Replace("-", " ");
+                //TODO: write movieName.Replace(x, " "); with all potential chars - find LINQ solution
+                extentMovieInfo(movieName);
+                return movieName;
+            }
+            return "";
+
+        }
         #endregion Helper Methods
     }
 }
