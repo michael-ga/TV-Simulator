@@ -1,16 +1,27 @@
 ﻿using System;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace MediaClasses
+namespace MediaClassesProj
 {
+    [BsonIgnoreExtraElements]
     public class Video
     {
+        [BsonElement("name")]
         protected string name;
+        [BsonElement("year")]
         protected string year;
+        [BsonElement("gnere")]
         protected string gnere;
+        [BsonElement("description")]
         protected string descryption;
+        [BsonElement("director")]
         protected string director;
+        [BsonElement("raiting")]
         protected string imdbRating;
+        [BsonElement("type")]
         protected string type;
+        [BsonElement("runtime")]
         private string runtime;
         TimeSpan duaration;
 

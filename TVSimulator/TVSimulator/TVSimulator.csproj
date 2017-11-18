@@ -81,6 +81,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="TvSeries.cs" />
+    <Compile Include="Video.cs" />
     <Page Include="UI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -89,6 +91,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="FileImporter.cs" />
     <Compile Include="UI.xaml.cs">
       <DependentUpon>UI.xaml</DependentUpon>
@@ -124,12 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReleaseNotes.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MediaClasses\MediaClasses.csproj">
-      <Project>{40E23E5B-9EB3-4681-970A-2E04FF6A131C}</Project>
-      <Name>MediaClasses</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets" Condition="Exists('..\packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets')" />
