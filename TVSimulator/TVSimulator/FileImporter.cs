@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace TVSimulator
 {
@@ -19,15 +20,17 @@ namespace TVSimulator
 
 
         List<String> allPathes;
-        
+        List<Video> allVideos;
+
         public FileImporter()
         {
             allPathes = new List<string>();
+            allVideos = new List<Video>();
         }
 
 
         // get files paths from folder List<string>(folder path) 
-        public void getAllMediaFromDirectory(String path,bool isIncludeSubfolders)
+        public  void getAllMediaFromDirectory(String path,bool isIncludeSubfolders)
         {
             String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv" ,".mp4",".mp3",".flac",".wav"};    // put here all file possible extensions
             String[] fileListArr;
@@ -45,14 +48,22 @@ namespace TVSimulator
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
-            for (int i = 0; i < 5; i++) //TEST : check function sortToType
+            getAllVideos();
+
+        }
+
+        private async void getAllVideos()
+        {
+            foreach (var item in allPathes)
             {
-                sortToTypes(allPathes[i]);
+                await sortToTypes(item);
             }
+            MessageBox.Show("DONE");
+
         }
 
         // check file type(movie/music/tv series)  :: (String filePath) 
-        public void sortToTypes(string filePath)
+        public async Task<bool> sortToTypes(string filePath)
         {
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath)); // holds fileName and extenstion
             
@@ -65,23 +76,23 @@ namespace TVSimulator
                 //..........................................................
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
-                    videoHandler(fileInfo,MOVIE);
+                    await videoHandler(fileInfo,MOVIE);
                 }
                 //..............................................
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
                 if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
-                    videoHandler(fileInfo,TVSERIES);
+                    await videoHandler(fileInfo,TVSERIES);
                 }
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
-
             }
+                return true;
         }
         
         #region sorted media handlers
         // extract name, extends info and call save to db
-        private async void videoHandler(FileInfo fileInfo,string type)
+        private async Task<bool> videoHandler(FileInfo fileInfo,string type)
         {
             string[] potentialMovieVals = { "201", "200", "199", "198", "197", "196", "195" };
             string[] potentialTvVals = { "S0", "S1", "S2" };
@@ -113,13 +124,22 @@ namespace TVSimulator
                 // movie or series name not found -- should be impossible if regex accepted
 
             }
-            Video video = await extendVideoInfo(videoName,type);
-            if(video.GetType().Equals(TVSERIES))
+            try
             {
-                string[] data = getSeasonAndEpisode(fileInfo.Name);
-                TvSeries tv;
-                if (data != null)
-                tv = new TvSeries(video, data[0],data[1]);
+                Video video = await extendVideoInfo(videoName, type);
+                if (video.GetType().Equals(TVSERIES))
+                {
+                    string[] data = getSeasonAndEpisode(fileInfo.Name);
+                    TvSeries tv;
+                    if (data != null)
+                        tv = new TvSeries(video, data[0], data[1]);
+                }
+                allVideos.Add(video);
+                return true;
+            }
+            catch (Exception) {
+                return false;
+                // TODO: implement what to do in case of faliure
             }
         }
 

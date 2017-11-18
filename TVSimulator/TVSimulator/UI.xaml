@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="900">
     <Grid>
-        <TextBox x:Name="folderPathTextbox"  HorizontalAlignment="Left" Height="33" Margin="246,490,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523"/>
+        <TextBox x:Name="folderPathTextbox"  HorizontalAlignment="Left" Height="33" Margin="246,490,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523" Text="D:\utorrent"/>
         <Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Width="73" Margin="57,569,0,37.667" Click="playBtn_Click"/>
         <Button x:Name="selectFolderBtn" Content="Select Folder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="115" Margin="105,496,0,0" Click="chooseFolderBtn_Click" Height="28"/>
         <Button x:Name="stopBtn" Content="Load Video From Folder" HorizontalAlignment="Left" Width="157" Margin="268,571,0,24.4" Click="stopBtn_Click"/>
