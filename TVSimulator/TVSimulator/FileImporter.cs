@@ -3,23 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace TVSimulator
 {
 
     class FileImporter : EventArgs
     {
-        private const string OMDB_APIKEY = "77f17a4d";
-        private const string MOVIE = "movie";
-        private const string TVSERIES = "TVseries";
-
-        public delegate void videoLoaded(Object o,List<Video> arg);
-
+        public delegate void videoLoaded(Object o,List<Video> arg);// should be media.
         public event videoLoaded OnVideoLoaded;
 
         List<String> allPathes;
@@ -41,7 +33,7 @@ namespace TVSimulator
             {
                 if(isIncludeSubfolders)
                 {
-                     fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);
+                     fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);// include subfolders
                 }
                 else
                 {
@@ -79,13 +71,13 @@ namespace TVSimulator
                 //..........................................................
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
-                    await videoHandler(fileInfo,MOVIE);
+                    await videoHandler(fileInfo,Constants.MOVIE);
                 }
                 //..............................................
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
                 if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
-                    await videoHandler(fileInfo,TVSERIES);
+                    await videoHandler(fileInfo, Constants.TVSERIES);
                 }
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
@@ -101,7 +93,7 @@ namespace TVSimulator
             string[] potentialTvVals = { "S0", "S1", "S2" };
             string videoName ="";
             //...................
-            if(type.Equals(MOVIE))
+            if(type.Equals(Constants.MOVIE))
             {
                 foreach (string val in potentialMovieVals)
                 {
@@ -111,7 +103,7 @@ namespace TVSimulator
                 }
             }
             //........................
-            if(type.Equals(TVSERIES))
+            if(type.Equals(Constants.TVSERIES))
             {
                 foreach (string val in potentialTvVals)
                 {
@@ -130,7 +122,7 @@ namespace TVSimulator
             try
             {
                 Video video = await extendVideoInfo(videoName, type);
-                if (video.GetType().Equals(TVSERIES))
+                if (video.GetType().Equals(Constants.TVSERIES))
                 {
                     string[] data = getSeasonAndEpisode(fileInfo.Name);
                     TvSeries tv;
@@ -175,7 +167,7 @@ namespace TVSimulator
 
         private async Task<Video> extendVideoInfo(string videoName,string type)
         {
-            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(OMDB_APIKEY, false);
+            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(Constants.OMDB_APIKEY, false);
             var x = await client.GetItemByTitle(videoName);
             return new Video(x.Title, type,x.Year, x.Genre, x.Plot, x.Director, x.Runtime,x.imdbRating);
         }
