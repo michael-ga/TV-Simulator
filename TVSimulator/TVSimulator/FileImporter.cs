@@ -12,12 +12,15 @@ using System.Windows;
 namespace TVSimulator
 {
 
-    class FileImporter
+    class FileImporter : EventArgs
     {
         private const string OMDB_APIKEY = "77f17a4d";
         private const string MOVIE = "movie";
         private const string TVSERIES = "TVseries";
 
+        public delegate void videoLoaded(Object o,List<Video> arg);
+
+        public event videoLoaded OnVideoLoaded;
 
         List<String> allPathes;
         List<Video> allVideos;
@@ -58,7 +61,7 @@ namespace TVSimulator
             {
                 await sortToTypes(item);
             }
-            MessageBox.Show("DONE");
+            OnVideoLoaded(this, allVideos);
 
         }
 

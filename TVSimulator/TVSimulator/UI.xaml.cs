@@ -1,5 +1,7 @@
 ﻿
+using MediaClasses;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -11,7 +13,7 @@ namespace TVSimulator
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window 
     {
         
         public MainWindow()
@@ -27,10 +29,17 @@ namespace TVSimulator
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     FileImporter fm = new FileImporter();
+                    fm.OnVideoLoaded += onVideoRecievedHandler;
                     fm.getAllMediaFromDirectory(folderDialog.SelectedPath,true);
                     //fm.sortToTypes();
                 }
             }
+        }
+
+        private void onVideoRecievedHandler(Object o,List<Video> arg)
+        {
+            System.Windows.MessageBox.Show("Done!!!");
+
         }
 
         private void selectFileBtn_Click(object sender, RoutedEventArgs e)
