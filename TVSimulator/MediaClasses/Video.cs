@@ -14,6 +14,7 @@ namespace MediaClasses
         protected string director;
         protected string imdbRating;
         protected string type;
+        private string runtime;
         TimeSpan duaration;
 
         public Video()
@@ -28,7 +29,9 @@ namespace MediaClasses
             this.gnere = gnere;
             this.descryption = descryption;
             this.director = director;
-            //TODO: parse the duration to A timespan.
+            this.imdbRating = imdbRating;
+            this.runtime = duaration;
+            //TODO: parse the runtime string  to duration timespan.
         }
 
 
@@ -40,6 +43,7 @@ namespace MediaClasses
         public string Director { get => director; set => director = value; }
         public string ImdbRating { get => imdbRating; set => imdbRating = value; }
         protected string Type { get => type; set => type = value; }
+        protected string Runtime { get => runtime; set => runtime = value; }
     }
 }
 
