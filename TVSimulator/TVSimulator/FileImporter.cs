@@ -11,7 +11,8 @@ namespace TVSimulator
 
     class FileImporter : EventArgs
     {
-        public delegate void videoLoaded(Object o, List<Video> arg);// should be media.
+
+        public delegate void videoLoaded(Object o,List<Video> arg);
         public event videoLoaded OnVideoLoaded;
 
         List<String> allPathes;
@@ -34,6 +35,7 @@ namespace TVSimulator
                 if (isIncludeSubfolders)
                 {
                     fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);// include subfolders
+
                 }
                 else
                 {
@@ -78,6 +80,7 @@ namespace TVSimulator
                 if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
+
                 }
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
@@ -103,7 +106,8 @@ namespace TVSimulator
                 }
             }
             //........................
-            if (type.Equals(Constants.TVSERIES))
+
+            if(type.Equals(Constants.TVSERIES))
             {
                 foreach (string val in potentialTvVals)
                 {
@@ -122,6 +126,7 @@ namespace TVSimulator
             try
             {
                 Video video = await extendVideoInfo(videoName, type, filePath);
+
                 if (video.GetType().Equals(Constants.TVSERIES))
                 {
                     string[] data = getSeasonAndEpisode(fileInfo.Name);

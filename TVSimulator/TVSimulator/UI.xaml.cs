@@ -33,11 +33,12 @@ namespace TVSimulator
                     FileImporter fm = new FileImporter();
                     fm.OnVideoLoaded += onVideoRecievedHandler;
                     fm.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
+                    fm.getAllMediaFromDirectory(folderDialog.SelectedPath,true);
                 }
             }
         }
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        private void onVideoRecievedHandler(Object o, List<Video> arg)
+        private void onVideoRecievedHandler(Object o,List<Video> arg)
         {
             System.Windows.MessageBox.Show("Done!!!");
             Random r = new Random();
