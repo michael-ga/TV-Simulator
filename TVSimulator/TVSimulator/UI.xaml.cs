@@ -67,8 +67,11 @@ namespace TVSimulator
 
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
-            mediaPlayer.Source = new Uri(folderPathTextbox.Text);
-            mediaPlayer.Play();
+            var f = new FileImporter();
+            f.createDB();
+
+            //mediaPlayer.Source = new Uri(folderPathTextbox.Text);
+            //mediaPlayer.Play();
         }
 
         // Play the media.

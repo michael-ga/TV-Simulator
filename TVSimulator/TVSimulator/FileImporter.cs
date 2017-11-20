@@ -1,4 +1,6 @@
 ﻿using MediaClasses;
+using MongoDB.Driver;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -145,6 +147,17 @@ namespace TVSimulator
 
         #region database functions
         // create file object by type and call save to DB 
+        public void createDB()
+        {
+            var client = new MongoClient();
+            var db = client.GetDatabase("TVsimulatorDB");
+            var coll = db.GetCollection<Video>("Movies");
+
+            Video video = new Video();
+
+            video.Name = "split";
+            coll.InsertOne(video);
+        }
         #endregion database functions
 
 
@@ -186,4 +199,6 @@ namespace TVSimulator
         }
         #endregion Helper Methods
     }
+
+   
 }
