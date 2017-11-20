@@ -13,15 +13,17 @@ namespace TVSimulator
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window 
+    public partial class MainWindow : Window
     {
-        
+        public bool isSubfolders = false;
+        TimeSpan t = new TimeSpan(0, 2, 3);
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
-       
+
         private void chooseFolderBtn_Click(object sender, RoutedEventArgs e)
         {
             using (var folderDialog = new FolderBrowserDialog())
@@ -30,6 +32,7 @@ namespace TVSimulator
                 {
                     FileImporter fm = new FileImporter();
                     fm.OnVideoLoaded += onVideoRecievedHandler;
+                    fm.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
                     fm.getAllMediaFromDirectory(folderDialog.SelectedPath,true);
                 }
             }
@@ -38,7 +41,10 @@ namespace TVSimulator
         private void onVideoRecievedHandler(Object o,List<Video> arg)
         {
             System.Windows.MessageBox.Show("Done!!!");
+            Random r = new Random();
+            int x = r.Next(arg.Count);
 
+            playVideoFromPosition(arg.ElementAt(x).Path, t); ;
         }
 
         private void selectFileBtn_Click(object sender, RoutedEventArgs e)
@@ -52,18 +58,24 @@ namespace TVSimulator
             }
         }
 
+        private void playVideoFromPosition(string path, TimeSpan t)
+        {
+            mediaPlayer.Source = new Uri(path);
+            mediaPlayer.Position = t;
+            mediaPlayer.Play();
+        }
 
         #region Media player functions
 
         private void stopBtn_Click(object sender, RoutedEventArgs e)
         {
-            if ( !(Directory.Exists(folderPathTextbox.Text)))
+            if (!(Directory.Exists(folderPathTextbox.Text)))
                 return;
-            
+
 
         }
 
-        
+
 
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
