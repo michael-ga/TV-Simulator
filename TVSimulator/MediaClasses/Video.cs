@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MediaClasses
 {
     public class Video
     {
+
         protected string name;
         protected string year;
         protected string gnere;

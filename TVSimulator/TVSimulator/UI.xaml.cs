@@ -1,4 +1,5 @@
 ﻿
+using MediaClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using UI;
 
 namespace TVSimulator
 {
@@ -29,13 +29,13 @@ namespace TVSimulator
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     FileImporter fm = new FileImporter();
-                    // fm.OnVideoLoaded += onVideoRecievedHandler;
-                    // fm.getAllMediaFromDirectory(folderDialog.SelectedPath,true);
-                    fm.saveListToDB();
+                    fm.OnVideoLoaded += onVideoRecievedHandler;
+                    fm.getAllMediaFromDirectory(folderDialog.SelectedPath,true);
+                    //fm.sortToTypes();
                 }
             }
         }
-        // event handler raised when data of enterred pathes is loaded on fileImporter.
+
         private void onVideoRecievedHandler(Object o,List<Video> arg)
         {
             System.Windows.MessageBox.Show("Done!!!");
