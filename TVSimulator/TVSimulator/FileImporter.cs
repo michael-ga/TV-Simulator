@@ -3,23 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace TVSimulator
 {
 
     class FileImporter : EventArgs
     {
-        private const string OMDB_APIKEY = "77f17a4d";
-        private const string MOVIE = "movie";
-        private const string TVSERIES = "TVseries";
-
-        public delegate void videoLoaded(Object o,List<Video> arg);
-
+        public delegate void videoLoaded(Object o, List<Video> arg);// should be media.
         public event videoLoaded OnVideoLoaded;
 
         List<String> allPathes;
@@ -33,21 +25,21 @@ namespace TVSimulator
 
 
         // get files paths from folder List<string>(folder path) 
-        public  void getAllMediaFromDirectory(String path,bool isIncludeSubfolders)
+        public void getAllMediaFromDirectory(String path, bool isIncludeSubfolders)
         {
-            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv" ,".mp4",".mp3",".flac",".wav"};    // put here all file possible extensions
+            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", ".mp4", ".mp3", ".flac", ".wav" };    // put here all file possible extensions
             String[] fileListArr;
             foreach (String extension in extensions)
             {
-                if(isIncludeSubfolders)
+                if (isIncludeSubfolders)
                 {
-                     fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);
+                    fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);// include subfolders
                 }
                 else
                 {
                     fileListArr = Directory.GetFiles(path, extension);
                 }
-    
+
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
@@ -69,7 +61,7 @@ namespace TVSimulator
         public async Task<bool> sortToTypes(string filePath)
         {
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath)); // holds fileName and extenstion
-            
+
             // query to check if file is movie type
             var movieExt = new List<string> { ".mkv", ".avi", ".wmv", ".mp4" };  //  need to change from list to array
             bool contains = movieExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
@@ -79,39 +71,39 @@ namespace TVSimulator
                 //..........................................................
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
-                    await videoHandler(fileInfo,MOVIE);
+                    await videoHandler(fileInfo, Constants.MOVIE, filePath);
                 }
                 //..............................................
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
                 if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
-                    await videoHandler(fileInfo,TVSERIES);
+                    await videoHandler(fileInfo, Constants.TVSERIES, filePath);
                 }
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
             }
-                return true;
+            return true;
         }
-        
+
         #region sorted media handlers
         // extract name, extends info and call save to db
-        private async Task<bool> videoHandler(FileInfo fileInfo,string type)
+        private async Task<bool> videoHandler(FileInfo fileInfo, string type, string filePath)
         {
             string[] potentialMovieVals = { "201", "200", "199", "198", "197", "196", "195" };
             string[] potentialTvVals = { "S0", "S1", "S2" };
-            string videoName ="";
+            string videoName = "";
             //...................
-            if(type.Equals(MOVIE))
+            if (type.Equals(Constants.MOVIE))
             {
                 foreach (string val in potentialMovieVals)
                 {
-                    videoName = extractVideoName(fileInfo.Name, val); 
-                    if ( !(videoName.Equals("")) )
+                    videoName = extractVideoName(fileInfo.Name, val);
+                    if (!(videoName.Equals("")))
                         break;
                 }
             }
             //........................
-            if(type.Equals(TVSERIES))
+            if (type.Equals(Constants.TVSERIES))
             {
                 foreach (string val in potentialTvVals)
                 {
@@ -121,7 +113,7 @@ namespace TVSimulator
                 }
             }
             //..........................................................
-            
+
             if (videoName.Equals(""))
             {
                 // movie or series name not found -- should be impossible if regex accepted
@@ -129,8 +121,8 @@ namespace TVSimulator
             }
             try
             {
-                Video video = await extendVideoInfo(videoName, type);
-                if (video.GetType().Equals(TVSERIES))
+                Video video = await extendVideoInfo(videoName, type, filePath);
+                if (video.GetType().Equals(Constants.TVSERIES))
                 {
                     string[] data = getSeasonAndEpisode(fileInfo.Name);
                     TvSeries tv;
@@ -140,13 +132,14 @@ namespace TVSimulator
                 allVideos.Add(video);
                 return true;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return false;
                 // TODO: implement what to do in case of faliure
             }
         }
 
-       
+
 
         #endregion sorted media handlers
 
@@ -159,7 +152,7 @@ namespace TVSimulator
 
         #region Helper Methods
         // generic function to extract video specific name
-        private string extractVideoName(string fullName,string compareArg)
+        private string extractVideoName(string fullName, string compareArg)
         {
             if (fullName.Contains(compareArg))
             {
@@ -173,11 +166,11 @@ namespace TVSimulator
             return "";
         }
 
-        private async Task<Video> extendVideoInfo(string videoName,string type)
+        private async Task<Video> extendVideoInfo(string videoName, string type, string path)
         {
-            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(OMDB_APIKEY, false);
+            OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(Constants.OMDB_APIKEY, false);
             var x = await client.GetItemByTitle(videoName);
-            return new Video(x.Title, type,x.Year, x.Genre, x.Plot, x.Director, x.Runtime,x.imdbRating);
+            return new Video(path, x.Title, type, x.Year, x.Genre, x.Plot, x.Director, x.Runtime, x.imdbRating);
         }
 
         private string[] getSeasonAndEpisode(string fullName)
