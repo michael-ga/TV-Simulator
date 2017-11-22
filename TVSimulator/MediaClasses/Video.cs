@@ -15,7 +15,6 @@ namespace MediaClasses
         protected string _imdbRating;
         protected string _type;
         private string _runtime;
-        TimeSpan _duaration;
 
         public Video()
         {
@@ -40,7 +39,6 @@ namespace MediaClasses
         public string Year { get => _year; set => _year = value; }
         public string Gnere { get => _gnere; set => _gnere = value; }
         public string Descryption { get => _descryption; set => _descryption = value; }
-        public TimeSpan Duaration { get => _duaration; set => _duaration = value; }
         public string Director { get => _director; set => _director = value; }
         public string ImdbRating { get => _imdbRating; set => _imdbRating = value; }
         protected string Type { get => _type; set => _type = value; }
