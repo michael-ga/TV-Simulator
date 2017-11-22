@@ -59,7 +59,7 @@ namespace TVSimulator
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     FileImporter fm = new FileImporter();
-                    fm.OnVideoLoaded += onVideoRecievedHandler;
+                    fm.OnVideoLoaded += OnVideoRecievedHandler;
                     fm.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
                    
                 }
@@ -121,8 +121,6 @@ namespace TVSimulator
             }
         }
 
-
-
         private void playVideoFromPosition(string path, TimeSpan t)
         {
             mediaPlayer.Position = t;
@@ -140,7 +138,7 @@ namespace TVSimulator
 
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        private void onVideoRecievedHandler(Object o, List<Video> arg)
+        private void OnVideoRecievedHandler(Object o, List<Media> arg)
         {
             System.Windows.MessageBox.Show("Done!!!");
             Random r = new Random();
@@ -150,4 +148,5 @@ namespace TVSimulator
         }
 
     }
+
 }

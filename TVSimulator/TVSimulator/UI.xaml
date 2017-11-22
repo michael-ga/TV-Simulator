@@ -16,12 +16,12 @@
 
         <Viewbox Height="672" Margin="4,0,3.333,-1.333" VerticalAlignment="Top">
             <MediaElement x:Name="mediaPlayer" 
-                      Height="8362" Width="11388" Margin="30,0,34.6,194.4" VerticalAlignment="Bottom" 
+                      Height="4148" Width="7665" Margin="30,0,34.6,194.4" VerticalAlignment="Bottom" 
                         LoadedBehavior="Manual"  MouseDown="OnMouseDownPauseMedia" 
                       
         />
         </Viewbox>
-       
+
 
     </Grid>
 </Window>

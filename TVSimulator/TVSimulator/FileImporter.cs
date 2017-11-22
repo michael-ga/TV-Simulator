@@ -28,7 +28,7 @@ namespace TVSimulator
         // get files paths from folder List<string>(folder path) 
         public void getAllMediaFromDirectory(String path, bool isIncludeSubfolders)
         {
-            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", ".mp4", ".mp3", ".flac", ".wav" };    // put here all file possible extensions
+            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mp3", "*.flac", "*.wav" };    // put here all file possible extensions
             String[] fileListArr;
             foreach (String extension in extensions)
             {
@@ -74,6 +74,13 @@ namespace TVSimulator
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
                 
                 }
+                else
+                {
+                    Media media =new Media(filePath,fileInfo.Name);
+                    allMedia.Add(media);
+                    //incase its not mocie or tvseries - no more description
+                }
+                    
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
             }
