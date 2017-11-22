@@ -6,15 +6,15 @@ namespace MediaClasses
 {
     public class Movie : Media
     {
-        private string year;
-        protected string descryption;
+        protected string description;
         protected string director;
         protected string imdbRating;
+        private string year;
 
 
-        public Movie(string path, string name, string duration = "", string genre = "",string director="",string des="",string imdbRaiting="",string year= "") : base(path, name, duration, genre)
+        public Movie(string path, string name, string duration = "", string genre = "",string director="",string description = "",string imdbRaiting="",string year= "") : base(path, name, duration, genre)
         {
-            this.descryption = des;
+            this.description = description;
             this.director = director;
             this.imdbRating = imdbRaiting;
             this.year = year;
@@ -22,7 +22,7 @@ namespace MediaClasses
         }
 
         public string Year { get => year; set => year = value; }
-        public string Descryption { get => descryption; set => descryption = value; }
+        public string Description { get => description; set => description = value; }
         public string Director { get => director; set => director = value; }
         public string ImdbRating { get => imdbRating; set => imdbRating = value; }
     }

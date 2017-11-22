@@ -12,6 +12,8 @@ namespace TVSimulator
         public const string OMDB_APIKEY = "77f17a4d";
         public const string MOVIE = "movie";
         public const string TVSERIES = "TVseries";
+        public const string MUSIC = "music";
+        public const string YOUTUBE_CHANNEL = "YouTubeChannel";
 
         // DB constants
 

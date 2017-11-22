@@ -9,21 +9,19 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TVSimulator
-{
-
+{ 
     class FileImporter : EventArgs
     {
-
-        public delegate void videoLoaded(Object o,List<Video> arg);
+        public delegate void videoLoaded(Object o,List<Movie> arg);
         public event videoLoaded OnVideoLoaded;
 
         List<String> allPathes;
-        List<Video> allVideos;
+        List<Movie> allMedia;
 
         public FileImporter()
         {
             allPathes = new List<string>();
-            allVideos = new List<Video>();
+            allMedia = new List<Movie>();
         }
 
 
@@ -34,37 +32,29 @@ namespace TVSimulator
             String[] fileListArr;
             foreach (String extension in extensions)
             {
-                if (isIncludeSubfolders)
-                {
-                    fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);// include subfolders
-
-                }
+                if (isIncludeSubfolders) // include subfolders
+                    fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);
                 else
-                {
                     fileListArr = Directory.GetFiles(path, extension);
-                }
 
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
-            getAllVideos();
-
+            getAllMedia();
         }
 
-        private async void getAllVideos()
+        private async void getAllMedia()
         {
             foreach (var item in allPathes)
-            {
-                await sortToTypes(item);
-            }
-            OnVideoLoaded(this, allVideos);
+                await sortToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
 
+            OnVideoLoaded(this, allMedia);
         }
 
         // check file type(movie/music/tv series)  :: (String filePath) 
         public async Task<bool> sortToTypes(string filePath)
         {
-            FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath)); // holds fileName and extenstion
+            FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath));     // holds fileName and extenstion
 
             // query to check if file is movie type
             var movieExt = new List<string> { ".mkv", ".avi", ".wmv", ".mp4" };  //  need to change from list to array
@@ -82,7 +72,7 @@ namespace TVSimulator
                 if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
-
+                
                 }
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
@@ -119,15 +109,15 @@ namespace TVSimulator
                 }
             }
             //..........................................................
-
-            if (videoName.Equals(""))
+                
+            if (videoName.Equals(""))       //incase media name not found 
             {
                 // movie or series name not found -- should be impossible if regex accepted
 
             }
             try
             {
-                Video video = await extendVideoInfo(videoName, type, filePath);
+                var media = await extendVideoInfo(videoName,filePath,type);
 
                 if (video.GetType().Equals(Constants.TVSERIES))
                 {
@@ -184,11 +174,24 @@ namespace TVSimulator
             return "";
         }
 
-        private async Task<Video> extendVideoInfo(string videoName, string type, string path)
+        private async Task<Media> extendVideoInfo(string videoName, string path,string type)
         {
             OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(Constants.OMDB_APIKEY, false);
-            var x = await client.GetItemByTitle(videoName);
-            return new Video(path, x.Title, type, x.Year, x.Genre, x.Plot, x.Director, x.Runtime, x.imdbRating);
+            var x = await client.GetItemByTitle(videoName);     // return object with properties
+
+            if (type.Equals(Constants.MOVIE))
+            {
+                var movie = new Movie(path, x.Title, x.Runtime, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
+                return (Media)movie;
+            }
+            else if (type.Equals(Constants.TVSERIES))
+            {
+                string[] data = getSeasonAndEpisode(path);      //  data[0] = season , data[1] = episode
+                var TvSeries = new TvSeries(path, x.Title, x.Runtime, x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
+                return (Media)TvSeries;
+            }
+            else
+                return null;
         }
 
         private string[] getSeasonAndEpisode(string fullName)
