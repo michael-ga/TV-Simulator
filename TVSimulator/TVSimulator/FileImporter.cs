@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using LiteDB;
+using System.Windows;
 
 namespace TVSimulator
 { 
@@ -28,7 +30,7 @@ namespace TVSimulator
         // get files paths from folder List<string>(folder path) 
         public void getAllMediaFromDirectory(String path, bool isIncludeSubfolders)
         {
-            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mp3", "*.flac", "*.wav" };    // put here all file possible extensions
+            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", ".mp4", ".mp3", ".flac", ".wav" };    // put here all file possible extensions
             String[] fileListArr;
             foreach (String extension in extensions)
             {
@@ -74,15 +76,13 @@ namespace TVSimulator
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
                 
                 }
-                else
-                {
-                    Media media =new Media(filePath,fileInfo.Name);
-                    allMedia.Add(media);
-                    //incase its not mocie or tvseries - no more description
-                }
-                    
+
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
+                //else
+                //{
+                //    musicHandler(filePath);
+                //}
             }
             return true;
         }
@@ -140,6 +140,13 @@ namespace TVSimulator
                 // TODO: implement what to do in case of faliure
             }
         }
+
+        //............................................
+        private void musicHandler(string path)
+        {
+            TagLib.File songDetails = TagLib.File.Create(path);
+            
+        }
         #endregion sorted media handlers
 
 
@@ -147,14 +154,23 @@ namespace TVSimulator
         // create file object by type and call save to DB 
         public void createDB()
         {
-            var client = new MongoClient();
-            var db = client.GetDatabase("TVsimulatorDB");
-            var coll = db.GetCollection<Media>("Movies");
-
-            Media video = new Media("" , "");
-
+            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
+            var media = db.GetCollection<Media>("media");
+            Media video = new Media("", "");
             video.Name = "split";
-            coll.InsertOne(video);
+            video.Path = "my path";
+            video.Gnere = "horror";
+           
+            media.Insert(video);
+        }
+
+        public void getDbVAls()
+        {
+            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
+            var media = db.GetCollection<Media>("media");
+            media.EnsureIndex(x => x.Name);
+            var results = media.Find(x => x.Name.StartsWith("s"));
+            MessageBox.Show(results.ElementAt(1).ToString());
         }
         #endregion database functions
 

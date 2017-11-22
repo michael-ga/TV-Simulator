@@ -15,21 +15,22 @@ namespace TVSimulator
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region fileds
         public bool isSubfolders = false, IsFullscreen=false;
         TimeSpan t = new TimeSpan(0, 2, 3);
         private Size _previousVideoContainerSize = new Size();
+        private FileImporter fileImporter;
+        #endregion fileds
 
         public MainWindow()
         {
             //this.WindowState = WindowState.Maximized;
 
             InitializeComponent();
-           
+            fileImporter = new FileImporter();
         }
 
-    
-
-
+        #region mouse listeners
         // Play the media.
         void OnMouseDownPlayMedia(object sender, MouseButtonEventArgs args)
         {
@@ -49,6 +50,7 @@ namespace TVSimulator
             mediaPlayer.Stop();
 
         }
+        #endregion mouse listeners
 
 
         #region button listeners
@@ -59,7 +61,7 @@ namespace TVSimulator
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     FileImporter fm = new FileImporter();
-                    fm.OnVideoLoaded += OnVideoRecievedHandler;
+                    fm.OnVideoLoaded += onVideoRecievedHandler;
                     fm.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
                    
                 }
@@ -80,14 +82,6 @@ namespace TVSimulator
 
 
 
-        private void stopBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-
-        }
-
-
-
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
             mediaPlayer.Source = new Uri(folderPathTextbox.Text);
@@ -96,11 +90,14 @@ namespace TVSimulator
 
         }
 
+        private void testBtn_Click(object sender, RoutedEventArgs e)
+        {
+            fileImporter.createDB();
+            fileImporter.getDbVAls();
+        }
+
 
         #endregion button listeners
-
-
-
 
         #region Media player functions
 
@@ -121,6 +118,8 @@ namespace TVSimulator
             }
         }
 
+
+
         private void playVideoFromPosition(string path, TimeSpan t)
         {
             mediaPlayer.Position = t;
@@ -133,12 +132,14 @@ namespace TVSimulator
             mediaPlayer.Play();
         }
 
+
+
         #endregion Media player functions
 
-
+        #region helper methods
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        private void OnVideoRecievedHandler(Object o, List<Media> arg)
+        private void onVideoRecievedHandler(Object o, List<Media> arg)
         {
             System.Windows.MessageBox.Show("Done!!!");
             Random r = new Random();
@@ -146,7 +147,7 @@ namespace TVSimulator
 
             playVideoFromPosition(arg.ElementAt(x).Path, t); ;
         }
+        #endregion helper methods
 
     }
-
 }
