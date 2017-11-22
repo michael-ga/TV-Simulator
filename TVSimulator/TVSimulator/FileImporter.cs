@@ -166,6 +166,8 @@ namespace TVSimulator
 
         public void getDbVAls()
         {
+            if(!Directory.Exists(Constants.DB_FILE_PATH))
+                Directory.CreateDirectory(Constants.DB_FILE_PATH);
             var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
             var media = db.GetCollection<Media>("media");
             media.EnsureIndex(x => x.Name);

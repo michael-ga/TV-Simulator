@@ -14,7 +14,7 @@ namespace TVSimulator
         public const string TVSERIES = "TVseries";
         public const string MUSIC = "music";
         public const string YOUTUBE_CHANNEL = "YouTubeChannel";
-
+        public const string DB_FILE_PATH = @"C:\\TVSimulatorDB";
         // DB constants
 
 
