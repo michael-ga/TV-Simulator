@@ -4,22 +4,23 @@ using System.Text;
 
 namespace MediaClasses
 {
-    class Media
+    public class Media
     {
-        private string path;
-        private string name;
-        private string runtime;
-        private string gnere;
+        protected string path;
+        protected string name;
+        protected string genre;
+        protected string duration;
 
-        public Media(string path,string name, string runtime = "")
+        public Media(string path,string name, string duration = "",string genre = "")
         {
             this.path = path;
             this.name = name;
-            this.runtime = runtime;
+            this.duration = duration;
+            this.genre = genre;
         }
 
-        protected string Runtime { get => runtime; set => runtime = value; }
-        protected string Gnere { get => gnere; set => gnere = value; }
+        protected string Duration { get => duration; set => duration = value; }
+        protected string Gnere { get => genre; set => genre = value; }
         protected string Path { get => path; set => path = value; }
         protected string Name { get => name; set => name = value; }
     }
