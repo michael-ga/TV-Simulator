@@ -18,7 +18,6 @@ namespace MediaClasses
             this.runtime = runtime;
         }
 
-
         protected string Runtime { get => runtime; set => runtime = value; }
         protected string Gnere { get => gnere; set => gnere = value; }
         protected string Path { get => path; set => path = value; }

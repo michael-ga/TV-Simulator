@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MediaClasses
 {
-    public class Video
+    public class Movie
     {
         protected string _path;
         protected string _name;
@@ -16,11 +16,11 @@ namespace MediaClasses
         protected string _type;
         private string _runtime;
 
-        public Video()
+        public Movie()
         {
 
         }
-        public Video(string path, string name, string type, string year = "", string gnere = "", string descryption = "", string director = "", string duaration = "", string imdbRating = "")
+        public Movie(string path, string name, string type, string year = "", string gnere = "", string descryption = "", string director = "", string duaration = "", string imdbRating = "")
         {
             this._path = path;
             this._name = name;
