@@ -13,11 +13,15 @@
         <Button x:Name="stopBtn" Content="Load Video From Folder" HorizontalAlignment="Left" Width="157" Margin="268,571,0,24.4" Click="stopBtn_Click"/>
         <Button x:Name="selectFileBtn" Content="Select File" HorizontalAlignment="Left" Margin="476,575,0,38.667" Width="75" Click="selectFileBtn_Click"/>
         <Image HorizontalAlignment="Left" Height="100" Margin="101,83,0,0" VerticalAlignment="Top" Width="100"/>
-        <MediaElement x:Name="mediaPlayer" 
-                      Height="461" Margin="30,0,34.6,194.4" VerticalAlignment="Bottom" 
-                        LoadedBehavior="Manual" MouseDown="OnMouseDownPauseMedia" 
+
+        <Viewbox Height="672" Margin="4,0,3.333,-1.333" VerticalAlignment="Top">
+            <MediaElement x:Name="mediaPlayer" 
+                      Height="8362" Width="11388" Margin="30,0,34.6,194.4" VerticalAlignment="Bottom" 
+                        LoadedBehavior="Manual"  MouseDown="OnMouseDownPauseMedia" 
                       
         />
+        </Viewbox>
+       
 
     </Grid>
 </Window>
