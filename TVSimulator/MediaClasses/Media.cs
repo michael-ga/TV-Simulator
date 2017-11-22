@@ -19,9 +19,9 @@ namespace MediaClasses
             this.genre = genre;
         }
 
-        protected string Duration { get => duration; set => duration = value; }
-        protected string Gnere { get => genre; set => genre = value; }
-        protected string Path { get => path; set => path = value; }
-        protected string Name { get => name; set => name = value; }
+        public string Duration { get => duration; set => duration = value; }
+        public string Gnere { get => genre; set => genre = value; }
+        public string Path { get => path; set => path = value; }
+        public string Name { get => name; set => name = value; }
     }
 }

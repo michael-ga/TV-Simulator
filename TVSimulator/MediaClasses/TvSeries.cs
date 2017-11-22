@@ -24,6 +24,6 @@ namespace MediaClasses
         public string Season { get => season; set => season = value; }
         public string Description { get => description; set => description = value; }
         public string Year { get => year; set => year = value; }
-        protected string ImdbRating { get => imdbRating; set => imdbRating = value; }
+        public string ImdbRating { get => imdbRating; set => imdbRating = value; }
     }
 }

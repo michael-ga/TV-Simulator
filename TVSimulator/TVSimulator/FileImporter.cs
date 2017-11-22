@@ -12,16 +12,16 @@ namespace TVSimulator
 { 
     class FileImporter : EventArgs
     {
-        public delegate void videoLoaded(Object o,List<Movie> arg);
+        public delegate void videoLoaded(Object o,List<Media> arg);
         public event videoLoaded OnVideoLoaded;
 
         List<String> allPathes;
-        List<Movie> allMedia;
+        List<Media> allMedia;
 
         public FileImporter()
         {
             allPathes = new List<string>();
-            allMedia = new List<Movie>();
+            allMedia = new List<Media>();
         }
 
 
@@ -117,16 +117,14 @@ namespace TVSimulator
             }
             try
             {
-                var media = await extendVideoInfo(videoName,filePath,type);
-
-                if (video.GetType().Equals(Constants.TVSERIES))
-                {
-                    string[] data = getSeasonAndEpisode(fileInfo.Name);
-                    TvSeries tv;
-                    if (data != null)
-                        tv = new TvSeries(video, data[0], data[1]);
-                }
-                allVideos.Add(video);
+                Media media = await extendVideoInfo(videoName,filePath,type);
+                if (media == null)
+                    return false;
+                if (media is Movie)
+                    allMedia.Add((Movie)media);
+                if (media is TvSeries)
+                    allMedia.Add((TvSeries)media);
+                
                 return true;
             }
             catch (Exception)
@@ -135,9 +133,6 @@ namespace TVSimulator
                 // TODO: implement what to do in case of faliure
             }
         }
-
-
-
         #endregion sorted media handlers
 
 
@@ -147,9 +142,9 @@ namespace TVSimulator
         {
             var client = new MongoClient();
             var db = client.GetDatabase("TVsimulatorDB");
-            var coll = db.GetCollection<Video>("Movies");
+            var coll = db.GetCollection<Media>("Movies");
 
-            Video video = new Video();
+            Media video = new Media("" , "");
 
             video.Name = "split";
             coll.InsertOne(video);
@@ -182,13 +177,13 @@ namespace TVSimulator
             if (type.Equals(Constants.MOVIE))
             {
                 var movie = new Movie(path, x.Title, x.Runtime, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
-                return (Media)movie;
+                return movie;
             }
             else if (type.Equals(Constants.TVSERIES))
             {
                 string[] data = getSeasonAndEpisode(path);      //  data[0] = season , data[1] = episode
                 var TvSeries = new TvSeries(path, x.Title, x.Runtime, x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
-                return (Media)TvSeries;
+                return TvSeries;
             }
             else
                 return null;
