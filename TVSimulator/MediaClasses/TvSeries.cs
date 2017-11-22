@@ -2,11 +2,13 @@
 
 namespace MediaClasses
 {
-    public class TvSeries : Video
+    public class TvSeries : Media
     {
-        string episode;
-        string season;
-        public TvSeries(Video video,string episode = "",string season = "")
+        private string episode;
+        private string season;
+
+
+        public TvSeries(string path, string name, string duration = "", string genre = "", string episode = "", string season = "") : base(path, name, duration, genre)
         {
             this.episode = episode;
             this.season = season;

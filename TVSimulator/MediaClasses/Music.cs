@@ -10,7 +10,7 @@ namespace MediaClasses
         private string album;
         private string year;
 
-        public Music(string path, string name, string duration = "", string genre = "", string artist, string album, string year) : base(path, name, duration, genre)
+        public Music(string path, string name, string duration = "", string genre = "", string artist="", string album="", string year="") : base(path, name, duration, genre)
         {
             this.artist = artist;
             this.album = album;
