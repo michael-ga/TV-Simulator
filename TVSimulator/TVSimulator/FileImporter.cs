@@ -30,7 +30,9 @@ namespace TVSimulator
         // get files paths from folder List<string>(folder path) 
         public void getAllMediaFromDirectory(String path, bool isIncludeSubfolders)
         {
-            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", ".mp4", ".mp3", ".flac", ".wav" };    // put here all file possible extensions
+            allPathes.Clear();
+            allMedia.Clear();
+            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mp3", "*.flac", "*.wav" };    // put here all file possible extensions
             String[] fileListArr;
             foreach (String extension in extensions)
             {
@@ -49,7 +51,7 @@ namespace TVSimulator
         {
             foreach (var item in allPathes)
                 await sortToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
-
+            if(allMedia.Count>0)
             OnVideoLoaded(this, allMedia);
         }
 
@@ -60,21 +62,21 @@ namespace TVSimulator
 
             // query to check if file is movie type
             var movieExt = new List<string> { ".mkv", ".avi", ".wmv", ".mp4" };  //  need to change from list to array
+            var musicExt = new List<string> { ".mp3", ".flac", ".ogg", ".wav" };
             bool contains = movieExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
             if (contains) // if the extension is of A video file we go here
             {
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
+                Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
                 //..........................................................
                 if (movieRegex.IsMatch(fileInfo.Name))
                 {
                     await videoHandler(fileInfo, Constants.MOVIE, filePath);
                 }
                 //..............................................
-                Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
-                if (TVSeriesRegex.IsMatch(fileInfo.Name))
+                else if (TVSeriesRegex.IsMatch(fileInfo.Name))
                 {
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
-                
                 }
 
                 //TODO : edge cases if name are not recognized 
@@ -83,6 +85,19 @@ namespace TVSimulator
                 //{
                 //    musicHandler(filePath);
                 //}
+                else
+                {
+                    allMedia.Add(new Media(filePath, fileInfo.Name));
+                }
+                return true;
+            }
+            else
+            {
+                contains = musicExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
+                if(contains)
+                {
+                    musicHandler(filePath);
+                }
             }
             return true;
         }
@@ -126,8 +141,11 @@ namespace TVSimulator
             {
                 Media media = await extendVideoInfo(videoName,filePath,type);
                 if (media == null)
+                {
+                    media = new Media(filePath, videoName);
                     return false;
-                if (media is Movie)
+                }
+                if(media is Movie)
                     allMedia.Add((Movie)media);
                 if (media is TvSeries)
                     allMedia.Add((TvSeries)media);
@@ -144,8 +162,10 @@ namespace TVSimulator
         //............................................
         private void musicHandler(string path)
         {
-            TagLib.File songDetails = TagLib.File.Create(path);
-            
+            TagLib.File data =  TagLib.File.Create(path);
+            var tag = data.Tag;
+            Music music = new Music(path, tag.Title, data.Properties.Duration.ToString(), tag.FirstGenre, tag.FirstPerformer, tag.Album,tag.Year.ToString(),tag.Lyrics);
+            allMedia.Add((Media)music);
         }
         #endregion sorted media handlers
 
@@ -219,8 +239,8 @@ namespace TVSimulator
             if (fullName.Contains("S0"))
             {
                 int x = fullName.IndexOf("S0");
-                string season = fullName.Substring(x + 1, x + 3);
-                string episode = fullName.Substring(x + 4, x + 6);
+                string season = fullName.Substring(x + 1, x + 3 - (x+1));
+                string episode = fullName.Substring(x + 4, x + 6 - (x+4));
                 string[] res = { season, episode };
                 return res;
             }

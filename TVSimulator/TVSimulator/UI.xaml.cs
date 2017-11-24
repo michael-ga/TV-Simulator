@@ -28,6 +28,8 @@ namespace TVSimulator
 
             InitializeComponent();
             fileImporter = new FileImporter();
+            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+
         }
 
         #region mouse listeners
@@ -60,10 +62,7 @@ namespace TVSimulator
             {
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    FileImporter fm = new FileImporter();
-                    fm.OnVideoLoaded += onVideoRecievedHandler;
-                    fm.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
-                   
+                    fileImporter.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
                 }
             }
         }
@@ -130,6 +129,11 @@ namespace TVSimulator
         {
             mediaPlayer.Source = new Uri(path);
             mediaPlayer.Play();
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            isSubfolders = !isSubfolders;
         }
 
 

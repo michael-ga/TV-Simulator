@@ -21,6 +21,9 @@
         />
         </Viewbox>
         <Button Content="launch test" x:Name="testBtn" HorizontalAlignment="Left" Margin="691,572,0,0" VerticalAlignment="Top" Width="89" Height="42" Click="testBtn_Click"/>
+        <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="124,536,0,0">
+            
+        </CheckBox>
 
 
     </Grid>

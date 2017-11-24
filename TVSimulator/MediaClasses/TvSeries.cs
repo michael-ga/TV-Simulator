@@ -10,6 +10,7 @@ namespace MediaClasses
         private string imdbRating;
         private string year;
 
+       
 
         public TvSeries(string path, string name, string duration = "", string genre = "", string season = "" , string episode = "", string description = "",string imdbRating = "",string year = "") : base(path, name, duration, genre)
         {
