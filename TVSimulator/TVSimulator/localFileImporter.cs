@@ -19,18 +19,20 @@ namespace TVSimulator
 
         List<String> allPathes;
         List<Media> allMedia;
+        Database db;
 
         public localFileImporter()
         {
             allPathes = new List<string>();
             allMedia = new List<Media>();
+            db = new Database();
         }
 
         public async void LoadLocalFilesFromDirectory(String path, bool isIncludeSubfolders)
         {
             getAllMediaFromDirectory(path, isIncludeSubfolders);
             await  getAllMedia();
-            saveMediaToDB();
+            db.addMediaList(allMedia);  // adding to "media" collection the media list.
         }
 
         // get files paths from folder List<string>(folder path) 
@@ -184,49 +186,14 @@ namespace TVSimulator
 
 
         #region database functions
-        // create file object by type and call save to DB 
-        public void createDB()
-        {
-            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
-            var media = db.GetCollection<Media>("media");
-            Media video = new Media("", "");
-            video.Name = "split";
-            video.Path = "my path";
-            video.Gnere = "horror";
-           
-            media.Insert(video);
-        }
+        
 
-        public void getDbVAls()
-        {
-            if(!Directory.Exists(Constants.DB_FILE_PATH))
-                Directory.CreateDirectory(Constants.DB_FILE_PATH);
-            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
-            var media = db.GetCollection<Media>("media");
-            media.EnsureIndex(x => x.Name);
-            var results = media.Find(x => x.Name.StartsWith("s"));
-            MessageBox.Show(results.ElementAt(1).ToString());
-        }
+       
 
-        private void saveMediaToDB()
-        {
-            
-            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
-            var media = db.GetCollection<Media>("media");
-            foreach (Media obj in allMedia)
-            {
-                Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
-                media.Insert(temp);
-                //if (obj is Movie)
-                //    media.Insert(((Movie)obj));
-                //else if (obj is TvSeries)
-                //    media.Insert((TvSeries)obj);
-                //else if (obj is Music)
-                //    media.Insert((Music)obj);
-                //else
-                //media.Insert((Media)obj);
-            }
-        }
+        //private void saveMediaToDB()
+        //{
+        //    db.addMediaList(allMedia);
+        //}
         public void readMediaCollectionFromDB()
         {
             var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
