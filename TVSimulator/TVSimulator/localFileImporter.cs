@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace TVSimulator
 { 
-    class FileImporter : EventArgs
+    class localFileImporter : EventArgs
     {
         public delegate void videoLoaded(Object o,List<Media> arg);
         public event videoLoaded OnVideoLoaded;
@@ -20,12 +20,18 @@ namespace TVSimulator
         List<String> allPathes;
         List<Media> allMedia;
 
-        public FileImporter()
+        public localFileImporter()
         {
             allPathes = new List<string>();
             allMedia = new List<Media>();
         }
 
+        public async void LoadLocalFilesFromDirectory(String path, bool isIncludeSubfolders)
+        {
+            getAllMediaFromDirectory(path, isIncludeSubfolders);
+            await  getAllMedia();
+            saveMediaToDB();
+        }
 
         // get files paths from folder List<string>(folder path) 
         public void getAllMediaFromDirectory(String path, bool isIncludeSubfolders)
@@ -44,15 +50,15 @@ namespace TVSimulator
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
-            getAllMedia();
         }
 
-        private async void getAllMedia()
+        private async Task<bool> getAllMedia()
         {
             foreach (var item in allPathes)
                 await sortToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
-            if(allMedia.Count>0)
-            OnVideoLoaded(this, allMedia);
+            if (allMedia.Count > 0)
+                OnVideoLoaded(this, allMedia);
+            return true;
         }
 
         // check file type(movie/music/tv series)  :: (String filePath) 
@@ -162,10 +168,17 @@ namespace TVSimulator
         //............................................
         private void musicHandler(string path)
         {
-            TagLib.File data =  TagLib.File.Create(path);
-            var tag = data.Tag;
-            Music music = new Music(path, tag.Title, data.Properties.Duration.ToString(), tag.FirstGenre, tag.FirstPerformer, tag.Album,tag.Year.ToString(),tag.Lyrics);
-            allMedia.Add((Media)music);
+            try
+            {
+                TagLib.File data = TagLib.File.Create(path);
+                var tag = data.Tag;
+                Music music = new Music(path, tag.Title, data.Properties.Duration.ToString(), tag.FirstGenre, tag.FirstPerformer, tag.Album, tag.Year.ToString(), tag.Lyrics);
+                allMedia.Add((Media)music);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
         #endregion sorted media handlers
 
@@ -193,6 +206,36 @@ namespace TVSimulator
             media.EnsureIndex(x => x.Name);
             var results = media.Find(x => x.Name.StartsWith("s"));
             MessageBox.Show(results.ElementAt(1).ToString());
+        }
+
+        private void saveMediaToDB()
+        {
+            
+            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
+            var media = db.GetCollection<Media>("media");
+            foreach (Media obj in allMedia)
+            {
+                Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
+                media.Insert(temp);
+                //if (obj is Movie)
+                //    media.Insert(((Movie)obj));
+                //else if (obj is TvSeries)
+                //    media.Insert((TvSeries)obj);
+                //else if (obj is Music)
+                //    media.Insert((Music)obj);
+                //else
+                //media.Insert((Media)obj);
+            }
+        }
+        public void readMediaCollectionFromDB()
+        {
+            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
+            var media = db.GetCollection<Media>("media");
+            var res = media.FindAll();
+            foreach (var item in res)
+            {
+                item.ToString();
+            }
         }
         #endregion database functions
 

@@ -19,7 +19,7 @@ namespace TVSimulator
         public bool isSubfolders = false, IsFullscreen=false;
         TimeSpan t = new TimeSpan(0, 2, 3);
         private Size _previousVideoContainerSize = new Size();
-        private FileImporter fileImporter;
+        private localFileImporter fileImporter;
         #endregion fileds
 
         public MainWindow()
@@ -27,7 +27,7 @@ namespace TVSimulator
             //this.WindowState = WindowState.Maximized;
 
             InitializeComponent();
-            fileImporter = new FileImporter();
+            fileImporter = new localFileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
 
         }
@@ -62,7 +62,7 @@ namespace TVSimulator
             {
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    fileImporter.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
+                    fileImporter.LoadLocalFilesFromDirectory(folderDialog.SelectedPath, isSubfolders);
                 }
             }
         }
@@ -91,8 +91,7 @@ namespace TVSimulator
 
         private void testBtn_Click(object sender, RoutedEventArgs e)
         {
-            fileImporter.createDB();
-            fileImporter.getDbVAls();
+            fileImporter.readMediaCollectionFromDB();
         }
 
 

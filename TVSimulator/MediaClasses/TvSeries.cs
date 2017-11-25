@@ -9,8 +9,10 @@ namespace MediaClasses
         private string description;
         private string imdbRating;
         private string year;
+        private int id;
 
-       
+        public TvSeries()
+        { }
 
         public TvSeries(string path, string name, string duration = "", string genre = "", string season = "" , string episode = "", string description = "",string imdbRating = "",string year = "") : base(path, name, duration, genre)
         {
@@ -26,5 +28,7 @@ namespace MediaClasses
         public string Description { get => description; set => description = value; }
         public string Year { get => year; set => year = value; }
         public string ImdbRating { get => imdbRating; set => imdbRating = value; }
+        public int Id { get => id; set => id = value; }
+
     }
 }

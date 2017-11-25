@@ -10,7 +10,8 @@ namespace MediaClasses
         protected string director;
         protected string imdbRating;
         private string year;
-
+        private int id;
+        public Movie() { }
 
         public Movie(string path, string name, string duration = "", string genre = "",string director="",string description = "",string imdbRaiting="",string year= "") : base(path, name, duration, genre)
         {
@@ -25,6 +26,8 @@ namespace MediaClasses
         public string Description { get => description; set => description = value; }
         public string Director { get => director; set => director = value; }
         public string ImdbRating { get => imdbRating; set => imdbRating = value; }
+        public int Id { get => id; set => id = value; }
+        
     }
 }
 

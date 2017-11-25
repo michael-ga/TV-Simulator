@@ -19,7 +19,6 @@ namespace TVSimulator
         public const string DB_FILE_PATH = @"C:\\TVSimulatorDB";
         // DB constants
 
-
         // collapse region Ctrl+M, Ctrl+S
         //Surround With   Ctrl+K,S
         //Navigate To Ctrl+,
