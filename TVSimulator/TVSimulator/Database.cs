@@ -57,7 +57,7 @@ namespace TVSimulator
         public List<Media> getAllMediaList()
         {
             var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
-            return (List<Media>)media.FindAll();
+            return media.FindAll().ToList();
         }
         #endregion
 

@@ -91,7 +91,6 @@ namespace TVSimulator
 
         private void testBtn_Click(object sender, RoutedEventArgs e)
         {
-            fileImporter.readMediaCollectionFromDB();
         }
 
 
