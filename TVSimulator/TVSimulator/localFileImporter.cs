@@ -71,6 +71,20 @@ namespace TVSimulator
             return db.getAllMediaList();
         }
 
+        public List<Movie> getMovieListFromDB()
+        {
+            return db.getMovieList();
+        }
+
+        public List<Music> getMusicListFromDB()
+        {
+            return db.getMusicList();
+        }
+
+        public List<TvSeries> getTVseriesListFromDB()
+        {
+            return db.getTVList();
+        }
         #endregion
 
         #region Get pathes and sort
@@ -273,7 +287,9 @@ namespace TVSimulator
             return null;
         }
 
-       
+        
+
+
 
 
 

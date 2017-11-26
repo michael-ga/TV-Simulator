@@ -16,5 +16,11 @@ namespace TVSimulator
 
         List<Media> getMediaListFromDB();//tested
 
+        List<Movie> getMovieListFromDB();//tested
+
+        List<Music> getMusicListFromDB();//tested
+
+        List<TvSeries> getTVseriesListFromDB();//tested
+
     }
 }

@@ -34,7 +34,8 @@ namespace TVSimulator
             var media = db.GetCollection<Media>(collName);
             media.Delete(Query.All(Query.Descending));
         }
-        // insert to collection
+
+        // insert to Media objects to collection
         public void insertMediaList(List<Media> mediaList)
         {
             if (mediaList.Count <= 0)
@@ -44,18 +45,10 @@ namespace TVSimulator
                 var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
                 Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
                 media.Insert(temp);
-                //if (obj is Movie)
-                //    media.Insert(((Movie)obj));
-                //else if (obj is TvSeries)
-                //    media.Insert((TvSeries)obj);
-                //else if (obj is Music)
-                //    media.Insert((Music)obj);
-                //else
-                //media.Insert((Media)obj);
             }
         }
 
-        // insert to 3 collections
+        // insert to 3 collections by type
         public void insertByType(List<Media> mediaList)
         {
             var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
@@ -68,27 +61,31 @@ namespace TVSimulator
                     movie.Insert(((Movie)obj));
                 else if (obj is TvSeries)
                     tv.Insert((TvSeries)obj);
-                //else if (obj is Music)
-                //    music.Insert((Music)obj);
+                else if (obj is Music)
+                    music.Insert((Music)obj);
                 else
                     media.Insert((Media)obj);
             }
         }
+
         public List<Movie> getMovieList()
         {
             var movie = db.GetCollection<Movie>(Constants.MOVIE_COLLECTION);
             return movie.FindAll().ToList();
         }
+
         public List<TvSeries> getTVList()
         {
             var tv = db.GetCollection<TvSeries>(Constants.TV_SERIES_COLLECTION);
             return tv.FindAll().ToList();
         }
+
         public List<Music> getMusicList()
         {
             var music = db.GetCollection<Music>(Constants.MUSIC_COLLECTION);
             return music.FindAll().ToList();
         }
+
         public List<Media> getAllMediaList()
         {
             var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
