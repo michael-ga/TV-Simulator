@@ -1,4 +1,5 @@
-﻿using MediaClasses;
+﻿#define testing
+using MediaClasses;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System;
@@ -11,7 +12,8 @@ using LiteDB;
 using System.Windows;
 
 namespace TVSimulator
-{ 
+{
+
     class localFileImporter : EventArgs,IFileImporter
     {
 
@@ -38,7 +40,16 @@ namespace TVSimulator
         {
             getAllMediaFromDirectory(path, isIncludeSubfolders);
             await getAllMedia();
+
+#if testing
+            db.removeMediaCollection(Constants.ALL_MEDIA_COLLECTION);// ** FOR TESTING ONLY - remove collection before insert **
+#endif
+
             db.addMediaList(allMedia);  // adding to "media" collection the media list.
+
+#if testing
+            db.getAllMediaList(); 
+#endif
         }
 
         public void removeFileFromDB(string name)
@@ -49,6 +60,11 @@ namespace TVSimulator
         public Media getFileFromDB(string name)
         {
             return db.getMediaFileByName(name);
+        }
+
+        public void removeCollectionFromDB(string collectionName)
+        {
+            db.removeMediaCollection("");
         }
 
         #endregion
@@ -253,7 +269,9 @@ namespace TVSimulator
             return null;
         }
 
-       
+      
+
+
         #endregion Helper Methods
     }
 
