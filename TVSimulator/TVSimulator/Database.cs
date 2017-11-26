@@ -11,29 +11,27 @@ namespace TVSimulator
 {
     class Database
     {
+
+        #region Fields And Constructor
         LiteDatabase db;
-        public Database ()
+        public Database()
         {
             if (!Directory.Exists(Constants.DB_FILE_PATH))
                 Directory.CreateDirectory(Constants.DB_FILE_PATH);
             db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
         }
+        #endregion
+        //TODO: CHECK QUERIES 
 
+        #region Collection queries
         // remove whole collection
         public void removeMediaCollection(string collName)
         {
             var media = db.GetCollection<Media>(collName);
             media.Delete(Query.All(Query.Descending));
         }
-        // return media object of a given name
-        public Media getMediaFileByName(string name)
-        {
-            var media = db.GetCollection<Media>("media");
-            media.EnsureIndex(x => x.Name);
-            return media.Find(x => x.Name.StartsWith(name)).First();
-        }
-        //
-       public void addMediaList(List<Media> mediaList)
+        // insert to collection
+        public void addMediaList(List<Media> mediaList)
         {
             if (mediaList.Count <= 0)
                 return;
@@ -52,5 +50,24 @@ namespace TVSimulator
                 //media.Insert((Media)obj);
             }
         }
+        #endregion
+
+
+        #region single file queries
+        // return media object of a given name
+        public Media getMediaFileByName(string name)
+        {
+            var media = db.GetCollection<Media>("media");
+            media.EnsureIndex(x => x.Name);
+            return media.Find(x => x.Name.StartsWith(name)).First();
+        } 
+        public void removeFileByName(string name)
+        {
+            var collection = db.GetCollection<Media>("media");
+            collection.EnsureIndex(x => x.Name);
+            collection.Delete(x => x.Name.StartsWith(name));
+        }
+        #endregion
+        
     }
 }

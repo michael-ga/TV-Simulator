@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace TVSimulator
 { 
-    class localFileImporter : EventArgs
+    class localFileImporter : EventArgs,IFileImporter
     {
 
         #region fields
@@ -40,6 +40,17 @@ namespace TVSimulator
             await getAllMedia();
             db.addMediaList(allMedia);  // adding to "media" collection the media list.
         }
+
+        public void removeFileFromDB(string name)
+        {
+            db.removeFileByName(name);
+        }
+
+        public Media getFileFromDB(string name)
+        {
+            return db.getMediaFileByName(name);
+        }
+
         #endregion
 
         #region Get pathes and sort
@@ -241,6 +252,8 @@ namespace TVSimulator
             }
             return null;
         }
+
+       
         #endregion Helper Methods
     }
 
