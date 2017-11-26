@@ -11,6 +11,6 @@ namespace TVSimulator
     {
         void LoadLocalFilesFromDirectory(string path);
         void removeFileFromDB(string name);
-        Media getFileFromDB();
+        Media getFileFromDB(string name);
     }
 }

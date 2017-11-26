@@ -14,27 +14,35 @@ namespace TVSimulator
 { 
     class localFileImporter : EventArgs
     {
-        public delegate void videoLoaded(Object o,List<Media> arg);
+
+        #region fields
+        public delegate void videoLoaded(Object o, List<Media> arg);
         public event videoLoaded OnVideoLoaded;
 
         List<String> allPathes;
         List<Media> allMedia;
         Database db;
+        #endregion
 
+        #region Constructor
         public localFileImporter()
         {
             allPathes = new List<string>();
             allMedia = new List<Media>();
             db = new Database();
         }
+        #endregion
 
+        #region Interface Implemention Functions
         public async void LoadLocalFilesFromDirectory(String path, bool isIncludeSubfolders)
         {
             getAllMediaFromDirectory(path, isIncludeSubfolders);
-            await  getAllMedia();
+            await getAllMedia();
             db.addMediaList(allMedia);  // adding to "media" collection the media list.
         }
+        #endregion
 
+        #region Get pathes and sort
         // get files paths from folder List<string>(folder path) 
         public void getAllMediaFromDirectory(String path, bool isIncludeSubfolders)
         {
@@ -102,15 +110,16 @@ namespace TVSimulator
             else
             {
                 contains = musicExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
-                if(contains)
+                if (contains)
                 {
                     musicHandler(filePath);
                 }
             }
             return true;
-        }
+        } 
+        #endregion
 
-        #region sorted media handlers
+        #region media handlers
         // extract name, extends info and call save to db
         private async Task<bool> videoHandler(FileInfo fileInfo, string type, string filePath)
         {
@@ -182,31 +191,7 @@ namespace TVSimulator
                 MessageBox.Show(e.Message);
             }
         }
-        #endregion sorted media handlers
-
-
-        #region database functions
-        
-
-       
-
-        //private void saveMediaToDB()
-        //{
-        //    db.addMediaList(allMedia);
-        //}
-        public void readMediaCollectionFromDB()
-        {
-            var db = new LiteDatabase(@"C:\\TVSimulatorDB\MyData.db");
-            var media = db.GetCollection<Media>("media");
-            var res = media.FindAll();
-            foreach (var item in res)
-            {
-                item.ToString();
-            }
-        }
-        #endregion database functions
-
-
+        #endregion media handlers
 
         #region Helper Methods
         // generic function to extract video specific name
