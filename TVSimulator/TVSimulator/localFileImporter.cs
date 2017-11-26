@@ -33,7 +33,7 @@ namespace TVSimulator
         #endregion
 
         #region Interface Implemention Functions
-        public async void LoadLocalFilesFromDirectory(String path, bool isIncludeSubfolders)
+        public async void getLocalFilesToDB(String path, bool isIncludeSubfolders)
         {
             getAllMediaFromDirectory(path, isIncludeSubfolders);
             await getAllMedia();
@@ -45,7 +45,7 @@ namespace TVSimulator
             db.addMediaList(allMedia);  // adding to "media" collection the media list.
 
 #if testing
-            db.getAllMediaList(); 
+            getMediaListFromDB();
 #endif
         }
 
@@ -62,6 +62,11 @@ namespace TVSimulator
         public void removeCollectionFromDB(string collectionName)
         {
             db.removeMediaCollection("");
+        }
+
+        public List<Media> getMediaListFromDB()
+        {
+            return db.getAllMediaList();
         }
 
         #endregion
@@ -266,7 +271,9 @@ namespace TVSimulator
             return null;
         }
 
-      
+       
+
+
 
 
         #endregion Helper Methods
