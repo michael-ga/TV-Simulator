@@ -10,7 +10,9 @@ namespace MediaClasses
         private string album;
         private string year;
         private string lyrics;
+        private int id;
 
+        public Music() { }
         public Music(string path, string name, string duration = "", string genre = "", string artist="", string album="", string year="",string lyrics = "") : base(path, name, duration, genre)
         {
             this.artist = artist;
@@ -23,5 +25,6 @@ namespace MediaClasses
         public string Album { get => album; set => album = value; }
         public string Year { get => year; set => year = value; }
         public string Lyrics { get => lyrics; set => lyrics = value; }
+        public int Id { get => id; set => id = value; }
     }
 }

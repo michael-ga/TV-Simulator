@@ -76,8 +76,18 @@ namespace TVSimulator
         }
         public List<Movie> getMovieList()
         {
-            var movie = db.GetCollection<Movie>("movie");
+            var movie = db.GetCollection<Movie>(Constants.MOVIE_COLLECTION);
             return movie.FindAll().ToList();
+        }
+        public List<TvSeries> getTVList()
+        {
+            var tv = db.GetCollection<TvSeries>(Constants.TV_SERIES_COLLECTION);
+            return tv.FindAll().ToList();
+        }
+        public List<Music> getMusicList()
+        {
+            var music = db.GetCollection<Music>(Constants.MUSIC_COLLECTION);
+            return music.FindAll().ToList();
         }
         public List<Media> getAllMediaList()
         {
