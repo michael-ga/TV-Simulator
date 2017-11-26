@@ -35,7 +35,7 @@ namespace TVSimulator
             media.Delete(Query.All(Query.Descending));
         }
         // insert to collection
-        public void addMediaList(List<Media> mediaList)
+        public void insertMediaList(List<Media> mediaList)
         {
             if (mediaList.Count <= 0)
                 return;
@@ -53,6 +53,31 @@ namespace TVSimulator
                 //else
                 //media.Insert((Media)obj);
             }
+        }
+
+        // insert to 3 collections
+        public void insertByType(List<Media> mediaList)
+        {
+            var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
+            var tv = db.GetCollection<TvSeries>("tvSeries");
+            var movie = db.GetCollection<Movie>("movie");
+            var music = db.GetCollection<Music>("music");
+            foreach (Media obj in mediaList)
+            {
+                if (obj is Movie)
+                    movie.Insert(((Movie)obj));
+                else if (obj is TvSeries)
+                    tv.Insert((TvSeries)obj);
+                //else if (obj is Music)
+                //    music.Insert((Music)obj);
+                else
+                    media.Insert((Media)obj);
+            }
+        }
+        public List<Movie> getMovieList()
+        {
+            var movie = db.GetCollection<Movie>("movie");
+            return movie.FindAll().ToList();
         }
         public List<Media> getAllMediaList()
         {
@@ -73,8 +98,8 @@ namespace TVSimulator
         public void removeFileByName(string name)
         {
             var collection = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
-            collection.EnsureIndex(x => x.Name);
-            collection.Delete(x => x.Name.StartsWith(name));
+            collection.EnsureIndex(x => x.Name.ToLower());
+            collection.Delete(x => x.Name.StartsWith(name.ToLower()));
         }
         #endregion
         

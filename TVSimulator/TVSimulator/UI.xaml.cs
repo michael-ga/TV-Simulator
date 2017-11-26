@@ -62,7 +62,7 @@ namespace TVSimulator
             {
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    fileImporter.LoadLocalFilesFromDirectory(folderDialog.SelectedPath, isSubfolders);
+                    fileImporter.getLocalFilesToDB(folderDialog.SelectedPath, isSubfolders);
                 }
             }
         }

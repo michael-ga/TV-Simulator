@@ -42,10 +42,12 @@ namespace TVSimulator
             db.removeMediaCollection(Constants.ALL_MEDIA_COLLECTION);// ** FOR TESTING ONLY - remove collection before insert **
 #endif
 
-            db.addMediaList(allMedia);  // adding to "media" collection the media list.
+            //db.insertMediaList(allMedia);  // adding to "media" collection the media list.
+            db.insertByType(allMedia);
 
 #if testing
-            getMediaListFromDB();
+            db.getMovieList();
+
 #endif
         }
 
