@@ -6,25 +6,16 @@
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="900">
-    <Grid>
-        <TextBox x:Name="folderPathTextbox"  HorizontalAlignment="Left" Height="33" Margin="246,490,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523" Text="D:\utorrent"/>
-        <Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Width="73" Margin="57,569,0,37.667" Click="playBtn_Click"/>
-        <Button x:Name="selectFolderBtn" Content="Select Folder" HorizontalAlignment="Left" VerticalAlignment="Top" Width="115" Margin="105,496,0,0" Click="chooseFolderBtn_Click" Height="28"/>
-        <Button x:Name="selectFileBtn" Content="Select File" HorizontalAlignment="Left" Margin="476,575,0,38.667" Width="75" Click="selectFileBtn_Click"/>
-        <Image HorizontalAlignment="Left" Height="100" Margin="101,83,0,0" VerticalAlignment="Top" Width="100"/>
+    <Grid Margin="0,0,0,0">
+        <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="0,2,-0.4,96.4" Stretch="Fill"   MouseDown="OnMouseDownPauseMedia" />
 
-        <Viewbox Height="474" Margin="4,0,3.333,0" VerticalAlignment="Top">
-            <MediaElement x:Name="mediaPlayer" 
-                      Height="8362" Width="11388" Margin="30,0,34.6,194.4" VerticalAlignment="Bottom" 
-                        LoadedBehavior="Manual"  MouseDown="OnMouseDownPauseMedia" 
-                      
-        />
-        </Viewbox>
-        <Button Content="launch test" x:Name="testBtn" HorizontalAlignment="Left" Margin="691,572,0,0" VerticalAlignment="Top" Width="89" Height="42" Click="testBtn_Click"/>
-        <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="124,536,0,0">
-            
-        </CheckBox>
-
-
+        <TextBox x:Name="folderPathTextbox" Margin="224,0,0,27.4" TextWrapping="Wrap" Text="D:\utorrent" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="445"/>
+        <Button x:Name="playBtn" Content="Play" Margin="14,0,0,30.4" Click="playBtn_Click" Height="40" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="66"/>
+        <Button x:Name="selectFolderBtn" Content="Select Folder" Margin="95,0,0,45.4" Click="chooseFolderBtn_Click" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="115"/>
+        <!--<Button x:Name="selectFileBtn" Content="Select File" HorizontalAlignment="Left" Margin="704,599,0,15.4" Width="75" Click="selectFileBtn_Click"/>
+              -->
+        <Button Content="launch test" x:Name="testBtn" Margin="0,0,14.6,30.4" VerticalAlignment="Bottom" Height="42" Click="testBtn_Click" HorizontalAlignment="Right" Width="89"/>
+        <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" Margin="93,0,0,26.4" Height="15" VerticalAlignment="Bottom"/>
+        <Button Content="Exit" x:Name="btnExit" Margin="0,0,112.6,31.4" VerticalAlignment="Bottom" Height="39" Click="Exit_Click" HorizontalAlignment="Right" Width="96"/>
     </Grid>
 </Window>

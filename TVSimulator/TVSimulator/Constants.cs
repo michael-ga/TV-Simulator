@@ -18,7 +18,7 @@ namespace TVSimulator
         public const string YOUTUBE_CHANNEL = "YouTubeChannel";
         public const string DB_FILE_PATH = @"C:\\TVSimulatorDB";
         // DB constants
-        public const string ALL_MEDIA_COLLECTION = "media";
+        public const string MEDIA_COLLECTION = "media";
         public const string MOVIE_COLLECTION = "movie";
         public const string TV_SERIES_COLLECTION = "tvseries";
         public const string MUSIC_COLLECTION = "music";

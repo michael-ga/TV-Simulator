@@ -83,10 +83,10 @@ namespace TVSimulator
 
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
-            mediaPlayer.Source = new Uri(folderPathTextbox.Text);
-            mediaPlayer.Play();
-            FullscreenToggle();
-
+            //mediaPlayer.Source = new Uri(folderPathTextbox.Text);
+            //mediaPlayer.Play();
+            //FullscreenToggle();
+            
         }
 
         private void testBtn_Click(object sender, RoutedEventArgs e)
@@ -107,6 +107,7 @@ namespace TVSimulator
                 this.WindowState = WindowState.Maximized;
                 mediaPlayer.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
                 mediaPlayer.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+                btnExit.Visibility = Visibility.Visible;
             }
             else
             {
@@ -132,6 +133,11 @@ namespace TVSimulator
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             isSubfolders = !isSubfolders;
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
 

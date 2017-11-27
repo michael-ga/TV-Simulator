@@ -39,7 +39,7 @@ namespace TVSimulator
             await getAllMedia();
 
 #if testing
-            db.removeMediaCollection(Constants.ALL_MEDIA_COLLECTION);// ** FOR TESTING ONLY - remove collection before insert **
+            db.removeMediaCollection(Constants.MEDIA_COLLECTION);// ** FOR TESTING ONLY - remove collection before insert **
 #endif
 
             //db.insertMediaList(allMedia);  // adding to "media" collection the media list.
@@ -286,14 +286,7 @@ namespace TVSimulator
             }
             return null;
         }
-
         
-
-
-
-
-
-
         #endregion Helper Methods
     }
 

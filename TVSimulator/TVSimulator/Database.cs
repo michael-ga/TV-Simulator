@@ -42,7 +42,7 @@ namespace TVSimulator
                 return;
             foreach (Media obj in mediaList)
             {
-                var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
+                var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
                 Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
                 media.Insert(temp);
             }
@@ -51,7 +51,7 @@ namespace TVSimulator
         // insert to 3 collections by type
         public void insertByType(List<Media> mediaList)
         {
-            var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
+            var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             var tv = db.GetCollection<TvSeries>("tvSeries");
             var movie = db.GetCollection<Movie>("movie");
             var music = db.GetCollection<Music>("music");
@@ -88,7 +88,7 @@ namespace TVSimulator
 
         public List<Media> getAllMediaList()
         {
-            var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
+            var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             return media.FindAll().ToList();
         }
         #endregion
@@ -98,13 +98,13 @@ namespace TVSimulator
         // return media object of a given name
         public Media getMediaFileByName(string name)
         {
-            var media = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
+            var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             media.EnsureIndex(x => x.Name);
             return media.Find(x => x.Name.StartsWith(name)).First();
         } 
         public void removeFileByName(string name)
         {
-            var collection = db.GetCollection<Media>(Constants.ALL_MEDIA_COLLECTION);
+            var collection = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             collection.EnsureIndex(x => x.Name.ToLower());
             collection.Delete(x => x.Name.StartsWith(name.ToLower()));
         }
