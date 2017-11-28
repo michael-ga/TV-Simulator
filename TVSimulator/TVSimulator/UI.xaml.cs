@@ -67,7 +67,9 @@ namespace TVSimulator
             }
         }
 
-        private void selectFileBtn_Click(object sender, RoutedEventArgs e)
+        //TODO: DELETE THIS - we dont need this - ROY
+
+        /*private void selectFileBtn_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = ("MKV|*.mkv");
@@ -77,7 +79,7 @@ namespace TVSimulator
                 folderPathTextbox.Text = ofd.FileName;
                 play(ofd.FileName);
             }
-        }
+        }*/
 
 
 
@@ -152,8 +154,14 @@ namespace TVSimulator
             System.Windows.MessageBox.Show("Done!!!");
             Random r = new Random();
             int x = r.Next(arg.Count);
+            folderPathTextbox.Text = arg.ElementAt(x).Name;     //check the name of media
 
-            playVideoFromPosition(arg.ElementAt(x).Path, t); ;
+            if (arg.ElementAt(x).GetType().ToString() == "MediaClasses.Music")
+                musicImage.Visibility = Visibility.Visible;
+            else
+                musicImage.Visibility = Visibility.Hidden;
+            playVideoFromPosition(arg.ElementAt(x).Path, t); 
+            //TODO: CANCEL THE RANDOM PLAY - ROY
         }
         #endregion helper methods
 

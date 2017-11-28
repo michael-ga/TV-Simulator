@@ -23,7 +23,7 @@ namespace TVSimulator
             if (!Directory.Exists(Constants.DB_FILE_PATH))
                 Directory.CreateDirectory(Constants.DB_FILE_PATH);
             db = new LiteDatabase(ConfigurationManager.ConnectionStrings["LiteDB"].ConnectionString);// get connction string from app.config
-        }
+        } 
         #endregion
         //TODO: CHECK QUERIES 
 

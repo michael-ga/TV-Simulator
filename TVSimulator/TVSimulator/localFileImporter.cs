@@ -129,16 +129,11 @@ namespace TVSimulator
             {
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
-                //..........................................................
+                
                 if (movieRegex.IsMatch(fileInfo.Name))
-                {
                     await videoHandler(fileInfo, Constants.MOVIE, filePath);
-                }
-                //..............................................
                 else if (TVSeriesRegex.IsMatch(fileInfo.Name))
-                {
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
-                }
 
                 //TODO : edge cases if name are not recognized 
                 // 1. movie name is number. - match a regex to this scenario and handler
@@ -157,7 +152,7 @@ namespace TVSimulator
                 contains = musicExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
                 if (contains)
                 {
-                    musicHandler(filePath);
+                    musicHandler(filePath, fileInfo.Name);
                 }
             }
             return true;
@@ -181,7 +176,6 @@ namespace TVSimulator
                         break;
                 }
             }
-            //........................
 
             if(type.Equals(Constants.TVSERIES))
             {
@@ -192,13 +186,7 @@ namespace TVSimulator
                         break;
                 }
             }
-            //..........................................................
-                
-            if (videoName.Equals(""))       //incase media name not found 
-            {
-                // movie or series name not found -- should be impossible if regex accepted
-
-            }
+          
             try
             {
                 Media media = await extendVideoInfo(videoName,filePath,type);
@@ -214,21 +202,22 @@ namespace TVSimulator
                 
                 return true;
             }
-            catch (Exception)
-            {
-                return false;
-                // TODO: implement what to do in case of faliure
-            }
+            catch (Exception) { return false; }
         }
 
-        //............................................
-        private void musicHandler(string path)
+        private void musicHandler(string path,string fileName)
         {
             try
             {
                 TagLib.File data = TagLib.File.Create(path);
                 var tag = data.Tag;
-                Music music = new Music(path, tag.Title, data.Properties.Duration.ToString(), tag.FirstGenre, tag.FirstPerformer, tag.Album, tag.Year.ToString(), tag.Lyrics);
+                var songName = "";
+                if (tag.Title == null)
+                    songName = fileName;
+                else
+                    songName = tag.Title;
+                
+                Music music = new Music(path, songName, data.Properties.Duration.ToString(), tag.FirstGenre, tag.FirstPerformer, tag.Album, tag.Year.ToString(), tag.Lyrics);
                 allMedia.Add((Media)music);
             }
             catch (Exception e)
