@@ -85,7 +85,8 @@ namespace TVSimulator
         {
             return db.getTVList();
         }
-        #endregion
+        #endregion  
+        //all of this functions above need to be in Databse.cs Class - ROY
 
         #region Get pathes and sort
         // get files paths from folder List<string>(folder path) 
@@ -134,26 +135,16 @@ namespace TVSimulator
                     await videoHandler(fileInfo, Constants.MOVIE, filePath);
                 else if (TVSeriesRegex.IsMatch(fileInfo.Name))
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
-
-                //TODO : edge cases if name are not recognized 
-                // 1. movie name is number. - match a regex to this scenario and handler
-                //else
-                //{
-                //    musicHandler(filePath);
-                //}
                 else
-                {
                     allMedia.Add(new Media(filePath, fileInfo.Name));
-                }
+                
                 return true;
             }
             else
             {
                 contains = musicExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
                 if (contains)
-                {
                     musicHandler(filePath, fileInfo.Name);
-                }
             }
             return true;
         } 
@@ -166,7 +157,7 @@ namespace TVSimulator
             string[] potentialMovieVals = { "201", "200", "199", "198", "197", "196", "195" };
             string[] potentialTvVals = { "S0", "S1", "S2" };
             string videoName = "";
-            //...................
+
             if (type.Equals(Constants.MOVIE))
             {
                 foreach (string val in potentialMovieVals)

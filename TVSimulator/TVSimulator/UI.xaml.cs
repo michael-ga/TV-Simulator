@@ -67,7 +67,7 @@ namespace TVSimulator
             }
         }
 
-        //TODO: DELETE THIS - we dont need this - ROY
+        //TODO: DELETE THIS if we dont need this - ROY
 
         /*private void selectFileBtn_Click(object sender, RoutedEventArgs e)
         {
