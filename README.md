@@ -1,9 +1,9 @@
 
 # TV-Simulator
-
 A Software that will make your PC A real life like TV that will feed media from streaming and local DB sources.
 
-![project logo (this one for is taken from basecamp - a project management service)](http://www.iconsfind.com/wp-content/uploads/2017/06/20170602_5930b7ab7dae9.png)
+![project logo (this one for is taken from basecamp - a project management service)]
+(https://github.com/michael-ga/TV-Simulator/blob/master/logo/TVSimulator-logo.png)
 
 ## Tools & Practices
 We're trying to use the best tools and practices in order to produce a quality enginneered product.
