@@ -220,7 +220,7 @@ namespace TVSimulator
 
         #region Helper Methods
         // generic function to extract video specific name
-        private string extractVideoName(string fullName, string compareArg)
+        public string extractVideoName(string fullName, string compareArg)
         {
             if (fullName.Contains(compareArg))
             {
@@ -234,7 +234,7 @@ namespace TVSimulator
             return "";
         }
 
-        private async Task<Media> extendVideoInfo(string videoName, string path,string type)
+        public async Task<Media> extendVideoInfo(string videoName, string path,string type)
         {
             OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(Constants.OMDB_APIKEY, false);
             var x = await client.GetItemByTitle(videoName);     // return object with properties
@@ -256,7 +256,7 @@ namespace TVSimulator
 
         private string[] getSeasonAndEpisode(string fullName)
         {
-            if (fullName.Contains("S0"))
+            if (fullName.Contains("S0"))    //need to extend this 
             {
                 int x = fullName.IndexOf("S0");
                 string season = fullName.Substring(x + 1, x + 3 - (x+1));
