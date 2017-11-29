@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TVSimulator
 {
     class Constants
     {
         // arrays and collections
-        //public const string [] movieExt = new co{ ".mkv", ".avi", ".wmv", ".mp4" };
+        //public const string [] videoExt = new co{ ".mkv", ".avi", ".wmv", ".mp4" };
         // file importer constants
         public const string OMDB_APIKEY = "77f17a4d";
         public const string MOVIE = "movie";
@@ -22,11 +17,5 @@ namespace TVSimulator
         public const string MOVIE_COLLECTION = "movie";
         public const string TV_SERIES_COLLECTION = "tvseries";
         public const string MUSIC_COLLECTION = "music";
-
-
-        // collapse region Ctrl+M, Ctrl+S
-        //Surround With   Ctrl+K,S
-        //Navigate To Ctrl+,
-
     }
 }

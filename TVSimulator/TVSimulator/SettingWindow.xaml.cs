@@ -21,12 +21,12 @@ namespace TVSimulator
     public partial class SettingWindow : Window
     {
         private bool isSubfolders;
-        private localFileImporter fileImporter;
+        private FileImporter fileImporter;
 
         public SettingWindow()
         {
             InitializeComponent();
-            fileImporter = new localFileImporter();
+            fileImporter = new FileImporter();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

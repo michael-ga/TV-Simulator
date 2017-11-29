@@ -1,0 +1,121 @@
+﻿
+
+ //**********************************************start mause listeners******************************************
+
+        //#region mouse listeners
+        //// Play the media.
+        //void OnMouseDownPlayMedia(object sender, MouseButtonEventArgs args)
+        //{
+        //    mediaPlayer.Play();
+        //}
+
+        //// Pause the mediav
+        //void OnMouseDownPauseMedia(object sender, MouseButtonEventArgs args)
+        //{
+        //    mediaPlayer.Pause();
+
+        //}
+
+        //// Stop the media.
+        //void OnMouseDownStopMedia(object sender, MouseButtonEventArgs args)
+        //{
+        //    mediaPlayer.Stop();
+
+        //}
+
+//**********************************************end mause listeners******************************************
+        
+-------
+
+//**********************************************start fullscreen function******************************************
+
+        private void FullscreenToggle()
+        {
+            this.IsFullscreen = !this.IsFullscreen;
+            if (this.IsFullscreen)
+            {
+                this.WindowStyle = WindowStyle.None;
+                this.WindowState = WindowState.Maximized;
+                mediaPlayer.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+                mediaPlayer.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+            }
+            else
+            {
+                mediaPlayer.Width = _previousVideoContainerSize.Width;
+                mediaPlayer.Height = _previousVideoContainerSize.Height;
+            }
+        }
+
+//**********************************************end fullscreen function******************************************
+
+-------
+
+//**********************************************start database function******************************************
+
+        #region Interface Implemention Functions
+
+        public async void getLocalFilesToDB(String path, bool isIncludeSubfolders)
+        {
+            getAllMediaFromDirectory(path, isIncludeSubfolders);
+            await getAllMedia();
+
+#if testing
+            db.removeMediaCollection(Constants.MEDIA_COLLECTION);// ** FOR TESTING ONLY - remove collection before insert **
+#endif
+
+            //db.insertMediaList(allMedia);  // adding to "media" collection the media list.
+            db.insertByType(allMedia);
+
+#if testing
+            db.getMovieList();
+
+#endif
+        }
+
+        public void removeFileFromDB(string name)
+        {
+            db.removeFileByName(name);
+        }
+
+        public Media getFileFromDB(string name)
+        {
+            return db.getMediaFileByName(name);
+        }
+
+        public void removeCollectionFromDB(string collectionName)
+        {
+            db.removeMediaCollection("");
+        }
+
+        public List<Media> getMediaListFromDB()
+        {
+            return db.getAllMediaList();
+        }
+
+        public List<Movie> getMovieListFromDB()
+        {
+            return db.getMovieList();
+        }
+
+        public List<Music> getMusicListFromDB()
+        {
+            return db.getMusicList();
+        }
+
+        public List<TvSeries> getTVseriesListFromDB()
+        {
+            return db.getTVList();
+        }
+        #endregion  
+
+//**********************************************end database function******************************************
+
+-------
+
+//**********************************************start shortcats******************************************
+
+        // collapse region Ctrl+M, Ctrl+S
+        //Surround With   Ctrl+K,S
+        //Navigate To Ctrl+,
+
+//**********************************************end shortcats******************************************

@@ -105,7 +105,8 @@
     </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Database.cs" />
-    <Compile Include="localFileImporter.cs" />
+    <Compile Include="IDatabase.cs" />
+    <Compile Include="FileImporter.cs" />
     <Compile Include="IFileImporter.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReleaseNotes.css" />
+    <Resource Include="codesAndMore.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MediaClasses\MediaClasses.csproj">

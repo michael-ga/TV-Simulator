@@ -11,7 +11,7 @@ using System.Windows;
 namespace TVSimulator
 {
 
-    class localFileImporter : EventArgs,IFileImporter
+    class FileImporter : EventArgs,IFileImporter
     {
 
         #region fields
@@ -21,10 +21,13 @@ namespace TVSimulator
         List<String> allPathes;
         List<Media> allMedia;
         Database db;
+        private string [] videoExt =  { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
+        private string [] musicExt =  { ".mp3", ".flac", ".ogg", ".wav", ".wma" };
+        private string [] mediaExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp", ".mp3", ".flac", ".ogg", ".wav", ".wma" };
         #endregion
 
         #region Constructor
-        public localFileImporter()
+        public FileImporter()
         {
             allPathes = new List<string>();
             allMedia = new List<Media>();
@@ -32,71 +35,15 @@ namespace TVSimulator
         }
         #endregion
 
-        #region Interface Implemention Functions
-        public async void getLocalFilesToDB(String path, bool isIncludeSubfolders)
-        {
-            getAllMediaFromDirectory(path, isIncludeSubfolders);
-            await getAllMedia();
-
-#if testing
-            db.removeMediaCollection(Constants.MEDIA_COLLECTION);// ** FOR TESTING ONLY - remove collection before insert **
-#endif
-
-            //db.insertMediaList(allMedia);  // adding to "media" collection the media list.
-            db.insertByType(allMedia);
-
-#if testing
-            db.getMovieList();
-
-#endif
-        }
-
-        public void removeFileFromDB(string name)
-        {
-            db.removeFileByName(name);
-        }
-
-        public Media getFileFromDB(string name)
-        {
-            return db.getMediaFileByName(name);
-        }
-
-        public void removeCollectionFromDB(string collectionName)
-        {
-            db.removeMediaCollection("");
-        }
-
-        public List<Media> getMediaListFromDB()
-        {
-            return db.getAllMediaList();
-        }
-
-        public List<Movie> getMovieListFromDB()
-        {
-            return db.getMovieList();
-        }
-
-        public List<Music> getMusicListFromDB()
-        {
-            return db.getMusicList();
-        }
-
-        public List<TvSeries> getTVseriesListFromDB()
-        {
-            return db.getTVList();
-        }
-        #endregion  
-        //all of this functions above need to be in Databse.cs Class - ROY
-
         #region Get pathes and sort
-        // get files paths from folder List<string>(folder path) 
-        public void getAllMediaFromDirectory(string path, bool isIncludeSubfolders)
+
+        public void getAllMediaFromDirectory(string path, bool isIncludeSubfolders)  // get files paths from folder List<string>(folder path) 
         {
             allPathes.Clear();
             allMedia.Clear();
-            String[] extensions = new String[] { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mp3", "*.flac", "*.wav" };    // put here all file possible extensions
+
             String[] fileListArr;
-            foreach (String extension in extensions)
+            foreach (String extension in mediaExt)
             {
                 if (isIncludeSubfolders) // include subfolders
                     fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);
@@ -108,15 +55,11 @@ namespace TVSimulator
             }
         }
 
-        // check file type(movie/music/tv series)  :: (String filePath) 
-        public async Task<bool> SortMediaToTypes(string filePath)
+        private async Task<bool> SortMediaToTypes(string filePath)        // check file type(movie/music/tv series)  :: (String filePath) 
         {
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath));     // holds fileName and extenstion
+            bool contains = videoExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);   // query to check if file is movie type
 
-            // query to check if file is movie type
-            var movieExt = new List<string> { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
-            var musicExt = new List<string> { ".mp3", ".flac", ".ogg", ".wav",".wma" };
-            bool contains = movieExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
             if (contains) // if the extension is of A video file we go here
             {
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
@@ -138,12 +81,13 @@ namespace TVSimulator
                     musicHandler(filePath, fileInfo.Name);
             }
             return true;
-        } 
+        }
+        
         #endregion
 
         #region media handlers
-        // extract name, extends info and call save to db
-        public async Task<bool> videoHandler(FileInfo fileInfo, string type, string filePath)
+
+        public async Task<bool> videoHandler(FileInfo fileInfo, string type, string filePath)         // extract name, extends info and call save to db
         {
             string[] potentialMovieVals = { "201", "200", "199", "198", "197", "196", "195" };
             string[] potentialTvVals = { "S0", "S1", "S2" };
@@ -202,10 +146,7 @@ namespace TVSimulator
                 Music music = new Music(path, songName, data.Properties.Duration.ToString(), tag.FirstGenre, tag.FirstPerformer, tag.Album, tag.Year.ToString(), tag.Lyrics);
                 allMedia.Add((Media)music);
             }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            catch (Exception e) { MessageBox.Show(e.Message); }
         }
 
         public string extractVideoName(string fullName, string compareArg)
@@ -214,9 +155,7 @@ namespace TVSimulator
             {
                 int x = fullName.IndexOf(compareArg);
                 string videoName = fullName.Substring(0, x);
-                videoName = videoName.Replace(".", " ");
-                videoName = videoName.Replace("-", " ");
-                //TODO: write movieName.Replace(x, " "); with all potential chars - find LINQ solution
+                videoName = videoName.Replace(".", " ").Replace("-"," ").Replace("_"," ");
                 return videoName;
             }
             return "";
