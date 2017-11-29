@@ -142,6 +142,16 @@ namespace TVSimulator
             this.Close();
         }
 
+        private void Channel_Up_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Channel_Down_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
 
         #endregion Media player functions

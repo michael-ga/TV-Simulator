@@ -90,7 +90,7 @@ namespace TVSimulator
 
         #region Get pathes and sort
         // get files paths from folder List<string>(folder path) 
-        public void getAllMediaFromDirectory(String path, bool isIncludeSubfolders)
+        public void getAllMediaFromDirectory(string path, bool isIncludeSubfolders)
         {
             allPathes.Clear();
             allMedia.Clear();
@@ -111,20 +111,20 @@ namespace TVSimulator
         private async Task<bool> getAllMedia()
         {
             foreach (var item in allPathes)
-                await sortToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
+                await SortToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
             if (allMedia.Count > 0)
                 OnVideoLoaded(this, allMedia);
             return true;
         }
 
         // check file type(movie/music/tv series)  :: (String filePath) 
-        public async Task<bool> sortToTypes(string filePath)
+        public async Task<bool> SortToTypes(string filePath)
         {
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath));     // holds fileName and extenstion
 
             // query to check if file is movie type
-            var movieExt = new List<string> { ".mkv", ".avi", ".wmv", ".mp4" };  //  need to change from list to array
-            var musicExt = new List<string> { ".mp3", ".flac", ".ogg", ".wav" };
+            var movieExt = new List<string> { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
+            var musicExt = new List<string> { ".mp3", ".flac", ".ogg", ".wav",".wma" };
             bool contains = movieExt.Contains(fileInfo.Extension, StringComparer.OrdinalIgnoreCase);
             if (contains) // if the extension is of A video file we go here
             {

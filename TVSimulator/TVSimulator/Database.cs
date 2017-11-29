@@ -102,6 +102,7 @@ namespace TVSimulator
             media.EnsureIndex(x => x.Name);
             return media.Find(x => x.Name.StartsWith(name)).First();
         } 
+
         public void removeFileByName(string name)
         {
             var collection = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
