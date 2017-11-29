@@ -108,17 +108,8 @@ namespace TVSimulator
             }
         }
 
-        private async Task<bool> getAllMedia()
-        {
-            foreach (var item in allPathes)
-                await SortToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
-            if (allMedia.Count > 0)
-                OnVideoLoaded(this, allMedia);
-            return true;
-        }
-
         // check file type(movie/music/tv series)  :: (String filePath) 
-        public async Task<bool> SortToTypes(string filePath)
+        public async Task<bool> SortMediaToTypes(string filePath)
         {
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath));     // holds fileName and extenstion
 
@@ -152,7 +143,7 @@ namespace TVSimulator
 
         #region media handlers
         // extract name, extends info and call save to db
-        private async Task<bool> videoHandler(FileInfo fileInfo, string type, string filePath)
+        public async Task<bool> videoHandler(FileInfo fileInfo, string type, string filePath)
         {
             string[] potentialMovieVals = { "201", "200", "199", "198", "197", "196", "195" };
             string[] potentialTvVals = { "S0", "S1", "S2" };
@@ -196,7 +187,7 @@ namespace TVSimulator
             catch (Exception) { return false; }
         }
 
-        private void musicHandler(string path,string fileName)
+        public void musicHandler(string path,string fileName)
         {
             try
             {
@@ -216,10 +207,7 @@ namespace TVSimulator
                 MessageBox.Show(e.Message);
             }
         }
-        #endregion media handlers
 
-        #region Helper Methods
-        // generic function to extract video specific name
         public string extractVideoName(string fullName, string compareArg)
         {
             if (fullName.Contains(compareArg))
@@ -234,7 +222,7 @@ namespace TVSimulator
             return "";
         }
 
-        public async Task<Media> extendVideoInfo(string videoName, string path,string type)
+        public async Task<Media> extendVideoInfo(string videoName, string path, string type)
         {
             OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(Constants.OMDB_APIKEY, false);
             var x = await client.GetItemByTitle(videoName);     // return object with properties
@@ -252,6 +240,19 @@ namespace TVSimulator
             }
             else
                 return null;
+        }
+
+        #endregion media handlers
+
+        #region Helper Methods
+        // generic function to extract video specific name
+        private async Task<bool> getAllMedia()
+        {
+            foreach (var item in allPathes)
+                await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
+            if (allMedia.Count > 0)
+                OnVideoLoaded(this, allMedia);
+            return true;
         }
 
         private string[] getSeasonAndEpisode(string fullName)
