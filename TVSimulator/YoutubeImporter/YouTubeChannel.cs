@@ -4,11 +4,11 @@ using System.Text;
 
 namespace MediaClasses
 {
-    public class YouTubeChannel : Media
+    public class YouTubeChannel1 : Media
     {
         private string description;
         private string photoURL;
-        public YouTubeChannel(string path, string name, string duration = "", string genre = "",string photoURL="") : base(path, name, duration, genre)
+        public YouTubeChannel1(string path, string name, string duration = "", string genre = "",string photoURL="") : base(path, name, duration, genre)
         {
             this.Description = Description;
             this.photoURL = photoURL;

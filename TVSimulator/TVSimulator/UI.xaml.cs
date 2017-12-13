@@ -32,12 +32,12 @@ namespace TVSimulator
             {
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    fileImporter.getLocalFilesToDB(folderDialog.SelectedPath, isSubfolders);
+                    fileImporter.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
                 }
             }
         }
 
-        private void testBtn_Click(object sender, RoutedEventArgs e) { }
+        private void testBtn_Click(object sender, RoutedEventArgs e) { YoutubeImporter yImporters = new YoutubeImporter(); }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
