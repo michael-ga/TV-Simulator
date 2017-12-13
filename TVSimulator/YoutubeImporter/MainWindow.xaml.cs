@@ -29,15 +29,9 @@ namespace YoutubeImporter
         {
             InitializeComponent();
             channels = new List<YouTubeChannel>();
-            getChannels();
             mListView.ItemsSource = channels;
         }
-        private async void getChannels()
-        {
-            channels = await searcher.customChannelSearch("milky chance", 30);
-            mListView.ItemsSource = channels;
-
-        }
+     
 
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
