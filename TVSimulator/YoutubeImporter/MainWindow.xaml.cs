@@ -23,6 +23,7 @@ namespace YoutubeImporter
     public partial class MainWindow : Window
     {
         Search searcher = new Search();
+
         public List<YouTubeChannel> channels { get; set; }
 
         public MainWindow()
