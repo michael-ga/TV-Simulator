@@ -5,16 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="900">
-    <Grid Margin="0,0,-1.4,0.4" Height="670" VerticalAlignment="Bottom">
-        <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="39,27,35,115" Stretch="Fill" />
+        Title="MainWindow" Height="706" Width="900" Visibility="Visible" WindowStyle="None" >
+    <Grid Margin="0,0,0,0" Height="706">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="0,-26,0.2,-4" Stretch="Fill" />
+        <Image x:Name="musicImage" Stretch="Fill" Height="706" Margin="0,0,0.6,0" VerticalAlignment="Top" Source="http://www.powerpointhintergrund.com/uploads/2017/07/music-background-www-galleryhip--the-hippest-pics-10.jpeg" Visibility="Visible"/>
+        <!--
+       <TextBox x:Name="folderPathTextbox" Margin="224,0,0,27" TextWrapping="Wrap" Text="D:\utorrent" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="445" IsReadOnly="true" Grid.ColumnSpan="2" />
+            <Button x:Name="selectFolderBtn" Content="Select Folder" Margin="95,0,0,45" Click="chooseFolderBtn_Click" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="115"/>
+            <Button Content="launch test" x:Name="testBtn" Margin="0,0,12.5,30" VerticalAlignment="Bottom" Height="42" Click="testBtn_Click" HorizontalAlignment="Right" Width="89" Grid.Column="1"/>
+            <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" Margin="93,0,0,26" Height="15" VerticalAlignment="Bottom"/>
+            <Button x:Name="channelUp" Content="c+" Margin="56,0,0,-434.6" Click="Channel_Up_Click" HorizontalAlignment="Left" Width="22" Height="0" VerticalAlignment="Bottom"/>
+            <Button x:Name="channelDown" Margin="27,591,0,0" VerticalAlignment="Top" Height="34" Click="Channel_Down_Click" HorizontalAlignment="Left" Width="23"/>
+        -->
+        <Label Content="Label" HorizontalAlignment="Left" Margin="1116,519,-320.8,0" VerticalAlignment="Top" Width="100"/>
+        <Grid Margin="-34,519,0.2,0">
+            <Rectangle Fill="#FF0A1D3A" Margin="34,30,0.4,1.6" Opacity="0.65"/>
 
-        <TextBox x:Name="folderPathTextbox" Margin="224,0,0,27.4" TextWrapping="Wrap" Text="D:\utorrent" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="445" IsReadOnly="true" />
-        <Button x:Name="selectFolderBtn" Content="Select Folder" Margin="95,0,0,45.4" Click="chooseFolderBtn_Click" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="115"/>
-        <Button Content="launch test" x:Name="testBtn" Margin="0,0,14.6,30.4" VerticalAlignment="Bottom" Height="42" Click="testBtn_Click" HorizontalAlignment="Right" Width="89"/>
-        <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" Margin="93,0,0,26.4" Height="15" VerticalAlignment="Bottom"/>
-        <Image x:Name="musicImage" Stretch="Fill" Height="527" Margin="40,29,36,0" VerticalAlignment="Top" Source="http://www.powerpointhintergrund.com/uploads/2017/07/music-background-www-galleryhip--the-hippest-pics-10.jpeg" Visibility="hidden"/>
-        <Button x:Name="channelUp" Content="c+" Margin="0,240,8,0" VerticalAlignment="Top" Height="110" Click="Channel_Up_Click" HorizontalAlignment="Right" Width="23"/>
-        <Button x:Name="channelDown" Content="c-" Margin="11,244,0,0" VerticalAlignment="Top" Height="110" Click="Channel_Down_Click" HorizontalAlignment="Left" Width="23"/>
+            <Rectangle Fill="Black" Height="40" VerticalAlignment="Top" Opacity="0.65" Margin="0,30,0.4,0"/>
+            <Label x:Name="lblBroadcastNow" Content="Now: Alpha Dog" HorizontalAlignment="Left" Margin="46,83,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold"/>
+            <Label x:Name="lblBroadcastNow_Copy" Content="Next: The Legend - 14:50" HorizontalAlignment="Left" Margin="46,124,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold"/>
+            <Label x:Name="lblMediaName_Copy" Content="Alpha Dog" HorizontalAlignment="Left" Margin="46,35,0,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="20"/>
+            <Label x:Name="lblClock" Content="12:35" Margin="0,37,10.4,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64"/>
+            <ProgressBar HorizontalAlignment="Left" Height="19" Margin="272,88,0,0" VerticalAlignment="Top" Width="303" ValueChanged="ProgressBar_ValueChanged"/>
+            <Label x:Name="lblStartTime" Content="12:35" Margin="218,86,0,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64"/>
+            <Label x:Name="lblEndTime" Content="14:50" Margin="576,85,0,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64"/>
+
+        </Grid>
+
+
     </Grid>
 </Window>
