@@ -9,7 +9,7 @@
     <Grid Margin="0,0,-1.4,0.4" Height="670" VerticalAlignment="Bottom">
         <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="39,27,35,115" Stretch="Fill" />
 
-        <TextBox x:Name="folderPathTextbox" Margin="224,0,0,27.4" TextWrapping="Wrap" Text="D:\utorrent" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="445" IsReadOnly="true" />
+        <TextBox x:Name="folderPathTextbox" Margin="224,0,0,27.4" TextWrapping="Wrap" Text="D:\utorrent" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="445"  />
         <Button x:Name="selectFolderBtn" Content="Select Folder" Margin="95,0,0,45.4" Click="chooseFolderBtn_Click" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="115"/>
         <Button Content="launch test" x:Name="testBtn" Margin="0,0,14.6,30.4" VerticalAlignment="Bottom" Height="42" Click="testBtn_Click" HorizontalAlignment="Right" Width="89"/>
         <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" Margin="93,0,0,26.4" Height="15" VerticalAlignment="Bottom"/>

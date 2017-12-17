@@ -6,6 +6,7 @@ using Google.Apis.Upload;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using MediaClasses;
+using MyToolkit.Multimedia;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,6 +61,49 @@ namespace YoutubeImporter
             });
             return youtubeService;
         }
+
+        public Task<List<SearchResult>> GetVideosFromChannelAsync(string ytChannelId)
+        {
+            return Task.Run(() =>
+            {
+                List<SearchResult> res = new List<SearchResult>();
+
+                string nextpagetoken = " ";
+
+                while (nextpagetoken != null)
+                {
+                    var searchListRequest = myService.Search.List("snippet");
+                    searchListRequest.MaxResults = 50;
+                    searchListRequest.ChannelId = ytChannelId;
+                    searchListRequest.PageToken = nextpagetoken;
+                    searchListRequest.Type = "video";
+
+                    // Call the search.list method to retrieve results matching the specified query term.
+                    var searchListResponse = searchListRequest.Execute();
+
+                    // Process  the video responses 
+                    res.AddRange(searchListResponse.Items);
+
+                    nextpagetoken = searchListResponse.NextPageToken;
+
+                }
+
+                //var url = await YouTube.GetVideoUriAsync(youtubeid, YouTubeQuality.Quality1080P);
+                //var YoutubePlayer = new MediaElement();
+                //YoutubePlayer.Source = url.Uri;
+                return res;
+            });
+        }
+
+        public async Task<Uri> getURIFromVideoID(string id)
+        {
+            return await GetYoutubeUri(id);
+        }
+    internal async Task<Uri> GetYoutubeUri(string VideoID)
+    {
+        YouTubeUri uri = await YouTube.GetVideoUriAsync(VideoID, YouTubeQuality.Quality480P);
+        return uri.Uri;
+    }
     }
 }
     

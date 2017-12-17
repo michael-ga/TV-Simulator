@@ -5,7 +5,19 @@
              StartupUri="UI.xaml" Exit="Application_Exit">
 
     <Application.Resources>
-         
+        
+        <Style x:Key="ImageButton" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Width" Value="45" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Image Source="alienthor.png"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </Application.Resources>
 </Application>
 

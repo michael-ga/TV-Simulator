@@ -1,20 +1,7 @@
-﻿using System;
+﻿using MediaClasses;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using YoutubeImporter;
-
-using MediaClasses;
 namespace YoutubeImporter
 {
     /// <summary>
@@ -23,6 +10,7 @@ namespace YoutubeImporter
     public partial class MainWindow : Window
     {
         Search searcher = new Search();
+
         public List<YouTubeChannel> channels { get; set; }
 
         public MainWindow()
@@ -30,9 +18,16 @@ namespace YoutubeImporter
             InitializeComponent();
             channels = new List<YouTubeChannel>();
             mListView.ItemsSource = channels;
+            mListView.SelectionChanged += selectedHandler;
         }
-     
 
+        public void selectedHandler (Object sender,EventArgs e)
+        {
+            //   var temp = mListView.SelectedValue as YouTubeChannel;
+            //   var res = await searcher.GetVideosFromChannelAsync(temp.Path);
+            //   var uri = await searcher.GetYoutubeUri("UO-8CMdeSHA");
+            //;
+        }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {

@@ -37,7 +37,7 @@ namespace TVSimulator
             }
         }
 
-        private void testBtn_Click(object sender, RoutedEventArgs e) { YoutubeImporter yImporters = new YoutubeImporter(); }
+        private void testBtn_Click(object sender, RoutedEventArgs e) {}
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {

@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Right" Margin="0,46,693,496" TextWrapping="Wrap" Text="Search:" Grid.RowSpan="2"/>
         <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Margin="124,24,0,2.667" Height="20" Width="212"/>
-        <Button Content="Search" HorizontalAlignment="Left" Margin="364,44,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button  Content="Search" HorizontalAlignment="Left" Margin="364,44,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Button_Click_1"/>
         <ListView x:Name="mListView" ItemsSource="{Binding Channels}" HorizontalAlignment="Left" Height="503" Margin="2,3.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="797">
             <ListView.View>
                 <GridView>
