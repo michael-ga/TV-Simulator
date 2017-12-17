@@ -2,10 +2,11 @@
 using MediaClasses;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
-
+using System.Windows.Input;
 
 namespace TVSimulator
 {
@@ -14,15 +15,14 @@ namespace TVSimulator
         #region fields
         public bool isSubfolders = false, IsFullscreen=false;
         private FileImporter fileImporter;
-        
         #endregion fields
 
-        /*public MainWindow()
+        public MainWindow()
         {
             InitializeComponent();
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
-        }*/
+        }
 
         #region button listeners
 
@@ -37,7 +37,7 @@ namespace TVSimulator
             }
         }
 
-        private void testBtn_Click(object sender, RoutedEventArgs e) { /*YoutubeImporter yImporters = new YoutubeImporter();*/ }
+        private void testBtn_Click(object sender, RoutedEventArgs e) { YoutubeImporter yImporters = new YoutubeImporter(); }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -64,19 +64,13 @@ namespace TVSimulator
             mediaPlayer.Source = new Uri(path);
             mediaPlayer.Play();
         }
-
-        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-        }
-
-
+       
         #endregion Media player functions
 
         #region subMethods
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        /*private void onVideoRecievedHandler(Object o, List<Media> arg)
+        private void onVideoRecievedHandler(Object o, List<Media> arg)
         {
             Random r = new Random();
             int x = r.Next(arg.Count);
@@ -87,7 +81,7 @@ namespace TVSimulator
             else
                 musicImage.Visibility = Visibility.Hidden;
             playVideoFromPosition(arg.ElementAt(x).Path, new TimeSpan(0,0,0)); 
-        }*/
+        }
 
         #endregion helper methods
 
