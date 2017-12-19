@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-       Title="MainWindow" Height="706" Width="1200" Visibility="Visible" WindowStyle="None" >
+       Title="MainWindow" Height="740.6" Width="1200" Visibility="Visible" WindowStyle="ToolWindow" >
     <Grid Margin="0,0,0,0" Height="706">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -21,15 +21,25 @@
              <Button x:Name="channelDown" Margin="27,591,0,0" VerticalAlignment="Top" Height="34" Click="Channel_Down_Click" HorizontalAlignment="Left" Width="23"/>
          -->
         <Grid Margin="-34,519,0.2,0">
-            <Rectangle Fill="#FF0A1D3A" Margin="34,30,0.4,1.6" Opacity="0.65"/>
-            <Rectangle Fill="Black" Height="40" VerticalAlignment="Top" Opacity="0.65" Margin="0,30,0.4,0"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1029*"/>
+                <ColumnDefinition Width="199*"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="#FF0A1D3A" Margin="34,30,0.4,1.6" Opacity="0.65" Grid.ColumnSpan="2"/>
+            <Rectangle Fill="Black" Height="40" VerticalAlignment="Top" Opacity="0.65" Margin="0,30,0.4,0" Grid.ColumnSpan="2"/>
             <Label x:Name="lblBroadcastNow" Content="Now: Alpha Dog" HorizontalAlignment="Left" Margin="46,83,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold"/>
             <Label x:Name="lblBroadcastNow_Copy" Content="Next: The Legend - 14:50" HorizontalAlignment="Left" Margin="46,124,0,0" VerticalAlignment="Top" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold"/>
-            <Label x:Name="lblMediaName_Copy" Content="Alpha Dog" HorizontalAlignment="Left" Margin="46,35,0,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="20"/>
-            <Label x:Name="lblClock" Content="12:35" Margin="0,37,10.4,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64"/>
+            <Label x:Name="lblMediaName_Copy" Content="Action - Alpha Dog" HorizontalAlignment="Left" Margin="46,35,0,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="20"/>
+            <Label x:Name="lblClock" Content="12:35" Margin="0,37,10.4,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Grid.Column="1"/>
             <ProgressBar HorizontalAlignment="Left" Height="19" Margin="272,88,0,0" VerticalAlignment="Top" Width="303" ValueChanged="ProgressBar_ValueChanged"/>
             <Label x:Name="lblStartTime" Content="12:35" Margin="218,86,0,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64"/>
             <Label x:Name="lblEndTime" Content="14:50" Margin="576,85,0,0" VerticalAlignment="Top" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64"/>
+            <Image Source ="control.png" Margin="0,80,125.2,0" HorizontalAlignment="Right" Width="45" Height="45" VerticalAlignment="Top" Grid.Column="1"/>
+            <Image Source ="info.png" HorizontalAlignment="Right" Margin="0,80,78.2,0" Grid.Column="1" Width="45"  Height="45" VerticalAlignment="Top"/>
+            <Image Source ="settings.png" Margin="0,80,33.2,0" Grid.Column="1" HorizontalAlignment="Right" Width="45" Height="45" VerticalAlignment="Top"/>
+            <Image Source ="channelUp.png" Margin="0,124,55.2,0" Grid.Column="1" HorizontalAlignment="Right" Width="45" Height="45" VerticalAlignment="Top"/>
+            <Image Source ="channelDown.png" Margin="0,124,103.2,0" Grid.Column="1" HorizontalAlignment="Right" Width="45" Height="60" VerticalAlignment="Top"/>
+
         </Grid>
     </Grid>
 </Window>

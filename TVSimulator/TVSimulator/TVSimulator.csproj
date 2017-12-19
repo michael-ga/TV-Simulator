@@ -188,6 +188,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="settings.png" />
+    <Resource Include="control.png" />
+    <Resource Include="info.png" />
+    <Resource Include="channelDown.png" />
+    <Resource Include="channelUp.png" />
     <Content Include="ReleaseNotes.css" />
     <Resource Include="codesAndMore.txt" />
   </ItemGroup>
