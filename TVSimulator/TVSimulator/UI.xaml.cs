@@ -21,7 +21,7 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
-            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
         }
 
         #region button listeners
@@ -64,13 +64,18 @@ namespace TVSimulator
             mediaPlayer.Source = new Uri(path);
             mediaPlayer.Play();
         }
-       
+
+        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
         #endregion Media player functions
 
         #region subMethods
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        private void onVideoRecievedHandler(Object o, List<Media> arg)
+        /*private void onVideoRecievedHandler(Object o, List<Media> arg)
         {
             Random r = new Random();
             int x = r.Next(arg.Count);
@@ -81,7 +86,7 @@ namespace TVSimulator
             else
                 musicImage.Visibility = Visibility.Hidden;
             playVideoFromPosition(arg.ElementAt(x).Path, new TimeSpan(0,0,0)); 
-        }
+        }*/
 
         #endregion helper methods
 
