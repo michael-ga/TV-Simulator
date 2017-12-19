@@ -188,6 +188,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="volume.png" />
     <Resource Include="settings.png" />
     <Resource Include="control.png" />
     <Resource Include="info.png" />

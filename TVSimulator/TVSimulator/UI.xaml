@@ -39,6 +39,9 @@
             <Image Source ="settings.png" Margin="0,80,33.2,0" Grid.Column="1" HorizontalAlignment="Right" Width="45" Height="45" VerticalAlignment="Top"/>
             <Image Source ="channelUp.png" Margin="0,124,55.2,0" Grid.Column="1" HorizontalAlignment="Right" Width="45" Height="45" VerticalAlignment="Top"/>
             <Image Source ="channelDown.png" Margin="0,124,103.2,0" Grid.Column="1" HorizontalAlignment="Right" Width="45" Height="60" VerticalAlignment="Top"/>
+            <Image Source ="volume.png" Margin="0,36,24,0" HorizontalAlignment="Right" Width="32" Height="30" VerticalAlignment="Top"/>
+
+            <Slider HorizontalAlignment="Left" Margin="1009,41,0,0" VerticalAlignment="Top" Height="20" Width="130" Grid.ColumnSpan="2" Opacity="0.4" ValueChanged="Slider_ValueChanged"/>
 
         </Grid>
     </Grid>
