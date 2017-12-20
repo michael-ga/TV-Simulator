@@ -25,11 +25,22 @@ namespace YoutubeImporter
 
         public void selectedHandler (Object sender, SelectionChangedEventArgs e)
         {
-            var selected = ((ListView)e.Source).SelectedItem;
-            string id = ((YouTubeChannel)selected).Path;
-            var list = searcher.GetVideosFromChannelAsync(id);
-            YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer();
-            yte.Show();
+
+            try
+            {
+                var selected = ((ListView)e.Source).SelectedItem;
+                string id = ((YouTubeChannel)selected).Path;
+                var list = searcher.GetVideosFromChannelAsync(id);
+                if (list[0] == null)
+                    return;
+                YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer(list[0].Path.ToString());
+                yte.Show();
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)

@@ -19,10 +19,29 @@ namespace YoutubeImporter
     /// </summary>
     public partial class YoutubeEmbeddedPlayer : Window
     {
-        public YoutubeEmbeddedPlayer()
+        public YoutubeEmbeddedPlayer(string id)
         {
             InitializeComponent();
+            TxtVideoId.Text = id;
             Player.GetBindingExpression(YoutubeImporter.Cef.CefYoutubeController.VideoIdProperty).UpdateSource();
+           
+        }
+        public void bindID(string id)
+        {
+        }
+
+        private void TxtVideoId_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key== Key.Escape)
+            {
+                this.WindowState = WindowState.Normal;
+                this.WindowStyle = WindowStyle.ToolWindow;
+            }
         }
     }
 }

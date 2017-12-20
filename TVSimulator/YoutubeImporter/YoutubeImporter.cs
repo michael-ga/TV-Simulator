@@ -75,7 +75,7 @@ namespace YoutubeImporter
             }
             foreach (var item in res)
             {
-                YoutubeVideo temp = new YoutubeVideo(item.Id.ToString(), item.Snippet.Title, item.ETag.Length.ToString(), "", ytChannelId);
+                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, item.ETag.Length.ToString(), "", ytChannelId);
                 videoList.Add(temp);
             }
             return videoList;
