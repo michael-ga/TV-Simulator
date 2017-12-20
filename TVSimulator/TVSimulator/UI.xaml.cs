@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -15,13 +16,15 @@ namespace TVSimulator
         #region fields
         public bool isSubfolders = false, IsFullscreen=false;
         private FileImporter fileImporter;
+        private bool infoPressed = true;
         #endregion fields
+
 
         public MainWindow()
         {
             InitializeComponent();
             fileImporter = new FileImporter();
-            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
         }
 
         #region button listeners
@@ -64,13 +67,23 @@ namespace TVSimulator
             mediaPlayer.Source = new Uri(path);
             mediaPlayer.Play();
         }
-       
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
         #endregion Media player functions
 
         #region subMethods
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        private void onVideoRecievedHandler(Object o, List<Media> arg)
+        /*private void onVideoRecievedHandler(Object o, List<Media> arg)
         {
             Random r = new Random();
             int x = r.Next(arg.Count);
@@ -81,8 +94,61 @@ namespace TVSimulator
             else
                 musicImage.Visibility = Visibility.Hidden;
             playVideoFromPosition(arg.ElementAt(x).Path, new TimeSpan(0,0,0)); 
+        }*/
+
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetCursorPos(ref Win32Point pt);
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct Win32Point
+        {
+            public Int32 X;
+            public Int32 Y;
+        };
+
+        private void mainWindow_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var point = GetMousePosition();
+
+            var heigth = System.Windows.SystemParameters.PrimaryScreenHeight;
+            if (point.Y > heigth - menuBar.Height)
+                menuBar.Visibility = Visibility.Visible;
+            else
+                menuBar.Visibility = Visibility.Hidden;
         }
 
+        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        {
+            if(infoPressed)
+            {
+                statsBox.Visibility = Visibility.Hidden;
+                txtDescription.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                statsBox.Visibility = Visibility.Visible;
+                txtDescription.Visibility = Visibility.Hidden;
+            }
+            infoPressed = !infoPressed;
+            
+        }
+
+        private void mainWindow_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+                volumeSlider.Value += 1;
+            else
+                volumeSlider.Value -= 1;
+        }
+
+        public static Point GetMousePosition()
+        {
+            Win32Point w32Mouse = new Win32Point();
+            GetCursorPos(ref w32Mouse);
+            return new Point(w32Mouse.X, w32Mouse.Y);
+        }
         #endregion helper methods
 
     }
