@@ -22,6 +22,7 @@ namespace YoutubeImporter
         public YoutubeEmbeddedPlayer()
         {
             InitializeComponent();
+            Player.GetBindingExpression(YoutubeImporter.Cef.CefYoutubeController.VideoIdProperty).UpdateSource();
         }
     }
 }
