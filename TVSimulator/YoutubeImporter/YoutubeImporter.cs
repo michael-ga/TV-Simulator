@@ -2,20 +2,36 @@
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using MediaClasses;
-using MyToolkit.Multimedia;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace YoutubeImporter
 {
     public class Search
     {
+        #region Fields and Ctor
         YouTubeService myService;
-
         public Search()
         {
             myService = getService();
+        } 
+        #endregion
+
+        #region OAuth
+        // authentication
+        private YouTubeService getService()
+        {
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = "AIzaSyCq2vcpfZaE-pyS5fSALAjNvqVw_rfkCio",
+                ApplicationName = this.GetType().ToString()
+            });
+            return youtubeService;
         }
+        #endregion
+
+        //TODO:: have various queries to get different videos from channel using search types from API.
+
+        #region Queries 
         // this function returns list of channels result from query.
         public async Task<List<YouTubeChannel>> customChannelSearch(string searchValue, int maxResults = 50)
         {
@@ -24,13 +40,8 @@ namespace YoutubeImporter
             searchListRequest.Type = "channel"; // optional values are "channel","video","playlist"
             searchListRequest.MaxResults = maxResults;
 
-            // Call the search.list method to retrieve results matching the specified query term.
-            var searchListResponse = await searchListRequest.ExecuteAsync();
-
+            var searchListResponse = await searchListRequest.ExecuteAsync();    // Call the search.list method to retrieve results matching the specified query term.
             List<YouTubeChannel> channels = new List<YouTubeChannel>();
-
-            // Add each result to the appropriate list, and then display the lists of
-            // matching videos, channels, and playlists.
             foreach (var searchResult in searchListResponse.Items)
             {
                 switch (searchResult.Id.Kind)
@@ -43,166 +54,32 @@ namespace YoutubeImporter
             }
             return channels;
         }
-        // authentication
-        private YouTubeService getService()
+        //  get list of all 50 videos from channel
+        public List<YoutubeVideo> GetVideosFromChannelAsync(string ytChannelId)
         {
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            List<SearchResult> res = new List<SearchResult>();
+            List<YoutubeVideo> videoList = new List<YoutubeVideo>();
+            string nextpagetoken = " ";
+
+            while (nextpagetoken != null)
             {
-                ApiKey = "AIzaSyCq2vcpfZaE-pyS5fSALAjNvqVw_rfkCio",
-                ApplicationName = this.GetType().ToString()
-            });
-            return youtubeService;
-        }
-
-        public Task<List<SearchResult>> GetVideosFromChannelAsync(string ytChannelId)
-        {
-            return Task.Run(() =>
+                var searchListRequest = myService.Search.List("snippet");
+                searchListRequest.MaxResults = 50;
+                searchListRequest.ChannelId = ytChannelId;
+                searchListRequest.PageToken = nextpagetoken;
+                searchListRequest.Type = "video";
+                
+                var searchListResponse = searchListRequest.Execute();   // Call the search.list method to retrieve results matching the specified query term.
+                res.AddRange(searchListResponse.Items);     // Process  the video responses 
+                nextpagetoken = searchListResponse.NextPageToken;
+            }
+            foreach (var item in res)
             {
-                List<SearchResult> res = new List<SearchResult>();
-
-                string nextpagetoken = " ";
-
-                while (nextpagetoken != null)
-                {
-                    var searchListRequest = myService.Search.List("snippet");
-                    searchListRequest.MaxResults = 50;
-                    searchListRequest.ChannelId = ytChannelId;
-                    searchListRequest.PageToken = nextpagetoken;
-                    searchListRequest.Type = "video";
-
-                    // Call the search.list method to retrieve results matching the specified query term.
-                    var searchListResponse = searchListRequest.Execute();
-
-                    // Process  the video responses 
-                    res.AddRange(searchListResponse.Items);
-
-                    nextpagetoken = searchListResponse.NextPageToken;
-
-                }
-
-                //var url = await YouTube.GetVideoUriAsync(youtubeid, YouTubeQuality.Quality1080P);
-                //var YoutubePlayer = new MediaElement();
-                //YoutubePlayer.Source = url.Uri;
-                return res;
-            });
+                YoutubeVideo temp = new YoutubeVideo(item.Id.ToString(), item.Snippet.Title, item.ETag.Length.ToString(), "", ytChannelId);
+                videoList.Add(temp);
+            }
+            return videoList;
         }
-
-        public async Task<Uri> getURIFromVideoID(string id)
-        {
-            return await GetYoutubeUri(id);
-        }
-    internal async Task<Uri> GetYoutubeUri(string VideoID)
-    {
-        YouTubeUri uri = await YouTube.GetVideoUriAsync(VideoID, YouTubeQuality.Quality480P);
-        return uri.Uri;
-    }
+        #endregion
     }
 }
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //public class UploadVideo
-    //    {
-    //        public void UploadVideoa()
-    //        {
-             
-    //            try
-    //            {
-    //                new UploadVideo().Run().Wait();
-    //            }
-    //            catch (AggregateException ex)
-    //            {
-    //                foreach (var e in ex.InnerExceptions)
-    //                {
-    //                    Console.WriteLine("Error: " + e.Message);
-    //                }
-    //            }
-
-    //            Console.WriteLine("Press any key to continue...");
-    //            Console.ReadKey();
-    //        }
-           
-
-    //        private async Task Run()
-    //        {
-    //            UserCredential credential;
-    //            string path = System.IO.Directory.GetCurrentDirectory();
-    //            path = path.Substring(0, path.IndexOf("TVSimulator"))+ @"TVSimulator\resources\client_secrets.json";
-    //            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
-    //            {
-    //                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-    //                    GoogleClientSecrets.Load(stream).Secrets,
-    //                    // This OAuth 2.0 access scope allows an application to upload files to the
-    //                    // authenticated user's YouTube channel, but doesn't allow other types of access.
-    //                    new[] { YouTubeService.Scope.YoutubeUpload },
-    //                    "user",
-    //                    CancellationToken.None
-    //                );
-    //            }
-
-
-    //            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
-    //            {
-    //                HttpClientInitializer = credential,
-    //                ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
-    //            });
-
-    //            var video = new Video();
-    //            video.Snippet = new VideoSnippet();
-    //            video.Snippet.Title = "Default Video Title";
-    //            video.Snippet.Description = "Default Video Description";
-    //            video.Snippet.Tags = new string[] { "tag1", "tag2" };
-    //            video.Snippet.CategoryId = "22"; // See https://developers.google.com/youtube/v3/docs/videoCategories/list
-    //            video.Status = new VideoStatus();
-    //            video.Status.PrivacyStatus = "unlisted"; // or "private" or "public"
-    //            var filePath = @"REPLACE_ME.mp4"; // Replace with path to actual movie file.
-
-    //            using (var fileStream = new FileStream(filePath, FileMode.Open))
-    //            {
-    //                var videosInsertRequest = youtubeService.Videos.Insert(video, "snippet,status", fileStream, "video/*");
-    //                videosInsertRequest.ProgressChanged += videosInsertRequest_ProgressChanged;
-    //                videosInsertRequest.ResponseReceived += videosInsertRequest_ResponseReceived;
-
-    //                await videosInsertRequest.UploadAsync();
-    //            }
-    //        }
-
-    //        void videosInsertRequest_ProgressChanged(Google.Apis.Upload.IUploadProgress progress)
-    //        {
-    //            switch (progress.Status)
-    //            {
-    //                case UploadStatus.Uploading:
-    //                    Console.WriteLine("{0} bytes sent.", progress.BytesSent);
-    //                    break;
-
-    //                case UploadStatus.Failed:
-    //                    Console.WriteLine("An error prevented the upload from completing.\n{0}", progress.Exception);
-    //                    break;
-    //            }
-    //        }
-
-    //        void videosInsertRequest_ResponseReceived(Video video)
-    //        {
-    //            Console.WriteLine("Video id '{0}' was successfully uploaded.", video.Id);
-    //        }
-    //    }
-    //}
-
-
-

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
+
 namespace YoutubeImporter
 {
     /// <summary>
@@ -21,12 +23,11 @@ namespace YoutubeImporter
             mListView.SelectionChanged += selectedHandler;
         }
 
-        public void selectedHandler (Object sender,EventArgs e)
+        public void selectedHandler (Object sender, SelectionChangedEventArgs e)
         {
-            //   var temp = mListView.SelectedValue as YouTubeChannel;
-            //   var res = await searcher.GetVideosFromChannelAsync(temp.Path);
-            //   var uri = await searcher.GetYoutubeUri("UO-8CMdeSHA");
-            //;
+            var selected = ((ListView)e.Source).SelectedItem;
+            string id = ((YouTubeChannel)selected).Path;
+            var list = searcher.GetVideosFromChannelAsync(id);
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
