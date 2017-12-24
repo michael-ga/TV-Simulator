@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-       Title="MainWindow" Height="740.6" Width="1200" WindowStyle="ToolWindow">
+       Title="MainWindow" Height="740.6" Width="1200" WindowStyle="ToolWindow" Loaded="Window_Loaded">
 
     <Grid x:Name="mainWindow" Margin="0,0,0,0" Height="706" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel">
 
@@ -29,7 +29,7 @@
             <Grid x:Name="statsBox" Margin="10,50,334.8,38.8" Grid.RowSpan="2">
                 <Label x:Name="lblBroadcastNow" Content="Now: Alpha Dog" HorizontalAlignment="Left" Margin="0,0,0,41" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="149"/>
                 <Label x:Name="lblBroadcastNow_Copy" Content="Next: The Legend - 14:50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="222" Margin="0,0,0,4"/>
-                <ProgressBar Name="mediaProgressBar" HorizontalAlignment="Left" Height="19" Margin="212,0,0,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged"/>
+                <ProgressBar Name="mediaProgressBar" HorizontalAlignment="Left" Height="19" Margin="212,0,0,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged" Foreground="#FF01062F"/>
                 <Label x:Name="lblStartTime" Content="12:35" Margin="158,0,0,42" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
                 <Label x:Name="lblEndTime" Content="14:50" Margin="516,0,0,43" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
             </Grid>
@@ -37,7 +37,7 @@
             <TextBlock x:Name="txtDescription" HorizontalAlignment="Left" Height="85" Margin="10,50,0,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="Johnny and a couple pals kidnap Jake's 15-year-old brother, Zach, then assigns his buddy Frankie to be Zach's minder. They develop a brotherly friendship. Zach parties with his captors as things begin to spin out of control." VerticalAlignment="Top" Width="595" Foreground="White" FontSize="16" FontFamily="Arial" Visibility="Hidden"/>
 
             <Label x:Name="lblMediaName_Copy" Content="Action - Alpha Dog" HorizontalAlignment="Left" Margin="10,0,0,81" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="20" Height="33" Width="213"/>
-            <Label x:Name="lblClock" Content="12:35" Margin="0,0,10,83" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Height="31" Grid.ColumnSpan="2" Grid.Column="2"/>
+            <Label x:Name="lblClock" Content="00:00" Margin="0,0,10,83" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Height="31" Grid.ColumnSpan="2" Grid.Column="2" RenderTransformOrigin="0.5,0.519"/>
             <Image Source ="volume.png" Margin="0,0,82,84" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="32" Grid.Column="1"/>
 
             <Slider x:Name="volumeSlider" Minimum="0" Maximum="100" Value="50" Margin="0,11,61.6,89" Opacity="0.4" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Right" Width="124" Grid.Column="1" Grid.ColumnSpan="2"/>

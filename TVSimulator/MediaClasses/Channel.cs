@@ -6,12 +6,13 @@ namespace MediaClasses
 {
     class Channel
     {
-        private string name;     //the name need to be channel main genre 
+        private string name;     //the name should be channel main genre 
         private MediaSchedule schedule;
-        private Boolean type;    //local or youtube streaming TODO:local variables to LOCAL_CHANNEL , YOUTUBE_CHANNEL
-        private Media playNow;
+        private Boolean type;    //local or youtube streaming 
+        private Media playNow;   //which media played right now
         private Media playNext;  // optional
-
+        private Boolean WatchingNow;    // if user watching the channel- 1 else- 0
+        
         public Channel()
         { }
 

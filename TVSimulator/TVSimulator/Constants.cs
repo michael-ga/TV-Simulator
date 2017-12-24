@@ -17,5 +17,9 @@ namespace TVSimulator
         public const string MOVIE_COLLECTION = "movie";
         public const string TV_SERIES_COLLECTION = "tvseries";
         public const string MUSIC_COLLECTION = "music";
+        public const int LOCAL_CHANNEL = 0;         // type of channels
+        public const int NETWORK_CHANNEL = 1;       // type of channels
+
+
     }
 }

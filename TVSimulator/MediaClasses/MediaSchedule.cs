@@ -7,7 +7,7 @@ namespace MediaClasses
     class MediaSchedule
     {
         private List<TimeSpan> durationList;
-        private List<string> sourcesList;
+        private List<Media> mediaList;
         private int numOfMedia;
         private TimeSpan totalDuration;
 
