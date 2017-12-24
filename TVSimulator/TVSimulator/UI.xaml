@@ -9,8 +9,7 @@
 
     <Grid x:Name="mainWindow" Margin="0,0,0,0" Height="706" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel">
 
-        <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="0,-26,0.2,-4" Stretch="Fill" />
-        <Image x:Name="musicImage" Stretch="Fill" Height="731" Margin="0,-25,0.6,0" VerticalAlignment="Top" Source="http://www.powerpointhintergrund.com/uploads/2017/07/music-background-www-galleryhip--the-hippest-pics-10.jpeg" Visibility="Visible" RenderTransformOrigin="1,0.5"/>
+        <MediaElement x:Name="mediaPlayer" Source="C:\Users\royok\Downloads\1\friends S06E02.avi" LoadedBehavior="Manual" Margin="0,-27,0.6,-4" Stretch="Fill" />
 
         <Grid x:Name="menuBar" Margin="5,0,0.6,0" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>
@@ -19,17 +18,18 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="925*"/>
-                <ColumnDefinition Width="245*"/>
+                <ColumnDefinition Width="126*"/>
+                <ColumnDefinition Width="119*"/>
                 <ColumnDefinition Width="18*"/>
             </Grid.ColumnDefinitions>
 
-            <Rectangle Fill="#FF0A1D3A" Margin="-3,0,-2,1.8" Opacity="0.65" Height="159" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
-            <Rectangle Fill="Black" Height="44" VerticalAlignment="Bottom" Opacity="0.65" Margin="-5,-4,1,80" Grid.ColumnSpan="3"/>
+            <Rectangle Fill="#FF0A1D3A" Margin="-3,0,-2,1.8" Opacity="0.65" Height="159" VerticalAlignment="Bottom" Grid.ColumnSpan="4" Grid.RowSpan="2"/>
+            <Rectangle Fill="Black" Height="44" VerticalAlignment="Bottom" Opacity="0.65" Margin="-5,-4,1,80" Grid.ColumnSpan="4"/>
 
             <Grid x:Name="statsBox" Margin="10,50,334.8,38.8" Grid.RowSpan="2">
                 <Label x:Name="lblBroadcastNow" Content="Now: Alpha Dog" HorizontalAlignment="Left" Margin="0,0,0,41" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="149"/>
                 <Label x:Name="lblBroadcastNow_Copy" Content="Next: The Legend - 14:50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="222" Margin="0,0,0,4"/>
-                <ProgressBar HorizontalAlignment="Left" Height="19" Margin="212,0,0,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged"/>
+                <ProgressBar Name="mediaProgressBar" HorizontalAlignment="Left" Height="19" Margin="212,0,0,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged"/>
                 <Label x:Name="lblStartTime" Content="12:35" Margin="158,0,0,42" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
                 <Label x:Name="lblEndTime" Content="14:50" Margin="516,0,0,43" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
             </Grid>
@@ -37,18 +37,16 @@
             <TextBlock x:Name="txtDescription" HorizontalAlignment="Left" Height="85" Margin="10,50,0,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="Johnny and a couple pals kidnap Jake's 15-year-old brother, Zach, then assigns his buddy Frankie to be Zach's minder. They develop a brotherly friendship. Zach parties with his captors as things begin to spin out of control." VerticalAlignment="Top" Width="595" Foreground="White" FontSize="16" FontFamily="Arial" Visibility="Hidden"/>
 
             <Label x:Name="lblMediaName_Copy" Content="Action - Alpha Dog" HorizontalAlignment="Left" Margin="10,0,0,81" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="20" Height="33" Width="213"/>
-            <Label x:Name="lblClock" Content="12:35" Margin="0,0,10,83" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Height="31" Grid.ColumnSpan="2" Grid.Column="1"/>
-            <Image Source ="volume.png" Margin="0,0,200.6,84" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="32" Grid.Column="1"/>
+            <Label x:Name="lblClock" Content="12:35" Margin="0,0,10,83" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Height="31" Grid.ColumnSpan="2" Grid.Column="2"/>
+            <Image Source ="volume.png" Margin="0,0,82,84" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="32" Grid.Column="1"/>
 
-            <Slider x:Name="volumeSlider" Minimum="0" Maximum="30" Margin="0,11,61.6,89" Opacity="0.4" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Right" Width="124" Grid.Column="1"/>
+            <Slider x:Name="volumeSlider" Minimum="0" Maximum="100" Value="50" Margin="0,11,61.6,89" Opacity="0.4" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Right" Width="124" Grid.Column="1" Grid.ColumnSpan="2"/>
 
-            <Button x:Name="btnInfo" Style="{StaticResource infoButton}" Margin="0,50,99.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Click="btnInfo_Click" Opacity="0.85" Height="45" VerticalAlignment="Top" Grid.Column="1"/>
-            <Button x:Name="btnControl" Style="{StaticResource controlButton}" Margin="0,50,51.6,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="1"/>
-            <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,7.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="1"/>
-            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,29.6,0" RenderTransformOrigin="0.502,0.5" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="1" Height="45" VerticalAlignment="Top"/>
-            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,77.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Grid.RowSpan="2" Height="45" VerticalAlignment="Top" Grid.Column="1"/>
-
-
+            <Button x:Name="btnInfo" Style="{StaticResource infoButton}" Margin="0,50,99.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Click="btnInfo_Click" Opacity="0.85" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <Button x:Name="btnControl" Style="{StaticResource controlButton}" Margin="0,50,51.6,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2" Click="btnControl_Click"/>
+            <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,7.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2"/>
+            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,29.6,0" RenderTransformOrigin="0.502,0.5" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="2" Height="45" VerticalAlignment="Top"/>
+            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,77.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Grid.RowSpan="2" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
 
         </Grid>
     </Grid>

@@ -24,6 +24,7 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
+            mediaPlayer.Play();
             //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
         }
 
@@ -70,7 +71,7 @@ namespace TVSimulator
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
+            mediaPlayer.Volume = volumeSlider.Value/100;
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -141,6 +142,10 @@ namespace TVSimulator
                 volumeSlider.Value += 1;
             else
                 volumeSlider.Value -= 1;
+        }
+
+        private void btnControl_Click(object sender, RoutedEventArgs e)
+        {
         }
 
         public static Point GetMousePosition()
