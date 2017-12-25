@@ -99,7 +99,7 @@ namespace TVSimulator
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            mediaPlayer.Volume = volumeSlider.Value/100;
+            mediaPlayer.Volume = volumeSlider.Value/60;
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -151,8 +151,11 @@ namespace TVSimulator
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             mediaPlayer.Play();
+            timeNow = DateTime.Now;
+            lblClock.Content = timeNow.ToShortTimeString();
+
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Interval = TimeSpan.FromSeconds(15);
             timer.Tick += tickevent;
             timer.Start();
         }
@@ -161,9 +164,8 @@ namespace TVSimulator
         {
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
-
             mediaProgressBar.Maximum = (int)mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-            mediaProgressBar.Value++;            
+            mediaProgressBar.Value +=15;            
         }
 
         public static Point GetMousePosition()

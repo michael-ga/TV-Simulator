@@ -11,7 +11,7 @@ namespace MediaClasses
         private Boolean type;    //local or youtube streaming 
         private Media playNow;   //which media played right now
         private Media playNext;  // optional
-        private Boolean WatchingNow;    // if user watching the channel- 1 else- 0
+        private Boolean isWatchingNow;    // if user watching the channel- 1 else- 0
         
         public Channel()
         { }
@@ -25,6 +25,5 @@ namespace MediaClasses
         }
 
         //TODO:play function - play the current media from the schedule here in the constructor
-
     }
 }
