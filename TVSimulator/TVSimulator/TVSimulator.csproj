@@ -181,6 +181,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChannelsBuilder.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="IDatabase.cs" />
@@ -233,7 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MediaClasses\MediaClasses.csproj">
-      <Project>{40E23E5B-9EB3-4681-970A-2E04FF6A131C}</Project>
+      <Project>{40e23e5b-9eb3-4681-970a-2e04ff6a131c}</Project>
       <Name>MediaClasses</Name>
     </ProjectReference>
   </ItemGroup>

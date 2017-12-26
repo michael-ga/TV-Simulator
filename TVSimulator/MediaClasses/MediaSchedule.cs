@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MediaClasses
 {
-    class MediaSchedule
+    public class MediaSchedule
     {
         private List<Media> mediaList;
         private List<TimeSpan> durationList;

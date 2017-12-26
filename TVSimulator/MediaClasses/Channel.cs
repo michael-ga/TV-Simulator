@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MediaClasses
 {
-    class Channel
+    public class Channel
     {
         private int channelNumber;
         private string typeOfMedia;       //movies,tv serias,music or youtube stream
@@ -14,12 +14,12 @@ namespace MediaClasses
         public Channel()
         { }
 
-        public Channel(int channelNumber,string typeOfMedia,string genre,MediaSchedule schedule)
+        public Channel(int channelNumber,string typeOfMedia,string genre)
         {
             this.channelNumber = channelNumber;
             this.genre = genre;
             this.typeOfMedia = typeOfMedia;
-            this.schedule = schedule;
+            //this.schedule = schedule;
             //TODO:playNow and playNext is done when the schedule will be ready
         }
     }
