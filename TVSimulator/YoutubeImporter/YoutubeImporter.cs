@@ -4,8 +4,13 @@ using Google.Apis.YouTube.v3.Data;
 using MediaClasses;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TVSimulator;
+
 namespace YoutubeImporter
 {
+    /// <summary>
+    ///  this class handles api calls and data extracting from Youtube Data Api
+    /// </summary>
     public class Search
     {
         #region Fields and Ctor
@@ -13,7 +18,7 @@ namespace YoutubeImporter
         public Search()
         {
             myService = getService();
-        } 
+        }
         #endregion
 
         #region OAuth
@@ -33,7 +38,7 @@ namespace YoutubeImporter
 
         #region Queries 
         // this function returns list of channels result from query.
-        public async Task<List<YouTubeChannel>> customChannelSearch(string searchValue, int maxResults = 50)
+        public async Task<List<YouTubeChannel>> channelSearch(string searchValue, int maxResults = 50)
         {
             var searchListRequest = myService.Search.List("snippet");
             searchListRequest.Q = searchValue; // searchListRequest.Q -> search query takes every word with OR operator a|b 
@@ -47,7 +52,7 @@ namespace YoutubeImporter
                 switch (searchResult.Id.Kind)
                 {
                     case "youtube#channel":
-                        YouTubeChannel temp = new YouTubeChannel(searchResult.Snippet.ChannelId, searchResult.Snippet.Title, "", "", searchResult.Snippet.Thumbnails.Default__.Url);
+                        YouTubeChannel temp = new YouTubeChannel(searchResult.Snippet.ChannelId, searchResult.Snippet.ChannelTitle, "", "", searchResult.Snippet.Thumbnails.Default__.Url);
                         channels.Add(temp);
                         break;
                 }
@@ -55,7 +60,7 @@ namespace YoutubeImporter
             return channels;
         }
         //  get list of all 50 videos from channel
-        public List<YoutubeVideo> GetVideosFromChannelAsync(string ytChannelId)
+        public List<YoutubeVideo> GetVideosFromChannelAsync(string ytChannelId,int maxResults = 30)
         {
             List<SearchResult> res = new List<SearchResult>();
             List<YoutubeVideo> videoList = new List<YoutubeVideo>();
@@ -64,22 +69,42 @@ namespace YoutubeImporter
             while (nextpagetoken != null)
             {
                 var searchListRequest = myService.Search.List("snippet");
-                searchListRequest.MaxResults = 50;
+                searchListRequest.MaxResults = maxResults;
                 searchListRequest.ChannelId = ytChannelId;
                 searchListRequest.PageToken = nextpagetoken;
                 searchListRequest.Type = "video";
-                
+
                 var searchListResponse = searchListRequest.Execute();   // Call the search.list method to retrieve results matching the specified query term.
                 res.AddRange(searchListResponse.Items);     // Process  the video responses 
                 nextpagetoken = searchListResponse.NextPageToken;
             }
             foreach (var item in res)
             {
-                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, item.ETag.Length.ToString(), "", ytChannelId);
+                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, item.ETag.Length.ToString(), "", ytChannelId,item.Snippet.Thumbnails.Default__.Url);
                 videoList.Add(temp);
             }
             return videoList;
         }
         #endregion
     }
+
+    ///// <summary>
+    ///// this class get handles database related function fro Importer
+    ///// </summary>
+    //public class DBManager
+    //{
+    //    Database db;
+
+    //    public DBManager()
+    //    {
+    //        db = new Database();
+    //    }
+
+    //    public void getChannels()
+    //    {
+            
+    //    }
+
+    //}
+
 }

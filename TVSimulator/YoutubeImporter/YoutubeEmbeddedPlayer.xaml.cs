@@ -1,16 +1,8 @@
-﻿using System;
+﻿using MediaClasses;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace YoutubeImporter
 {
@@ -19,17 +11,36 @@ namespace YoutubeImporter
     /// </summary>
     public partial class YoutubeEmbeddedPlayer : Window
     {
+        private List<YoutubeVideo> videos;
+        private string currentVideoId;
+        public string CurrentVideoId { get => currentVideoId; set => currentVideoId = value; }
+
+        public YoutubeEmbeddedPlayer()
+        {
+            InitializeComponent();
+            Player.GetBindingExpression(YoutubeImporter.Cef.CefYoutubeController.VideoIdProperty).UpdateSource();
+        }
+        public YoutubeEmbeddedPlayer(List<YoutubeVideo> videoList)
+        {
+            InitializeComponent();
+            videos = videoList;
+            currentVideoId = videos[0].Path;
+            TxtVideoId.Text = videos[0].Path;
+            Player.GetBindingExpression(YoutubeImporter.Cef.CefYoutubeController.VideoIdProperty).UpdateSource();
+        }
+
         public YoutubeEmbeddedPlayer(string id)
         {
             InitializeComponent();
             TxtVideoId.Text = id;
             Player.GetBindingExpression(YoutubeImporter.Cef.CefYoutubeController.VideoIdProperty).UpdateSource();
-           
-        }
-        public void bindID(string id)
-        {
         }
 
+
+        private void playNext()
+        {
+
+        }
         private void TxtVideoId_KeyDown(object sender, KeyEventArgs e)
         {
 

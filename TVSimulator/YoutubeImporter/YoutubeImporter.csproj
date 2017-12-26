@@ -229,6 +229,10 @@
       <Project>{40E23E5B-9EB3-4681-970A-2E04FF6A131C}</Project>
       <Name>MediaClasses</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TVSimulator\TVSimulator.csproj">
+      <Project>{0e18ef4b-73b3-44a5-aad4-8c5d436e0331}</Project>
+      <Name>TVSimulator</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CefPlayer.js" />

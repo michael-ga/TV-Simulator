@@ -1,7 +1,7 @@
 ﻿
 namespace TVSimulator
 {
-    class Constants
+    public class Constants
     {
         // arrays and collections
         //public const string [] videoExt = new co{ ".mkv", ".avi", ".wmv", ".mp4" };
@@ -17,5 +17,7 @@ namespace TVSimulator
         public const string MOVIE_COLLECTION = "movie";
         public const string TV_SERIES_COLLECTION = "tvseries";
         public const string MUSIC_COLLECTION = "music";
+        public const string YOUTUBE_CHANNEL_COLLECTION = "youtube_channel";
+
     }
 }

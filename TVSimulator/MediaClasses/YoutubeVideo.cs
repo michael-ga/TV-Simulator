@@ -6,14 +6,18 @@ namespace MediaClasses
 {
     public class YoutubeVideo : Media
     {
-        private string url;
+        private string photoURL;
         private string channelId;
-        public YoutubeVideo(string path, string name, string duration = "", string genre = "", string channelId ="") : base(path, name, duration, genre)
+        private int id;
+
+        public YoutubeVideo(string path, string name, string duration = "", string genre = "", string channelId ="",string photoURL = "") : base(path, name, duration, genre)
         {
             this.channelId = channelId;
+            this.photoURL = photoURL;
         }
 
-        public string Url { get => url; set => url = value; }
+        public string PhotoURL { get => photoURL; set => photoURL = value; }
         public string ChannelId { get => channelId; set => channelId = value; }
+        public int Id { get => id; set => id = value; }
     }
 }
