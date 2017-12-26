@@ -87,9 +87,9 @@ namespace YoutubeImporter
             foreach (var item in res)
             {
                 // problem getting video duration
-                dur = await durationReq(item.Id.VideoId.ToString());
-                dur = extractDuration(dur);
-                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, dur, "", ytChannelId,item.Snippet.Thumbnails.Default__.Url);
+                //dur = await durationReq(item.Id.VideoId.ToString());
+                //dur = extractDuration(dur);
+                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, "", "", ytChannelId,item.Snippet.Thumbnails.Default__.Url);
                 videoList.Add(temp);
             }
             return videoList;
