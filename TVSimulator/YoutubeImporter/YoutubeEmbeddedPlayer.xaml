@@ -1,0 +1,17 @@
+﻿<Window x:Class="YoutubeImporter.YoutubeEmbeddedPlayer"
+        xmlns:YTPL="clr-namespace:YoutubeImporter;assembly=YoutubeImporter" 
+        xmlns:Cef="clr-namespace:YoutubeImporter.Cef;assembly=YoutubeImporter" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YoutubeImporter"
+        xmlns:Cef1="clr-namespace:YoutubeImporter.Cef"
+        mc:Ignorable="d"
+        Title="YoutubeEmbeddedPlayer" Height="600" Width="800" WindowStyle="None" ResizeMode="NoResize"  
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown">
+    <Grid>
+        <Cef1:CefYoutubeController x:Name="Player" VideoId="{Binding Text, ElementName=TxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,4.667"/>
+        <TextBox Name="TxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Collapsed" />
+    </Grid>
+</Window>

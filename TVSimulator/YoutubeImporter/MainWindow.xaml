@@ -12,17 +12,29 @@
             <RowDefinition Height="275*"/>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Right" Margin="0,46,693,496" TextWrapping="Wrap" Text="Search:" Grid.RowSpan="2"/>
-        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Margin="124,24,0,2.667" Height="20" Width="212"/>
-        <Button  Content="Search" HorizontalAlignment="Left" Margin="364,44,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <ListView x:Name="mListView" ItemsSource="{Binding Channels}" HorizontalAlignment="Left" Height="503" Margin="2,3.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="797">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="path" Width="200"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Title" Width="150"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding PhotoURL}" Header="PhotoURL" Width="100"/>
-                </GridView>
-            </ListView.View>
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Margin="124,24,0,2.667" Height="20" Width="212" KeyDown="SearchBox_KeyDown"/>
+        <Button  x:Name="searchBtn" Content="Search" HorizontalAlignment="Left" Margin="364,44,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Search_Click"/>
+        <ListView x:Name="mListView" ItemsSource="{Binding Channels}" Margin="0,3.333,1,3" Grid.Row="1" HorizontalAlignment="Right" Width="676">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="5" HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel x:Name="sPanel" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Image Source="{Binding PhotoURL}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" />
+                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="856,22,-131,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="addChannelBtn" Content="add channel" HorizontalAlignment="Left" Margin="454,44,0,0" VerticalAlignment="Top" Width="79" Click="addChannelBtn_Click"/>
+        <Button x:Name="removeChannelBtn" Content="remove channel" HorizontalAlignment="Left" Margin="558,43,0,0" VerticalAlignment="Top" Width="75" Click="removeChannelBtn_Click"/>
+        <Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Margin="655,42,0,0" VerticalAlignment="Top" Width="75" Click="playBtn_Click"/>
+        <Button x:Name="showMyChannelsBtn" Content="show my channels" HorizontalAlignment="Left" Margin="20,20.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="showMyChannelsBtn_Click"/>
+        <Button x:Name="showVideosBtn" Content="show videos" HorizontalAlignment="Left" Margin="24,65.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="showVideosBtn_Click"/>
     </Grid>
 
 </Window>
