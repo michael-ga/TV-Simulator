@@ -223,12 +223,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="volume.png" />
-    <Resource Include="settings.png" />
-    <Resource Include="control.png" />
-    <Resource Include="info.png" />
-    <Resource Include="channelDown.png" />
-    <Resource Include="channelUp.png" />
+    <Resource Include="Resources\volume.png" />
+    <Resource Include="Resources\settings.png" />
+    <Resource Include="Resources\control.png" />
+    <Resource Include="Resources\info.png" />
+    <Resource Include="Resources\channelDown.png" />
+    <Resource Include="Resources\channelUp.png" />
     <Content Include="ReleaseNotes.css" />
     <Resource Include="codesAndMore.txt" />
   </ItemGroup>
