@@ -6,10 +6,14 @@ namespace MediaClasses
 {
     class MediaSchedule
     {
-        private List<TimeSpan> durationList;
         private List<Media> mediaList;
+        private List<TimeSpan> durationList;
+
         private int numOfMedia;
         private TimeSpan totalDuration;
+
+        private Media playNow;   //which media played right now
+        private Media playNext;  // optional
 
         public MediaSchedule() {   }
     

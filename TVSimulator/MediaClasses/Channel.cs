@@ -10,8 +10,6 @@ namespace MediaClasses
         private string typeOfMedia;       //movies,tv serias,music or youtube stream
         private string genre;             //the name should be channel main genre 
         private MediaSchedule schedule;
-        private Media playNow;   //which media played right now
-        private Media playNext;  // optional
         
         public Channel()
         { }
@@ -24,7 +22,5 @@ namespace MediaClasses
             this.schedule = schedule;
             //TODO:playNow and playNext is done when the schedule will be ready
         }
-
-        //TODO:play function - play the current media from the schedule here in the constructor
     }
 }
