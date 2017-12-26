@@ -2,7 +2,10 @@
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using MediaClasses;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TVSimulator;
 
@@ -13,6 +16,8 @@ namespace YoutubeImporter
     /// </summary>
     public class Search
     {
+        private string request = @"https://www.googleapis.com/youtube/v3/videos?id=XXX&key=AIzaSyCq2vcpfZaE-pyS5fSALAjNvqVw_rfkCio&part=snippet,contentDetails";
+        
         #region Fields and Ctor
         YouTubeService myService;
         public Search()
@@ -60,10 +65,11 @@ namespace YoutubeImporter
             return channels;
         }
         //  get list of all 50 videos from channel
-        public List<YoutubeVideo> GetVideosFromChannelAsync(string ytChannelId,int maxResults = 30)
+        public async Task<List<YoutubeVideo>> GetVideosFromChannelAsync(string ytChannelId,int maxResults = 30)
         {
             List<SearchResult> res = new List<SearchResult>();
             List<YoutubeVideo> videoList = new List<YoutubeVideo>();
+            string dur;
             string nextpagetoken = " ";
 
             while (nextpagetoken != null)
@@ -80,13 +86,38 @@ namespace YoutubeImporter
             }
             foreach (var item in res)
             {
-                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, item.ETag.Length.ToString(), "", ytChannelId,item.Snippet.Thumbnails.Default__.Url);
+                // problem getting video duration
+                dur = await durationReq(item.Id.VideoId.ToString());
+                dur = extractDuration(dur);
+                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, dur, "", ytChannelId,item.Snippet.Thumbnails.Default__.Url);
                 videoList.Add(temp);
             }
             return videoList;
         }
         #endregion
+
+
+        public async Task<string> durationReq(string videoID)
+        {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+                client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+                string req = "https://www.googleapis.com/youtube/v3/videos?id=" + videoID + "&key=AIzaSyCq2vcpfZaE-pyS5fSALAjNvqVw_rfkCio&part=snippet,contentDetails";
+                var stringTask = await client.GetStringAsync(req);
+                 return stringTask;
+        }
+        private string extractDuration(string response)
+        {
+            int x = response.IndexOf("duration")+8;
+            x = response.IndexOf("P", x);
+            int y = response.IndexOf("\"",x);
+            return response.Substring(x,y - x);
+        }
     }
+
 
     ///// <summary>
     ///// this class get handles database related function fro Importer

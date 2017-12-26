@@ -15,7 +15,11 @@ namespace MediaClasses
             this.channelId = channelId;
             this.photoURL = photoURL;
         }
-
+        public TimeSpan getTimeSpan()
+        {
+            return System.Xml.XmlConvert.ToTimeSpan(duration);
+        }
+        
         public string PhotoURL { get => photoURL; set => photoURL = value; }
         public string ChannelId { get => channelId; set => channelId = value; }
         public int Id { get => id; set => id = value; }

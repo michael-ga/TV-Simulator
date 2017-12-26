@@ -17,7 +17,7 @@ namespace YoutubeImporter
     /// </summary>
     public partial class MainWindow : Window    {
 
-        #region Fields and Constructor
+        #region Fields
         Search searcher = new Search();
         Database db;
 
@@ -46,6 +46,7 @@ namespace YoutubeImporter
             }
 
         }
+        #endregion
 
         public MainWindow()
         {
@@ -56,7 +57,6 @@ namespace YoutubeImporter
             mListView.ItemsSource = Channels;
             mListView.SelectionChanged += selectedHandler;
         }
-        #endregion
 
 
         #region Button Listeners
@@ -70,7 +70,7 @@ namespace YoutubeImporter
 
         private void addChannelBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (currSelection == null)
+            if (currSelection == null || mListView.ItemsSource != Channels)
                 return;
 
             if (!(db.insertYoutubechannel(currSelection)))
@@ -82,7 +82,7 @@ namespace YoutubeImporter
 
         private void removeChannelBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (currSelection == null)
+            if (currSelection == null ||  mListView.ItemsSource != Channels)
                 return;
 
             var res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currSelection.Path);
@@ -92,11 +92,11 @@ namespace YoutubeImporter
                 Debug.WriteLine("nothing happened");
         }
 
-        private void playBtn_Click(object sender, RoutedEventArgs e)
+        private async void playBtn_Click(object sender, RoutedEventArgs e)
         {
             if (mListView.ItemsSource == Channels)
             {
-                var list = searcher.GetVideosFromChannelAsync(currSelection.Path);
+                var list = await searcher.GetVideosFromChannelAsync(currSelection.Path);
                 if (list[0] == null)
                     return;
 
@@ -105,13 +105,14 @@ namespace YoutubeImporter
             }
             if (mListView.ItemsSource == Videos)
             {
+                string a = await searcher.durationReq(currVideoSelection.Path);
                 YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer(currVideoSelection.Path);
                 yte.Show();
             }
         }
-        private void showVideosBtn_Click(object sender, RoutedEventArgs e)
+        private async void showVideosBtn_Click(object sender, RoutedEventArgs e)
         {
-            Videos = searcher.GetVideosFromChannelAsync(currSelection.Path);
+            Videos = await searcher.GetVideosFromChannelAsync(currSelection.Path);
         }
         private void showMyChannelsBtn_Click(object sender, RoutedEventArgs e)
         {
