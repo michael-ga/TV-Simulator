@@ -10,10 +10,8 @@ using System.Windows;
 
 namespace TVSimulator
 {
-
     class FileImporter : EventArgs,IFileImporter
     {
-
         #region fields
         public delegate void videoLoaded(Object o, List<Media> arg);
         public event videoLoaded OnVideoLoaded;
