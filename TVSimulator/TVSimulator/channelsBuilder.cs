@@ -39,7 +39,7 @@ namespace TVSimulator
 
         public void buildLocalChannels()
         {
-            List<Channel> c = new List<Channel>();
+            localChannels = new List<Channel>();
 
             List<string> gMovie = new List<string>();
             List<string> gTV = new List<string>();
@@ -56,8 +56,8 @@ namespace TVSimulator
 
             for (var i = 0; i < gMovie.Count(); i++)
             {
-                c.Add(new Channel(channelNumber, Constants.MOVIE, gMovie.ElementAt(i)));
-                c.ElementAt(channelNumber-1).buildSchedule();
+                localChannels.Add(new Channel(channelNumber, Constants.MOVIE, gMovie.ElementAt(i)));
+                localChannels.ElementAt(channelNumber-1).buildSchedule();
                 channelNumber++;
             }
 
@@ -68,8 +68,8 @@ namespace TVSimulator
             gTV = gTV.Distinct().ToList();
             for (var i = 0; i < gTV.Count(); i++)
             {
-                c.Add(new Channel(channelNumber, Constants.TVSERIES, gTV.ElementAt(i)));
-                c.ElementAt(channelNumber-1).buildSchedule();
+                localChannels.Add(new Channel(channelNumber, Constants.TVSERIES, gTV.ElementAt(i)));
+                localChannels.ElementAt(channelNumber-1).buildSchedule();
                 channelNumber++;
             }
         }
