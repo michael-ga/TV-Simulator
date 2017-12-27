@@ -18,7 +18,8 @@ namespace TVSimulator
         public const string TV_SERIES_COLLECTION = "tvseries";
         public const string MUSIC_COLLECTION = "music";
         public const string YOUTUBE_CHANNEL_COLLECTION = "youtube_channel";
-        //genre constants
+        //times constants 
+        public const string START_CYCLE = "26/12/2017 13:30:00";
 
     }
 }

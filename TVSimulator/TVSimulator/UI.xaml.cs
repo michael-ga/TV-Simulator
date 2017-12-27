@@ -21,7 +21,8 @@ namespace TVSimulator
         public event EventHandler Tick;
         public DateTime timeNow;
         public Database db;
-        public ChannelsBuilder ch = new ChannelsBuilder();
+        public ChannelsBuilder cb = new ChannelsBuilder();
+        public int curChannelNum = 1;
         #endregion fields
 
 
@@ -29,6 +30,9 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
+            //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            cb.buildLocalChannels();
+            
         }
 
         #region button listeners
@@ -61,7 +65,6 @@ namespace TVSimulator
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
-            
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -71,12 +74,16 @@ namespace TVSimulator
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
-
+            curChannelNum++;
+            var c = cb.LocalChannels.ElementAt(curChannelNum);
+            playFromChannel(c);
         }
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
         {
-
+            curChannelNum--;
+            var c = cb.LocalChannels.ElementAt(curChannelNum);
+            playFromChannel(c);
         }
 
         #endregion button listeners
@@ -85,8 +92,8 @@ namespace TVSimulator
 
         private void playVideoFromPosition(string path, TimeSpan t)
         {
-            mediaPlayer.Position = t;
             mediaPlayer.Source = new Uri(path);
+            mediaPlayer.Position = t;
             mediaPlayer.Play();
         }
 
@@ -152,7 +159,10 @@ namespace TVSimulator
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            mediaPlayer.Play();
+            var c0 = cb.LocalChannels.ElementAt(curChannelNum);
+            playFromChannel(c0);
+            
+            //mediaPlayer.Play();
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
 
@@ -162,11 +172,88 @@ namespace TVSimulator
             timer.Start();
         }
 
+        private void playFromChannel(Channel curChannel)
+        {
+            var durLength = curChannel.DurationList.Count();
+            var totalDur = curChannel.DurationList.ElementAt(durLength - 1);
+
+            var a = DateTime.Parse(Constants.START_CYCLE);
+            var b = DateTime.Now;
+            var diff = ((b.Subtract(a)).TotalMinutes) % totalDur;
+
+            for(var i=0;i< curChannel.DurationList.Count();i++)
+            {
+                if(diff < curChannel.DurationList.ElementAt(i))
+                {
+                    TimeSpan t;
+                    int min;
+                    if (i == 0)
+                    {
+                        min = (int)diff;
+                        t = new TimeSpan(0, min, 0);
+                        playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
+                        changeLabels(curChannel, min, i);
+                        return;
+                    }
+                    else
+                    {
+                        min = (int)diff - curChannel.DurationList.ElementAt(i - 1);
+                        t = new TimeSpan(0,min, 0);
+                        playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
+                        changeLabels(curChannel, min,i);
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void changeLabels(Channel c,int time,int mediaNum)
+        {
+            lblChannelNumber.Content = c.ChannelNumber;
+            lblMediaName.Content = c.Genre + " - " +c.Media.ElementAt(mediaNum).Name;
+            lblBroadcastNow.Content = "Now: " + c.Media.ElementAt(mediaNum).Name;
+          
+            if (mediaNum < c.Media.Count()-1)
+                lblBroadcastNext.Content = "Next: " + c.Media.ElementAt(mediaNum + 1).Name;
+            else
+                lblBroadcastNext.Content = "Next: " + c.Media.ElementAt(0).Name;
+
+            //change times labels
+            var b = DateTime.Now;
+            lblStartTime.Content = (b.AddMinutes(time*(-1))).ToShortTimeString();
+            int x;
+            if (mediaNum != 0)
+            {
+                x = c.DurationList.ElementAt(mediaNum) - c.DurationList.ElementAt(mediaNum - 1) - time;
+                mediaProgressBar.Maximum = (c.DurationList.ElementAt(mediaNum) - c.DurationList.ElementAt(mediaNum - 1)) * 60;
+            }
+            else
+            {
+                mediaProgressBar.Maximum = c.DurationList.ElementAt(mediaNum) * 60;
+                x = c.DurationList.ElementAt(mediaNum) - time;
+            }
+            mediaProgressBar.Value = time * 60;
+        
+            lblEndTime.Content = b.AddMinutes(x).ToShortTimeString();
+
+            //change Description
+            if (c.TypeOfMedia.Equals(Constants.MOVIE))
+            {
+                Movie m = c.Media.ElementAt(mediaNum) as Movie;
+                txtDescription.Text = m.Description + "  - IMDB Rating: " + m.ImdbRating;
+            }
+            if(c.TypeOfMedia.Equals(Constants.TVSERIES))
+            {
+                TvSeries t = c.Media.ElementAt(mediaNum) as TvSeries;
+                txtDescription.Text = t.Description + "  - IMDB Rating: " + t.ImdbRating;
+            }
+            
+        }
+
         private void tickevent(object sender,EventArgs e)
         {
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
-            mediaProgressBar.Maximum = (int)mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             mediaProgressBar.Value +=15;            
         }
 

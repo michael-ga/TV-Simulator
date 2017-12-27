@@ -13,8 +13,14 @@ namespace TVSimulator
         private List<Media> media;
         private List<int> durationList;
         private Database db;
-
         private DateTime StartCycleTime;
+
+        public List<Media> Media { get => media; set => media = value; }
+        public List<int> DurationList { get => durationList; set => durationList = value; }
+        public int ChannelNumber { get => channelNumber; set => channelNumber = value; }
+        public string Genre { get => genre; set => genre = value; }
+        public string TypeOfMedia { get => typeOfMedia; set => typeOfMedia = value; }
+
         //private /*MediaSchedule*/ schedule;
 
         public Channel()
@@ -30,7 +36,7 @@ namespace TVSimulator
             this.durationList = new List<int>();
 
             this.db = new Database();
-            this.StartCycleTime = DateTime.Now;
+            this.StartCycleTime = DateTime.Parse(Constants.START_CYCLE); 
 
 
             //this.schedule = schedule;
