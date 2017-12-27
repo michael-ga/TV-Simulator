@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace TVSimulator
 {
@@ -17,6 +18,8 @@ namespace TVSimulator
         public bool isSubfolders = false, IsFullscreen=false;
         private FileImporter fileImporter;
         private bool infoPressed = true;
+        public event EventHandler Tick;
+        public DateTime timeNow;
         #endregion fields
 
 
@@ -24,6 +27,7 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
+            
             //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
         }
 
@@ -40,7 +44,24 @@ namespace TVSimulator
             }
         }
 
-        private void testBtn_Click(object sender, RoutedEventArgs e) {}
+        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        {
+            if (infoPressed)
+            {
+                statsBox.Visibility = Visibility.Hidden;
+                txtDescription.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                statsBox.Visibility = Visibility.Visible;
+                txtDescription.Visibility = Visibility.Hidden;
+            }
+            infoPressed = !infoPressed;
+        }
+
+        private void btnControl_Click(object sender, RoutedEventArgs e)
+        {
+        }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -68,9 +89,17 @@ namespace TVSimulator
             mediaPlayer.Play();
         }
 
+        private void mainWindow_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+                volumeSlider.Value += 1;
+            else
+                volumeSlider.Value -= 1;
+        }
+
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-
+            mediaPlayer.Volume = volumeSlider.Value/60;
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -96,7 +125,7 @@ namespace TVSimulator
             playVideoFromPosition(arg.ElementAt(x).Path, new TimeSpan(0,0,0)); 
         }*/
 
-
+        //for get the mouse point
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool GetCursorPos(ref Win32Point pt);
@@ -119,28 +148,24 @@ namespace TVSimulator
                 menuBar.Visibility = Visibility.Hidden;
         }
 
-        private void btnInfo_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if(infoPressed)
-            {
-                statsBox.Visibility = Visibility.Hidden;
-                txtDescription.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                statsBox.Visibility = Visibility.Visible;
-                txtDescription.Visibility = Visibility.Hidden;
-            }
-            infoPressed = !infoPressed;
-            
+            mediaPlayer.Play();
+            timeNow = DateTime.Now;
+            lblClock.Content = timeNow.ToShortTimeString();
+
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(15);
+            timer.Tick += tickevent;
+            timer.Start();
         }
 
-        private void mainWindow_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void tickevent(object sender,EventArgs e)
         {
-            if (e.Delta > 0)
-                volumeSlider.Value += 1;
-            else
-                volumeSlider.Value -= 1;
+            timeNow = DateTime.Now;
+            lblClock.Content = timeNow.ToShortTimeString();
+            mediaProgressBar.Maximum = (int)mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+            mediaProgressBar.Value +=15;            
         }
 
         public static Point GetMousePosition()
@@ -149,6 +174,8 @@ namespace TVSimulator
             GetCursorPos(ref w32Mouse);
             return new Point(w32Mouse.X, w32Mouse.Y);
         }
+
+
         #endregion helper methods
 
     }
