@@ -60,10 +60,7 @@ namespace TVSimulator
                     break;
 
             }
-
-
         }
-
 
         // insert to Media objects to collection
         public void insertMediaList(List<Media> mediaList)

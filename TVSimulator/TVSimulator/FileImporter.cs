@@ -19,9 +19,12 @@ namespace TVSimulator
         List<String> allPathes;
         List<Media> allMedia;
         Database db;
+
         private string [] videoExt =  { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
         private string [] musicExt =  { ".mp3", ".flac", ".ogg", ".wav", ".wma" };
         private string [] mediaExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp", ".mp3", ".flac", ".ogg", ".wav", ".wma" };
+
+        public List<Media> AllMedia { get => allMedia; set => allMedia = value; }
         #endregion
 
         #region Constructor

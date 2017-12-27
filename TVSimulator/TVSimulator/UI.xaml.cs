@@ -20,6 +20,8 @@ namespace TVSimulator
         private bool infoPressed = true;
         public event EventHandler Tick;
         public DateTime timeNow;
+        public Database db;
+        public ChannelsBuilder ch = new ChannelsBuilder();
         #endregion fields
 
 
@@ -27,8 +29,9 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
-            
             //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            ch.buildLocalChannels();
+            
         }
 
         #region button listeners
@@ -112,13 +115,14 @@ namespace TVSimulator
         #region subMethods
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        /*private void onVideoRecievedHandler(Object o, List<Media> arg)
+       /* private void onVideoRecievedHandler(Object o, List<Media> arg)
         {
+            db.insertByType(arg);
             Random r = new Random();
             int x = r.Next(arg.Count);
             folderPathTextbox.Text = arg.ElementAt(x).Name;     //check the name of media
 
-            if (arg.ElementAt(x) is Music)
+            /*if (arg.ElementAt(x) is Music)
                 musicImage.Visibility = Visibility.Visible;
             else
                 musicImage.Visibility = Visibility.Hidden;
