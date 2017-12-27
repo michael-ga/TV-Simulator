@@ -22,6 +22,7 @@ namespace TVSimulator
         public DateTime timeNow;
         public Database db;
         public ChannelsBuilder cb = new ChannelsBuilder();
+        public int curChannelNum = 1;
         #endregion fields
 
 
@@ -73,12 +74,16 @@ namespace TVSimulator
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
-
+            curChannelNum++;
+            var c = cb.LocalChannels.ElementAt(curChannelNum);
+            playFromChannel(c);
         }
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
         {
-
+            curChannelNum--;
+            var c = cb.LocalChannels.ElementAt(curChannelNum);
+            playFromChannel(c);
         }
 
         #endregion button listeners
@@ -87,8 +92,8 @@ namespace TVSimulator
 
         private void playVideoFromPosition(string path, TimeSpan t)
         {
-            mediaPlayer.Position = t;
             mediaPlayer.Source = new Uri(path);
+            mediaPlayer.Position = t;
             mediaPlayer.Play();
         }
 
@@ -154,7 +159,8 @@ namespace TVSimulator
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            playFromChannel();
+            var c0 = cb.LocalChannels.ElementAt(curChannelNum);
+            playFromChannel(c0);
             
             //mediaPlayer.Play();
             timeNow = DateTime.Now;
@@ -166,19 +172,18 @@ namespace TVSimulator
             timer.Start();
         }
 
-        private void playFromChannel()
+        private void playFromChannel(Channel curChannel)
         {
-            var channel1 = cb.LocalChannels.ElementAt(1);
-            var durLength = channel1.DurationList.Count();
-            var totalDur = channel1.DurationList.ElementAt(durLength - 1);
+            var durLength = curChannel.DurationList.Count();
+            var totalDur = curChannel.DurationList.ElementAt(durLength - 1);
 
             var a = DateTime.Parse(Constants.START_CYCLE);
             var b = DateTime.Now;
             var diff = ((b.Subtract(a)).TotalMinutes) % totalDur;
 
-            for(var i=0;i<channel1.DurationList.Count();i++)
+            for(var i=0;i< curChannel.DurationList.Count();i++)
             {
-                if(diff < channel1.DurationList.ElementAt(i))
+                if(diff < curChannel.DurationList.ElementAt(i))
                 {
                     TimeSpan t;
                     int min;
@@ -186,16 +191,16 @@ namespace TVSimulator
                     {
                         min = (int)diff;
                         t = new TimeSpan(0, min, 0);
-                        playVideoFromPosition(channel1.Media.ElementAt(i).Path, t);
-                        changeLabels(channel1, min, i);
+                        playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
+                        changeLabels(curChannel, min, i);
                         return;
                     }
                     else
                     {
-                        min = (int)diff - channel1.DurationList.ElementAt(i - 1);
+                        min = (int)diff - curChannel.DurationList.ElementAt(i - 1);
                         t = new TimeSpan(0,min, 0);
-                        playVideoFromPosition(channel1.Media.ElementAt(i).Path, t);
-                        changeLabels(channel1,min,i);
+                        playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
+                        changeLabels(curChannel, min,i);
                         return;
                     }
                 }

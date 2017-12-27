@@ -49,8 +49,8 @@
             <Button x:Name="btnInfo" Style="{StaticResource infoButton}" Margin="0,50,99.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Click="btnInfo_Click" Opacity="0.85" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
             <Button x:Name="btnControl" Style="{StaticResource controlButton}" Margin="0,50,51.6,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2" Click="btnControl_Click"/>
             <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,7.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2"/>
-            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,29.6,0" RenderTransformOrigin="0.502,0.5" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="2" Height="45" VerticalAlignment="Top"/>
-            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,77.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Grid.RowSpan="2" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,29.6,0" RenderTransformOrigin="0.502,0.5" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="2" Height="45" VerticalAlignment="Top" Click="Channel_Up_Click"/>
+            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,77.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Grid.RowSpan="2" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Click="Channel_Down_Click"/>
 
         </Grid>
         <Label x:Name="lblChannelNumber" Content="" HorizontalAlignment="Left" Margin="27,0,0,0" VerticalAlignment="Top" Opacity="0.75" FontFamily="Arial Black" FontSize="36" Foreground="White"/>
