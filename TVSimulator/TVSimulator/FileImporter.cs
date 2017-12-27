@@ -194,14 +194,14 @@ namespace TVSimulator
 
             if (type.Equals(Constants.MOVIE))
             {
-                string duration = getDuration(path).Minutes.ToString()+" ";
+                string duration = getDuration(path).Minutes.ToString()+"  ";
                 var movie = new Movie(path, x.Title, duration, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
                 allMovies.Add(movie);
                 return movie;
             }
             else if (type.Equals(Constants.TVSERIES))
             {
-                string duration = getDuration(path).Minutes.ToString() + " ";
+                string duration = getDuration(path).Minutes.ToString() + "  ";
                 string[] data = getSeasonAndEpisode(path);      //  data[0] = season , data[1] = episode
                 var TvSeries = new TvSeries(path, x.Title, duration , x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
                 allTVseries.Add(TvSeries);
