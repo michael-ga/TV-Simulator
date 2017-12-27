@@ -29,9 +29,6 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
-            //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
-            ch.buildLocalChannels();
-            
         }
 
         #region button listeners
@@ -64,6 +61,7 @@ namespace TVSimulator
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
+            
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

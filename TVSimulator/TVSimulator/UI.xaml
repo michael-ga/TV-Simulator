@@ -9,7 +9,7 @@
 
     <Grid x:Name="mainWindow" Margin="0,0,0,0" Height="706" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel">
 
-        <MediaElement x:Name="mediaPlayer" Source="C:\Users\royok\Downloads\1\friends S06E02.avi" LoadedBehavior="Manual" Margin="0,-27,0.6,-4" Stretch="Fill" />
+        <MediaElement x:Name="mediaPlayer"  LoadedBehavior="Manual" Margin="0,-27,0.6,-4" Stretch="Fill" />
 
         <Grid x:Name="menuBar" Margin="5,0,0.6,0" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using WMPLib;
+
 
 namespace TVSimulator
 {
@@ -25,6 +27,7 @@ namespace TVSimulator
         private string [] mediaExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp", ".mp3", ".flac", ".ogg", ".wav", ".wma" };
 
         public List<Media> AllMedia { get => allMedia; set => allMedia = value; }
+        
         #endregion
 
         #region Constructor
@@ -33,6 +36,7 @@ namespace TVSimulator
             allPathes = new List<string>();
             allMedia = new List<Media>();
             db = new Database();
+            
         }
         #endregion
 
@@ -67,14 +71,25 @@ namespace TVSimulator
             {
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
                 Regex TVSeriesRegex = new Regex(@"([\.\w']+?)([sS]([0-9]{2})[eE]([0-9]{2})\..*)");
-                
+
                 if (movieRegex.IsMatch(fileInfo.Name))
                     await videoHandler(fileInfo, Constants.MOVIE, filePath);
                 else if (TVSeriesRegex.IsMatch(fileInfo.Name))
+                {
                     await videoHandler(fileInfo, Constants.TVSERIES, filePath);
+                }
                 else
-                    allMedia.Add(new Media(filePath, fileInfo.Name));
-                
+                {
+                    if(fileInfo.Name.ToLower().Contains("season"))
+                    {
+                        fileInfo.Name.Replace("Season", "S"); fileInfo.Name.Replace("Episode", "E");
+                        fileInfo.Name.Replace("season", "S"); fileInfo.Name.Replace("episode", "E");
+                        fileInfo.Name.Replace("Season","S"); fileInfo.Name.Replace("episode", "E");
+                        await videoHandler(fileInfo, Constants.TVSERIES, filePath);
+                    }
+                    else
+                        allMedia.Add(new Media(filePath, fileInfo.Name));
+                }
                 return true;
             }
             else
@@ -171,6 +186,7 @@ namespace TVSimulator
 
             if (type.Equals(Constants.MOVIE))
             {
+                string duration = getDuration(path).ToString();
                 var movie = new Movie(path, x.Title, x.Runtime, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
                 return movie;
             }
@@ -208,6 +224,12 @@ namespace TVSimulator
                 return res;
             }
             return null;
+        }
+
+        public TimeSpan getDuration(string path)
+        {
+            TagLib.File data = TagLib.File.Create(path);
+            return data.Properties.Duration;
         }
         
         #endregion Helper Methods
