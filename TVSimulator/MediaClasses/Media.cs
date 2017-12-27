@@ -47,5 +47,10 @@ namespace MediaClasses
                 return genre;
             return genre.Substring(0,x);
         }
+
+        public TimeSpan getDurationTimespan()
+        {
+            return TimeSpan.Parse(duration);
+        }
     }
 }

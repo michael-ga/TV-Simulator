@@ -75,14 +75,16 @@ namespace TVSimulator
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
             curChannelNum++;
-            var c = cb.LocalChannels.ElementAt(curChannelNum);
+            var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
             playFromChannel(c);
         }
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
         {
             curChannelNum--;
-            var c = cb.LocalChannels.ElementAt(curChannelNum);
+            if (curChannelNum < 0)
+                curChannelNum = cb.LocalChannels.Count;
+            var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
             playFromChannel(c);
         }
 
@@ -174,6 +176,8 @@ namespace TVSimulator
 
         private void playFromChannel(Channel curChannel)
         {
+            if (curChannel.DurationList.Count < 1)
+                return;
             var durLength = curChannel.DurationList.Count();
             var totalDur = curChannel.DurationList.ElementAt(durLength - 1);
 
