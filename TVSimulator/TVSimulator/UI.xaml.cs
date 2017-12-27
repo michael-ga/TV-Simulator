@@ -30,6 +30,7 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
+            chooseFolderBtn_Click(new object(), new RoutedEventArgs());
             //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             cb.buildLocalChannels();
             
@@ -161,6 +162,8 @@ namespace TVSimulator
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (cb.LocalChannels.Count < 1)
+                return;
             var c0 = cb.LocalChannels.ElementAt(curChannelNum);
             playFromChannel(c0);
             

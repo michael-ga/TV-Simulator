@@ -39,13 +39,20 @@ namespace TVSimulator
         }
         #endregion
         //TODO: CHECK QUERIES 
+        public void removeCollections()
+        {
+            mediaCollection.Delete(Query.All(Query.Descending));
+            movieCollection.Delete(Query.All(Query.Descending));
+            TVCollection.Delete(Query.All(Query.Descending)); 
+            musicCollection.Delete(Query.All(Query.Descending));
+        }
 
+        
         #region Collection queries
         // remove whole collection
-        public void removeMediaCollection(string collName)
+        public void removeMediaCollection()
         {
-            var media = db.GetCollection<Media>(collName);
-            media.Delete(Query.All(Query.Descending));
+            mediaCollection.Delete(Query.All(Query.Descending));
         }
 
         public void removeCollectionByName(string collectionName)
@@ -79,20 +86,16 @@ namespace TVSimulator
         // insert to 3 collections by type
         public void insertByType(List<Media> mediaList)
         {
-            var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
-            var tv = db.GetCollection<TvSeries>(Constants.TV_SERIES_COLLECTION);
-            var movie = db.GetCollection<Movie>(Constants.MOVIE_COLLECTION);
-            var music = db.GetCollection<Music>(Constants.MUSIC_COLLECTION);
             foreach (Media obj in mediaList)
             {
                 if (obj is Movie)
-                    movie.Insert(((Movie)obj));
+                    movieCollection.Insert(((Movie)obj));
                 else if (obj is TvSeries)
-                    tv.Insert((TvSeries)obj);
+                    TVCollection.Insert((TvSeries)obj);
                 else if (obj is Music)
-                    music.Insert((Music)obj);
+                    musicCollection.Insert((Music)obj);
                 else
-                    media.Insert((Media)obj);
+                    mediaCollection.Insert((Media)obj);
             }
         }
 

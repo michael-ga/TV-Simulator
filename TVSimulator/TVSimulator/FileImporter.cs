@@ -20,6 +20,9 @@ namespace TVSimulator
 
         List<String> allPathes;
         List<Media> allMedia;
+        List<Movie> allMovies;
+        List<TvSeries> allTVseries;
+        List<Music> allMusic;
         Database db;
 
         private string [] videoExt =  { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
@@ -35,6 +38,9 @@ namespace TVSimulator
         {
             allPathes = new List<string>();
             allMedia = new List<Media>();
+            allMovies = new List<Movie>();
+            allTVseries = new List<TvSeries>();
+            allMusic = new List<Music>();
             db = new Database();
             
         }
@@ -60,6 +66,7 @@ namespace TVSimulator
                     allPathes.Add(file);
             }
             await getAllMedia();
+            saveListsToDB();
         }
 
         private async Task<bool> SortMediaToTypes(string filePath)        // check file type(movie/music/tv series)  :: (String filePath) 
@@ -163,6 +170,7 @@ namespace TVSimulator
                 
                 Music music = new Music(path, songName, data.Properties.Duration.ToString(), tag.FirstGenre, tag.FirstPerformer, tag.Album, tag.Year.ToString(), tag.Lyrics);
                 allMedia.Add((Media)music);
+                allMusic.Add(music);
             }
             catch (Exception e) { MessageBox.Show(e.Message); }
         }
@@ -186,14 +194,17 @@ namespace TVSimulator
 
             if (type.Equals(Constants.MOVIE))
             {
-                string duration = getDuration(path).ToString();
-                var movie = new Movie(path, x.Title, x.Runtime, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
+                string duration = getDuration(path).Minutes.ToString()+" ";
+                var movie = new Movie(path, x.Title, duration, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
+                allMovies.Add(movie);
                 return movie;
             }
             else if (type.Equals(Constants.TVSERIES))
             {
+                string duration = getDuration(path).Minutes.ToString() + " ";
                 string[] data = getSeasonAndEpisode(path);      //  data[0] = season , data[1] = episode
-                var TvSeries = new TvSeries(path, x.Title, x.Runtime, x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
+                var TvSeries = new TvSeries(path, x.Title, duration , x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
+                allTVseries.Add(TvSeries);
                 return TvSeries;
             }
             else
@@ -208,8 +219,8 @@ namespace TVSimulator
         {
             foreach (var item in allPathes)
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
-            if (allMedia.Count > 0)
-                OnVideoLoaded(this, allMedia);
+            //if (allMedia.Count > 0)                   // commented in UI
+            //    OnVideoLoaded(this, allMedia);
             return true;
         }
 
@@ -230,6 +241,13 @@ namespace TVSimulator
         {
             TagLib.File data = TagLib.File.Create(path);
             return data.Properties.Duration;
+        }
+
+        public void saveListsToDB()
+        {
+            db.removeCollections();
+            db.insertByType(allMedia);
+
         }
         
         #endregion Helper Methods
