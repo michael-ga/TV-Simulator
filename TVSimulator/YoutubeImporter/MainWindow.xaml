@@ -22,8 +22,8 @@
             </ItemsControl.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel x:Name="sPanel" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                        <Image Source="{Binding PhotoURL}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" />
+                    <StackPanel x:Name="sPanel"  MaxHeight="75" MaxWidth="50"  Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Image Source="{Binding PhotoURL}"  MaxHeight="50" MaxWidth="50"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Stretch="UniformToFill" />
                         <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
                     </StackPanel>
                 </DataTemplate>
