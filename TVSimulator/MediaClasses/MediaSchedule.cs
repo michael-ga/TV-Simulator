@@ -15,8 +15,8 @@ namespace MediaClasses
         private Media playNow;   //which media played right now
         private Media playNext;  // optional
 
-        public MediaSchedule() {   }
-    
+        public MediaSchedule() { }
+
         //TODO: constructor and functions
     }
 

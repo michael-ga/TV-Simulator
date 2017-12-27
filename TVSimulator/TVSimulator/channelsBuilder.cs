@@ -40,42 +40,36 @@ namespace TVSimulator
         public void buildLocalChannels()
         {
             List<Channel> c = new List<Channel>();
-            string genreStr = "";
+
+            List<string> gMovie = new List<string>();
+            List<string> gTV = new List<string>();
+            //List<string> gMusic = new List<string>();
 
             var channelNumber = 1;
+
             //create movie channels
 
             foreach (Movie m in movies)
-            {
-                if (m.Gnere != null)
-                {
-                    genreStr += m.Gnere;
-                    genreStr += ",";
-                }
-            }
+                gMovie.Add(m.getFirstGenre());
 
-            string[] genre = getGenreArray(genreStr);
-        
-            for (var i=0;i < genre.Count();i++)
+            gMovie = gMovie.Distinct().ToList();
+
+            for (var i = 0; i < gMovie.Count(); i++)
             {
-                c.Add(new Channel(channelNumber,Constants.MOVIE, genre[i]));
+                c.Add(new Channel(channelNumber, Constants.MOVIE, gMovie.ElementAt(i)));
+                c.ElementAt(channelNumber-1).buildSchedule();
                 channelNumber++;
             }
 
             //create tv series channels
-            genreStr = "";
             foreach (TvSeries t in tvSeries)
+                gTV.Add(t.getFirstGenre());
+
+            gTV = gTV.Distinct().ToList();
+            for (var i = 0; i < gTV.Count(); i++)
             {
-                if (t.Gnere != null)
-                {
-                    genreStr += t.Gnere;
-                    genreStr += ",";
-                }
-            }
-            genre = getGenreArray(genreStr);
-            for (var i = 0; i < genre.Count(); i++)
-            {
-                c.Add(new Channel(channelNumber, Constants.TVSERIES, genre[i]));
+                c.Add(new Channel(channelNumber, Constants.TVSERIES, gTV.ElementAt(i)));
+                c.ElementAt(channelNumber-1).buildSchedule();
                 channelNumber++;
             }
         }

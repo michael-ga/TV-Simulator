@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace MediaClasses
 {
     public class Media
     {
+        public const string GENERAL_GENRE = "general";
+
         protected string path;
         protected string name;
         protected string genre;
@@ -15,7 +18,7 @@ namespace MediaClasses
         {
 
         }
-        public Media(string path,string name, string duration = "",string genre = "")
+        public Media(string path,string name, string duration = "",string genre = "general")
         {
             this.path = path;
             this.name = name;
@@ -33,5 +36,16 @@ namespace MediaClasses
         public string Path { get => path; set => path = value; }
         public string Name { get => name; set => name = value; }
         public int Id { get => id; set => id = value; }
+
+        public string getFirstGenre()
+        {
+            if(genre == null)
+                return GENERAL_GENRE;
+            int x = genre.IndexOf(",");
+
+            if (genre.Equals(GENERAL_GENRE) || x < 0)
+                return genre;
+            return genre.Substring(0,x);
+        }
     }
 }

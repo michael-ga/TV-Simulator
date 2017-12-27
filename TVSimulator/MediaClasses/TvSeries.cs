@@ -30,5 +30,13 @@ namespace MediaClasses
         public string ImdbRating { get => imdbRating; set => imdbRating = value; }
         public int Id { get => id; set => id = value; }
 
+        public int getDurationInMin()
+        {
+            if (Duration == null || Duration == "")
+                return -1;
+            int x = Duration.IndexOf(" ");
+            return int.Parse(Duration.Substring(0, x));
+        }
+
     }
 }
