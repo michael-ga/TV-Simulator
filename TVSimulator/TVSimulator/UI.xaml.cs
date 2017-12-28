@@ -30,10 +30,8 @@ namespace TVSimulator
         {
             InitializeComponent();
             fileImporter = new FileImporter();
-            chooseFolderBtn_Click(new object(), new RoutedEventArgs());
-            //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             cb.buildLocalChannels();
-            
         }
 
         #region button listeners
@@ -75,13 +73,26 @@ namespace TVSimulator
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
+            if (cb.LocalChannels == null)
+            {
+                System.Windows.MessageBox.Show("no channels");
+                return;
+            }
             curChannelNum++;
-            var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
-            playFromChannel(c);
+            if(cb.LocalChannels != null && cb.LocalChannels.Count>=1)
+            {
+                var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
+                playFromChannel(c);
+            }
         }
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
         {
+            if(cb.LocalChannels == null)
+            {
+                System.Windows.MessageBox.Show("no channels");
+                return;
+            }
             curChannelNum--;
             if (curChannelNum < 0)
                 curChannelNum = cb.LocalChannels.Count;
@@ -123,19 +134,21 @@ namespace TVSimulator
         #region subMethods
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-       /* private void onVideoRecievedHandler(Object o, List<Media> arg)
+        private void onVideoRecievedHandler(Object o, List<Media> arg)
         {
-            db.insertByType(arg);
-            Random r = new Random();
-            int x = r.Next(arg.Count);
-            folderPathTextbox.Text = arg.ElementAt(x).Name;     //check the name of media
+            cb.buildLocalChannels();
+            Window_Loaded(this, new RoutedEventArgs());
+            //if (arg.ElementAt(x) is Music)
+            //    musicImage.Visibility = Visibility.Visible;
+            //else
+            //    musicImage.Visibility = Visibility.Hidden;
+            //playVideoFromPosition(arg.ElementAt(x).Path, new TimeSpan(0,0,0)); 
+            //Random r = new Random();
+            //int x = r.Next(arg.Count);
+            //folderPathTextbox.Text = arg.ElementAt(x).Name;     //check the name of media
 
-            /*if (arg.ElementAt(x) is Music)
-                musicImage.Visibility = Visibility.Visible;
-            else
-                musicImage.Visibility = Visibility.Hidden;
-            playVideoFromPosition(arg.ElementAt(x).Path, new TimeSpan(0,0,0)); 
-        }*/
+
+        }
 
         //for get the mouse point
         [DllImport("user32.dll")]
@@ -154,7 +167,7 @@ namespace TVSimulator
             var point = GetMousePosition();
 
             var heigth = System.Windows.SystemParameters.PrimaryScreenHeight;
-            if (point.Y > heigth - menuBar.Height)
+            if (point.Y > heigth - menuBar.Height -100)
                 menuBar.Visibility = Visibility.Visible;
             else
                 menuBar.Visibility = Visibility.Hidden;
@@ -162,7 +175,7 @@ namespace TVSimulator
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (cb.LocalChannels.Count < 1)
+            if (cb.LocalChannels == null || cb.LocalChannels.Count < 1)
                 return;
             var c0 = cb.LocalChannels.ElementAt(curChannelNum);
             playFromChannel(c0);
@@ -179,8 +192,11 @@ namespace TVSimulator
 
         private void playFromChannel(Channel curChannel)
         {
-            if (curChannel.DurationList.Count < 1)
+            if (curChannel == null || curChannel.DurationList.Count < 1)
+            {
+                System.Windows.MessageBox.Show("Error playing channel");
                 return;
+            }
             var durLength = curChannel.DurationList.Count();
             var totalDur = curChannel.DurationList.ElementAt(durLength - 1);
 

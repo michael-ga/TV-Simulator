@@ -42,7 +42,6 @@ namespace TVSimulator
             allTVseries = new List<TvSeries>();
             allMusic = new List<Music>();
             db = new Database();
-            
         }
         #endregion
 
@@ -194,14 +193,14 @@ namespace TVSimulator
 
             if (type.Equals(Constants.MOVIE))
             {
-                string duration = getDuration(path).Minutes.ToString()+"  ";
+                string duration = getDuration(path).Minutes.ToString();duration += ".";
                 var movie = new Movie(path, x.Title, duration, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
                 allMovies.Add(movie);
                 return movie;
             }
             else if (type.Equals(Constants.TVSERIES))
             {
-                string duration = getDuration(path).Minutes.ToString() + "  ";
+                string duration = getDuration(path).Minutes.ToString() + ".";
                 string[] data = getSeasonAndEpisode(path);      //  data[0] = season , data[1] = episode
                 var TvSeries = new TvSeries(path, x.Title, duration , x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
                 allTVseries.Add(TvSeries);
@@ -219,8 +218,8 @@ namespace TVSimulator
         {
             foreach (var item in allPathes)
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
-            //if (allMedia.Count > 0)                   // commented in UI
-            //    OnVideoLoaded(this, allMedia);
+            if (allMedia.Count > 0)                   // commented in UI
+                OnVideoLoaded(this, allMedia);
             return true;
         }
 
@@ -247,7 +246,6 @@ namespace TVSimulator
         {
             db.removeCollections();
             db.insertByType(allMedia);
-
         }
         
         #endregion Helper Methods

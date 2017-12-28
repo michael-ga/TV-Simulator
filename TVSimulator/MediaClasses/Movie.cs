@@ -32,7 +32,7 @@ namespace MediaClasses
         {
             if (Duration == null || Duration == "")
                 return -1;
-            int x = Duration.IndexOf(" ");
+            int x = Duration.IndexOf(".");
             return int.Parse(Duration.Substring(0, x));
              
         }
