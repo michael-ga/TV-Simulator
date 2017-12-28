@@ -72,6 +72,7 @@ namespace TVSimulator
                 localChannels.ElementAt(channelNumber-1).buildSchedule();
                 channelNumber++;
             }
+            localChannels.RemoveAt(0);
         }
 
         public void buildYouTubeChannels() {}

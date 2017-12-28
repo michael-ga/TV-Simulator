@@ -9,7 +9,7 @@
 
     <Grid x:Name="mainWindow" Margin="0,0,0,0" Height="706" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel">
 
-        <MediaElement x:Name="mediaPlayer" Source="" LoadedBehavior="Manual" Margin="0,-27,0.6,-4" Stretch="Fill" />
+        <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="0,-25,0.6,-6" Stretch="Fill" />
 
         <Grid x:Name="menuBar" Margin="5,0,0.6,0" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>
@@ -47,10 +47,11 @@
             <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" Margin="93,0,0,26.4" Height="15" VerticalAlignment="Bottom"/>
             -->
             <Button x:Name="btnInfo" Style="{StaticResource infoButton}" Margin="0,50,99.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Click="btnInfo_Click" Opacity="0.85" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
-            <Button x:Name="btnControl" Style="{StaticResource controlButton}" Margin="0,50,51.6,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2" Click="btnControl_Click"/>
-            <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,7.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2"/>
-            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,29.6,0" RenderTransformOrigin="0.502,0.5" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="2" Height="45" VerticalAlignment="Top" Click="Channel_Up_Click"/>
-            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,77.6,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Grid.RowSpan="2" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Click="Channel_Down_Click"/>
+            <Button x:Name="btnControl" Style="{StaticResource controlButton}" Margin="0,50,51.4,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2" Click="btnControl_Click"/>
+            <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,5.4,25" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="Auto" Grid.Column="2"/>
+            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,7.4,0" RenderTransformOrigin="0.502,0.5" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="2" Height="45" VerticalAlignment="Top" Click="Channel_Up_Click"/>
+            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,99.4,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Grid.RowSpan="2" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Click="Channel_Down_Click"/>
+            <TextBox x:Name="editChannelNumber" MaxLength="3" HorizontalAlignment="Left" Height="28" Margin="19.8,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" Grid.RowSpan="2" TextChanged="TextBox_TextChanged" Grid.Column="2" Foreground="White" FontSize="16" FontFamily="Arial Black" Text="8" TextAlignment="Center" TextDecorations="{x:Null}" Padding="0,3,0,0" Background="{x:Null}" BorderBrush="Black" BorderThickness="2" />
 
         </Grid>
         <Label x:Name="lblChannelNumber" Content="" HorizontalAlignment="Left" Margin="27,0,0,0" VerticalAlignment="Top" Opacity="0.75" FontFamily="Arial Black" FontSize="36" Foreground="White"/>
