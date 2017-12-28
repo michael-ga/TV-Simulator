@@ -99,7 +99,7 @@ namespace TVSimulator
             if (curChannelNum < 0)
                 curChannelNum = cb.LocalChannels.Count;
 
-            //editChannelNumber.Text = cb.LocalChannels.ElementAt(curChannelNum % cb.LocalChannels.Count).ChannelNumber.ToString();
+            editChannelNumber.Text = cb.LocalChannels.ElementAt(curChannelNum % cb.LocalChannels.Count).ChannelNumber.ToString();
             var c = cb.LocalChannels.ElementAt(curChannelNum % cb.LocalChannels.Count);
             playFromChannel(c);
 
