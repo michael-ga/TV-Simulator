@@ -13,7 +13,7 @@ namespace MediaClasses
         private int id;
         public Movie() { }
 
-        public Movie(string path, string name, string duration = "", string genre = "",string director="",string description = "",string imdbRaiting="",string year= "") : base(path, name, duration, genre)
+        public Movie(string path, string name, string duration = "", string genre = "general",string director="",string description = "",string imdbRaiting="",string year= "") : base(path, name, duration, genre)
         {
             this.description = description;
             this.director = director;

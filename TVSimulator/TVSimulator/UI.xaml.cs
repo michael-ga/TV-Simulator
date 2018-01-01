@@ -15,7 +15,7 @@ namespace TVSimulator
     public partial class MainWindow : Window
     {
         #region fields
-        public bool isSubfolders = false, IsFullscreen=false;
+        public bool isSubfolders = true, IsFullscreen=false;
         private FileImporter fileImporter;
         private bool infoPressed = true;
         public event EventHandler Tick;
@@ -31,6 +31,7 @@ namespace TVSimulator
             InitializeComponent();
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            chooseFolderBtn_Click(new object(), new RoutedEventArgs());
             cb.buildLocalChannels();
         }
 
