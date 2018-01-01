@@ -37,6 +37,8 @@ namespace YoutubeImporter.Cef
                 SchemeHandlerFactory = new CefSharpSchemeHandlerFactory()
             });
 
+            settings.CefCommandLineArgs.Add("disable-gpu", "1");
+
             //if (!CefSharp.Cef.Initialize(settings, shutdownOnProcessExit: true, performDependencyCheck: !DebuggingSubProcess))
             //{
             //    throw new Exception("Unable to Initialize Cef");
