@@ -289,8 +289,6 @@ namespace TVSimulator
             return temp;
         }
 
-
-
         #endregion Helper Methods
     }
 

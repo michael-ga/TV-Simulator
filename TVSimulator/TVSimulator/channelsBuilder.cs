@@ -19,6 +19,7 @@ namespace TVSimulator
         private List<Movie> movies;
         private List<TvSeries> tvSeries;
         private List<Music> musics;
+        private List<YouTubeChannel> youtube;
 
         public ChannelsBuilder()
         {
@@ -26,12 +27,14 @@ namespace TVSimulator
             this.movies = db.getMovieList();
             this.tvSeries = db.getTVList();
             this.musics = db.getMusicList();
+            this.Youtube = db.getYoutubeChannelList();
         }
 
         public List<Channel> LocalChannels { get => localChannels; set => localChannels = value; }
         public List<Movie> Movies { get => movies; set => movies = value; }
         public List<TvSeries> TvSeries { get => tvSeries; set => tvSeries = value; }
         public List<Music> Music { get => musics; set => musics = value; }
+        public List<YouTubeChannel> Youtube { get => youtube; set => youtube = value; }
 
         #endregion
 
@@ -72,9 +75,15 @@ namespace TVSimulator
                 localChannels.ElementAt(channelNumber-1).buildSchedule();
                 channelNumber++;
             }
+
+            //buildYouTubeChannels();
         }
 
-        public void buildYouTubeChannels() {}
+        //public void buildYouTubeChannels()
+        //{
+        //    var channelNumber = localChannels.Count()+1;
+        //    localChannels.Add(new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, ""));
+        //}
         public void buildUserChannel() {}
 
         #endregion

@@ -15,7 +15,7 @@ namespace TVSimulator
     public partial class MainWindow : Window
     {
         #region fields
-        public bool isSubfolders = true, IsFullscreen=false;
+        public bool isSubfolders = false, IsFullscreen=false;
         private FileImporter fileImporter;
         private bool infoPressed = true;
         public event EventHandler Tick;
@@ -83,7 +83,13 @@ namespace TVSimulator
             if(cb.LocalChannels != null && cb.LocalChannels.Count>=1)
             {
                 var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
-                playFromChannel(c);
+                if(!c.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
+                    playFromChannel(c);
+                else
+                {
+                    mediaPlayer.Stop();
+                    mediaPlayer.Visibility = Visibility.Hidden;
+                }
             }
         }
 
@@ -98,7 +104,13 @@ namespace TVSimulator
             if (curChannelNum < 0)
                 curChannelNum = cb.LocalChannels.Count;
             var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
-            playFromChannel(c);
+            if (!c.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
+                playFromChannel(c);
+            else
+            {
+                mediaPlayer.Stop();
+                mediaPlayer.Visibility = Visibility.Hidden;
+            }
         }
 
         #endregion button listeners
@@ -279,6 +291,11 @@ namespace TVSimulator
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
             mediaProgressBar.Value +=15;            
+        }
+
+        private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
         }
 
         public static Point GetMousePosition()

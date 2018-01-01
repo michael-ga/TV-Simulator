@@ -54,5 +54,6 @@ namespace YoutubeImporter
                 this.WindowStyle = WindowStyle.ToolWindow;
             }
         }
+
     }
 }
