@@ -11,7 +11,7 @@
         Title="YoutubeEmbeddedPlayer" Height="600" Width="800" WindowStyle="None" ResizeMode="NoResize"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown">
     <Grid>
-        <Cef1:CefYoutubeController x:Name="Player" VideoId="{Binding Text, ElementName=TxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,4.667" Loaded="Player_Loaded"/>
+        <Cef1:CefYoutubeController x:Name="Player" VideoId="{Binding Text, ElementName=TxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,4.667" />
         <TextBox Name="TxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Collapsed" />
     </Grid>
 </Window>
