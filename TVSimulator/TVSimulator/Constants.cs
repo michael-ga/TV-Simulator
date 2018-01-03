@@ -21,5 +21,10 @@ namespace TVSimulator
         //times constants 
         public const string START_CYCLE = "26/12/2017 13:30:00";
 
+        public enum channelSwitch
+        {
+            decreament, increament
+        }
+
     }
 }

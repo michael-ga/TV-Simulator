@@ -74,23 +74,17 @@ namespace TVSimulator
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
-            if (cb.LocalChannels == null)
+            if(cb.LocalChannels == null)
             {
                 System.Windows.MessageBox.Show("no channels");
                 return;
             }
-            curChannelNum++;
-            if(cb.LocalChannels != null && cb.LocalChannels.Count>=1)
-            {
-                var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
-                if(!c.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
-                    playFromChannel(c);
-                else
-                {
-                    mediaPlayer.Stop();
-                    mediaPlayer.Visibility = Visibility.Hidden;
-                }
-            }
+
+            curChannelNum = switchChannel(curChannelNum,1);         // second paramter 1 for increament
+            int index = parseChanneltoIndex(curChannelNum);
+
+            var c = cb.LocalChannels.ElementAt(index);
+            playFromChannel(c);
         }
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
@@ -100,21 +94,15 @@ namespace TVSimulator
                 System.Windows.MessageBox.Show("no channels");
                 return;
             }
-            curChannelNum--;
-            if (curChannelNum < 0)
-                curChannelNum = cb.LocalChannels.Count;
-            var c = cb.LocalChannels.ElementAt(curChannelNum% cb.LocalChannels.Count);
-            if (!c.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
-                playFromChannel(c);
-            else
-            {
-                mediaPlayer.Stop();
-                mediaPlayer.Visibility = Visibility.Hidden;
-            }
+            curChannelNum = switchChannel(curChannelNum, -1);    // second paramter -1 for decreament
+            int index = parseChanneltoIndex(curChannelNum);
+
+            var c = cb.LocalChannels.ElementAt(index);
+            playFromChannel(c);
         }
 
         #endregion button listeners
-
+        
         #region Media player functions
 
         private void playVideoFromPosition(string path, TimeSpan t)
@@ -190,10 +178,11 @@ namespace TVSimulator
         {
             if (cb.LocalChannels == null || cb.LocalChannels.Count < 1)
                 return;
-            var c0 = cb.LocalChannels.ElementAt(curChannelNum);
+
+            var index = parseChanneltoIndex(curChannelNum);
+            var c0 = cb.LocalChannels.ElementAt(index);
             playFromChannel(c0);
             
-            //mediaPlayer.Play();
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
 
@@ -305,8 +294,36 @@ namespace TVSimulator
             return new Point(w32Mouse.X, w32Mouse.Y);
         }
 
+        public int parseChanneltoIndex(int channelNumber)
+        {
+            if (channelNumber == cb.LocalChannels.Count())
+                return cb.LocalChannels.Count() - 1;
+            else if (channelNumber == 1)
+                return 0;
+            else
+                return channelNumber - 1;
+        }
+
+        public int switchChannel(int channelNumber, int incOrDec)
+        {
+            var c = cb.LocalChannels;
+
+            if(incOrDec == 1)
+            {
+                if (channelNumber == c.Count())
+                    return 1;
+                else
+                    return channelNumber + 1;
+            }
+            else
+            {
+                if (channelNumber == 1)
+                    return c.Count();
+                else
+                    return channelNumber - 1;
+            }
+        }
 
         #endregion helper methods
-
     }
 }
