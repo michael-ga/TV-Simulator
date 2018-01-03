@@ -1,4 +1,5 @@
-﻿using MediaClasses;
+﻿using HelperClasses;
+using MediaClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using TVSimulator;
 
 namespace YoutubeImporter
 {
@@ -100,14 +100,14 @@ namespace YoutubeImporter
                 if (list[0] == null)
                     return;
 
-                YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer(list);
-                yte.Show();
+                //YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer(list);
+                //yte.Show();
             }
             if (mListView.ItemsSource == Videos)
             {
                 string a = await searcher.durationReq(currVideoSelection.Path);
-                YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer(currVideoSelection.Path);
-                yte.Show();
+                //YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer(currVideoSelection.Path);
+                //yte.Show();
             }
         }
         private async void showVideosBtn_Click(object sender, RoutedEventArgs e)

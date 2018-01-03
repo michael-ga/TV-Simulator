@@ -9,9 +9,10 @@
         xmlns:Cef1="clr-namespace:YoutubeImporter.Cef"
         mc:Ignorable="d"
         Title="YoutubeEmbeddedPlayer" Height="600" Width="800" WindowStyle="None" ResizeMode="NoResize"  
-        WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
-        <Cef1:CefYoutubeController x:Name="Player" VideoId="{Binding Text, ElementName=TxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,4.667" />
+        <!--<Cef1:CefYoutubeController x:Name="Player" VideoId="{Binding Text, ElementName=TxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,4.667" />
         <TextBox Name="TxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Collapsed" />
-    </Grid>
+        -->
+        </Grid>
 </Window>

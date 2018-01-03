@@ -1,4 +1,5 @@
 ﻿
+using HelperClasses;
 using MediaClasses;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,10 @@ namespace TVSimulator
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
+            youtubePlayer.Visibility = Visibility.Visible;
+            mediaPlayer.Stop();
+            mediaPlayer.Visibility = Visibility.Hidden;
+
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -101,8 +106,17 @@ namespace TVSimulator
             playFromChannel(c);
         }
 
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.WindowState = WindowState.Normal;
+                this.WindowStyle = WindowStyle.ToolWindow;
+            }
+        }
+
         #endregion button listeners
-        
+
         #region Media player functions
 
         private void playVideoFromPosition(string path, TimeSpan t)
@@ -323,6 +337,7 @@ namespace TVSimulator
                     return channelNumber - 1;
             }
         }
+
 
         #endregion helper methods
     }

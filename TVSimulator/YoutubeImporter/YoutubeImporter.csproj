@@ -228,20 +228,20 @@
     <None Include="Resources\CefPlayer.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaClasses\MediaClasses.csproj">
-      <Project>{40E23E5B-9EB3-4681-970A-2E04FF6A131C}</Project>
-      <Name>MediaClasses</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TVSimulator\TVSimulator.csproj">
-      <Project>{0e18ef4b-73b3-44a5-aad4-8c5d436e0331}</Project>
-      <Name>TVSimulator</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\CefPlayer.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Player.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelperClasses1\HelperClasses.csproj">
+      <Project>{76F34F21-7B0E-4E94-974D-A260692FC2C1}</Project>
+      <Name>HelperClasses</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MediaClasses\MediaClasses.csproj">
+      <Project>{40E23E5B-9EB3-4681-970A-2E04FF6A131C}</Project>
+      <Name>MediaClasses</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\cef.redist.x64.3.2987.1601\build\cef.redist.x64.targets" Condition="Exists('..\packages\cef.redist.x64.3.2987.1601\build\cef.redist.x64.targets')" />

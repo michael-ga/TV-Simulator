@@ -1,15 +1,15 @@
 ﻿using LiteDB;
 using MediaClasses;
-using System.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TVSimulator
+namespace HelperClasses
 {
     // very useful link
     // https://github.com/mbdavid/LiteDB/wiki/Collections
@@ -24,14 +24,14 @@ namespace TVSimulator
         LiteCollection<Music> musicCollection;
         LiteCollection<YouTubeChannel> youtube_channelCollection;
 
-
+        public LiteCollection<Media> MediaCollection { get => mediaCollection; set => mediaCollection = value; }
 
         public Database()
         {
             if (!Directory.Exists(Constants.DB_FILE_PATH))
                 Directory.CreateDirectory(Constants.DB_FILE_PATH);
-            db = new LiteDatabase(ConfigurationManager.ConnectionStrings["LiteDB"].ConnectionString);// get connction string from app.config
-            mediaCollection = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
+            db = new LiteDatabase(@"C:\TVSimulatorDB\MyData.db");// get connction string from app.config
+            MediaCollection = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             TVCollection = db.GetCollection<TvSeries>(Constants.TV_SERIES_COLLECTION);
             movieCollection = db.GetCollection<Movie>(Constants.MOVIE_COLLECTION);
             musicCollection = db.GetCollection<Music>(Constants.MUSIC_COLLECTION);
@@ -41,7 +41,7 @@ namespace TVSimulator
         //TODO: CHECK QUERIES 
         public void removeCollections()
         {
-            mediaCollection.Delete(Query.All(Query.Descending));
+            MediaCollection.Delete(Query.All(Query.Descending));
             movieCollection.Delete(Query.All(Query.Descending));
             TVCollection.Delete(Query.All(Query.Descending)); 
             musicCollection.Delete(Query.All(Query.Descending));
@@ -52,7 +52,7 @@ namespace TVSimulator
         // remove whole collection
         public void removeMediaCollection()
         {
-            mediaCollection.Delete(Query.All(Query.Descending));
+            MediaCollection.Delete(Query.All(Query.Descending));
         }
 
         public void removeCollectionByName(string collectionName)
@@ -78,7 +78,7 @@ namespace TVSimulator
             {
                 //var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
                 Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
-                mediaCollection.Insert(temp);
+                MediaCollection.Insert(temp);
             }
         }
         
@@ -95,7 +95,7 @@ namespace TVSimulator
                 else if (obj is Music)
                     musicCollection.Insert((Music)obj);
                 else
-                    mediaCollection.Insert((Media)obj);
+                    MediaCollection.Insert((Media)obj);
             }
         }
 

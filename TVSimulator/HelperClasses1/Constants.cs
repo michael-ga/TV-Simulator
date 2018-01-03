@@ -1,5 +1,5 @@
 ﻿
-namespace TVSimulator
+namespace HelperClasses
 {
     public class Constants
     {
@@ -20,7 +20,7 @@ namespace TVSimulator
         public const string YOUTUBE_CHANNEL_COLLECTION = "youtube_channel";
         //times constants 
         public const string START_CYCLE = "26/12/2017 13:30:00";
-
+        public string CONNECTION_STRING = @"C:\TVSimulatorDB\MyData.db";
         public enum channelSwitch
         {
             decreament, increament

@@ -1,4 +1,5 @@
 ﻿#define testing
+using HelperClasses;
 using MediaClasses;
 using System;
 using System.Collections.Generic;

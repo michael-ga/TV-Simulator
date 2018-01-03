@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
+        xmlns:Cef1="clr-namespace:YoutubeImporter.Cef;assembly=YoutubeImporter"
         mc:Ignorable="d"
-       Title="MainWindow" Height="740.6" Width="1200" WindowStyle="ToolWindow" Loaded="Window_Loaded">
+       Title="MainWindow" Height="700" Width="1200" WindowStyle="None" ResizeMode="NoResize" Loaded="Window_Loaded"  
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown">
 
-    <Grid x:Name="mainWindow" Margin="0,0,0,0" Height="706" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel">
+    <Grid x:Name="mainWindow" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel">
 
-        <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="0,-25,0.6,-6" Stretch="Fill" />
+        <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="0,0,0,0" Stretch="UniformToFill"/>
+        <Cef1:CefYoutubeController x:Name="youtubePlayer"  Margin="5,5,5,-40" Visibility="Hidden"/>
+        <TextBox x:Name="TxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Hidden" />
 
         <Grid x:Name="menuBar" Margin="5,0,0.6,0" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>
@@ -29,7 +33,7 @@
             <Grid x:Name="statsBox" Margin="10,50,119.8,38.8" Grid.RowSpan="2">
                 <Label x:Name="lblBroadcastNow" Content="Now: Alpha Dog" HorizontalAlignment="Left" Margin="0,0,0,41" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="365"/>
                 <Label x:Name="lblBroadcastNext" Content="Next: The Legend - 14:50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="570" Margin="0,0,0,4"/>
-                <ProgressBar Name="mediaProgressBar" HorizontalAlignment="Left" Height="19" Margin="424,0,-147,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged" Foreground="#FF01062F"/>
+                <ProgressBar x:Name="mediaProgressBar" HorizontalAlignment="Left" Height="19" Margin="424,0,-147,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged" Foreground="#FF01062F"/>
                 <Label x:Name="lblStartTime" Content="12:35" Margin="370,0,0,42" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
                 <Label x:Name="lblEndTime" Content="14:50" Margin="728,0,-212,43" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
             </Grid>
@@ -51,9 +55,9 @@
             <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,5.4,25" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="Auto" Grid.Column="2"/>
             <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,7.4,0" RenderTransformOrigin="0.502,0.5" Grid.RowSpan="2" HorizontalAlignment="Right" Grid.Column="2" Height="45" VerticalAlignment="Top" Click="Channel_Up_Click"/>
             <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,99.4,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Grid.RowSpan="2" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Click="Channel_Down_Click"/>
-            <TextBox x:Name="editChannelNumber" MaxLength="3" HorizontalAlignment="Left" Height="28" Margin="19.8,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="48" Grid.RowSpan="2" TextChanged="TextBox_TextChanged" Grid.Column="2" Foreground="White" FontSize="16" FontFamily="Arial Black" Text="8" TextAlignment="Center" TextDecorations="{x:Null}" Padding="0,3,0,0" Background="{x:Null}" BorderBrush="Black" BorderThickness="2" />
+            <TextBox x:Name="editChannelNumber" MaxLength="3" HorizontalAlignment="Right" Margin="0,100,51,0" TextWrapping="Wrap" Width="48" Grid.RowSpan="2" TextChanged="TextBox_TextChanged" Grid.Column="2" Foreground="White" FontSize="16" FontFamily="Arial Black" Text="8" TextAlignment="Center" TextDecorations="{x:Null}" Padding="0,3,0,0" Background="{x:Null}" BorderBrush="Black" BorderThickness="2" Height="28" VerticalAlignment="Top" />
 
         </Grid>
-        <Label x:Name="lblChannelNumber" Content="" HorizontalAlignment="Left" Margin="27,0,0,0" VerticalAlignment="Top" Opacity="0.75" FontFamily="Arial Black" FontSize="36" Foreground="White"/>
+        <Label x:Name="lblChannelNumber" Content="" HorizontalAlignment="Left" Margin="18,20,0,0" Opacity="0.75" FontFamily="Arial Black" FontSize="36" Foreground="White" Width="48" Height="45" VerticalAlignment="Top"/>
     </Grid>
 </Window>
