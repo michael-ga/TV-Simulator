@@ -164,10 +164,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BarWin.xaml.cs">
-      <DependentUpon>BarWin.xaml</DependentUpon>
-    </Compile>
-    <Page Include="BarWin.xaml">
+    <Page Include="initWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,6 +186,9 @@
     <Compile Include="IDatabase.cs" />
     <Compile Include="FileImporter.cs" />
     <Compile Include="IFileImporter.cs" />
+    <Compile Include="initWindow.xaml.cs">
+      <DependentUpon>initWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>

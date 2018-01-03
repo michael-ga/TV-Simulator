@@ -8,4 +8,5 @@
              mc:Ignorable="d" ScrollViewer.VerticalScrollBarVisibility="Disabled"
              d:DesignHeight="300" d:DesignWidth="300">
     <cefSharp:ChromiumWebBrowser Grid.Row="0" Name="WebBrowser" />
+
 </UserControl>

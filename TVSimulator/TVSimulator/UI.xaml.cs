@@ -249,13 +249,32 @@ namespace TVSimulator
         private void changeLabels(Channel c,int time,int mediaNum)
         {
             lblChannelNumber.Content = c.ChannelNumber;
-            lblMediaName.Content = c.Genre + " - " +c.Media.ElementAt(mediaNum).Name;
-            lblBroadcastNow.Content = "Now: " + c.Media.ElementAt(mediaNum).Name;
-          
-            if (mediaNum < c.Media.Count()-1)
-                lblBroadcastNext.Content = "Next: " + c.Media.ElementAt(mediaNum + 1).Name;
+            string strMediaName = c.Genre + " - " +c.Media.ElementAt(mediaNum).Name;
+            string broadCastNow = "Now: " + c.Media.ElementAt(mediaNum).Name;
+            string broadCastNext = "";
+
+            if (mediaNum < c.Media.Count() - 1)
+                broadCastNext = "Next: " + c.Media.ElementAt(mediaNum + 1).Name;
             else
-                lblBroadcastNext.Content = "Next: " + c.Media.ElementAt(0).Name;
+                broadCastNext = "Next: " + c.Media.ElementAt(0).Name;
+
+            if (c.TypeOfMedia.Equals(Constants.TVSERIES))
+            {
+                TvSeries tvNow = c.Media.ElementAt(mediaNum) as TvSeries;
+                TvSeries tvNext;
+                strMediaName += " - Season " + tvNow.Season + " Episode " + tvNow.Episode;
+                broadCastNow += " - Season " + tvNow.Season + " Episode " + tvNow.Episode;
+                if (mediaNum < c.Media.Count() - 1)
+                    tvNext = c.Media.ElementAt(mediaNum + 1) as TvSeries;
+                else
+                    tvNext = c.Media.ElementAt(0) as TvSeries;
+
+                broadCastNext += " - Season " + tvNext.Season + " Episode " + tvNext.Episode;
+            }
+            lblMediaName.Content = strMediaName;
+            lblBroadcastNow.Content = broadCastNow;
+            lblBroadcastNext.Content = broadCastNext;
+            
 
             //change times labels
             var b = DateTime.Now;
