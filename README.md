@@ -4,10 +4,6 @@ A Software that will make your PC A real life like TV that will feed media from 
 
 ![project logo (this one for is taken from basecamp - a project management service)](https://github.com/michael-ga/TV-Simulator/blob/master/logo/TVSimulator-logo.png)
 
-## Tools & Practices
-We're trying to use the best tools and practices in order to produce a quality enginneered product.
-(replace 'jce-il/project-template' with your 'username/repo' and register to the relevant services)
-
 |Category|Status|
 |---|---|
 | Version Control System| git & github |
