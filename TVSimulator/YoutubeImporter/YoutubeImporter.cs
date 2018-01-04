@@ -74,7 +74,7 @@ namespace YoutubeImporter
             while (nextpagetoken != null)
             {
                 var searchListRequest = myService.Search.List("snippet");
-                searchListRequest.MaxResults = maxResults;
+                searchListRequest.MaxResults = 50;
                 searchListRequest.ChannelId = ytChannelId;
                 searchListRequest.PageToken = nextpagetoken;
                 searchListRequest.Type = "video";

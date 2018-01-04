@@ -17,6 +17,7 @@ namespace TVSimulator
     {
         #region fields
         public bool isSubfolders = true, IsFullscreen=false;
+        private bool isLocal = true;
         private FileImporter fileImporter;
         private bool infoPressed = true;
         public event EventHandler Tick;
@@ -30,6 +31,7 @@ namespace TVSimulator
         public MainWindow()
         {
             InitializeComponent();
+            db = new Database();
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
@@ -66,9 +68,6 @@ namespace TVSimulator
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
-            youtubePlayer.Visibility = Visibility.Visible;
-            mediaPlayer.Stop();
-            mediaPlayer.Visibility = Visibility.Hidden;
 
         }
 
@@ -101,7 +100,6 @@ namespace TVSimulator
             }
             curChannelNum = switchChannel(curChannelNum, -1);    // second paramter -1 for decreament
             int index = parseChanneltoIndex(curChannelNum);
-
             var c = cb.LocalChannels.ElementAt(index);
             playFromChannel(c);
         }
@@ -146,7 +144,38 @@ namespace TVSimulator
 
         #endregion Media player functions
 
+        #region Youtube media player functions
+        private async void playYoutubeChannel(Channel curChannel)
+        {
+            //BUG:: BAR IS NOT SYNCED WITH YOUTUBE CHANNELS.
+            var searcher = new YoutubeImporter.Search();
+            var videos = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
+            
+            //TODO: CHECK WHEN VIDEO DONE PLAYING AND SET THE NEXT ONE AFTER
+            YtbTxtVideoId.Text = videos[2].Path;
+        } 
+        #endregion
+
         #region subMethods
+
+        private void switchMediaControl(Constants.playerSwitch mode)
+        {
+            if (mode == Constants.playerSwitch.Youtube)
+            {
+                youtubePlayer.Visibility = Visibility.Visible;
+                mediaPlayer.Stop();
+                mediaPlayer.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                mediaPlayer.Visibility = Visibility.Visible;
+                mediaPlayer.Play();
+                youtubePlayer.Visibility = Visibility.Hidden;
+            }
+
+            
+        }
+
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
         private void onVideoRecievedHandler(Object o, List<Media> arg)
@@ -208,6 +237,21 @@ namespace TVSimulator
 
         private void playFromChannel(Channel curChannel)
         {
+            if (curChannel.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
+            {
+                switchMediaControl(Constants.playerSwitch.Youtube);
+                playYoutubeChannel(curChannel);
+            }
+            else
+            {
+                switchMediaControl(Constants.playerSwitch.Local);
+                playLocalChannel(curChannel);
+            }
+        }
+
+        private void playLocalChannel(Channel curChannel)
+        {
+            
             if (curChannel == null || curChannel.DurationList.Count < 1)
             {
                 System.Windows.MessageBox.Show("Error playing channel");
@@ -220,9 +264,9 @@ namespace TVSimulator
             var b = DateTime.Now;
             var diff = ((b.Subtract(a)).TotalMinutes) % totalDur;
 
-            for(var i=0;i< curChannel.DurationList.Count();i++)
+            for (var i = 0; i < curChannel.DurationList.Count(); i++)
             {
-                if(diff < curChannel.DurationList.ElementAt(i))
+                if (diff < curChannel.DurationList.ElementAt(i))
                 {
                     TimeSpan t;
                     int min;
@@ -237,9 +281,9 @@ namespace TVSimulator
                     else
                     {
                         min = (int)diff - curChannel.DurationList.ElementAt(i - 1);
-                        t = new TimeSpan(0,min, 0);
+                        t = new TimeSpan(0, min, 0);
                         playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
-                        changeLabels(curChannel, min,i);
+                        changeLabels(curChannel, min, i);
                         return;
                     }
                 }

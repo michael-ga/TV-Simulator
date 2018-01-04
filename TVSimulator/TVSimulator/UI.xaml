@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:TVSimulator"
         xmlns:Cef1="clr-namespace:YoutubeImporter.Cef;assembly=YoutubeImporter"
         mc:Ignorable="d"
-       Title="MainWindow" Height="700" Width="1200" WindowStyle="None" ResizeMode="NoResize" Loaded="Window_Loaded"  
+        Title="MainWindow" Height="700" Width="1200" WindowStyle="None" ResizeMode="NoResize" Loaded="Window_Loaded"  
         WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown">
 
     <Grid x:Name="mainWindow" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel" Background="Black">
 
         <MediaElement x:Name="mediaPlayer" LoadedBehavior="Manual" Margin="0,0,0,0" StretchDirection="Both" Stretch="Fill"/>
-        <Cef1:CefYoutubeController x:Name="youtubePlayer"  Margin="5,5,5,-40" Visibility="Hidden"/>
-        <TextBox x:Name="TxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Hidden" />
+        <Cef1:CefYoutubeController x:Name="youtubePlayer"  VideoId="{Binding Text, ElementName=YtbTxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,-40" Visibility="Hidden"/>
+        <TextBox x:Name="YtbTxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Hidden" />
 
         <Grid x:Name="menuBar" Margin="5,0,0.6,0" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>

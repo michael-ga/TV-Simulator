@@ -2,13 +2,10 @@
 using MediaClasses;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace YoutubeImporter
 {
@@ -99,7 +96,6 @@ namespace YoutubeImporter
                 var list = await searcher.GetVideosFromChannelAsync(currSelection.Path);
                 if (list[0] == null)
                     return;
-
                 //YoutubeEmbeddedPlayer yte = new YoutubeEmbeddedPlayer(list);
                 //yte.Show();
             }
@@ -113,6 +109,8 @@ namespace YoutubeImporter
         private async void showVideosBtn_Click(object sender, RoutedEventArgs e)
         {
             Videos = await searcher.GetVideosFromChannelAsync(currSelection.Path);
+            db.insertYoutubeVideoList(Videos);
+
         }
         private void showMyChannelsBtn_Click(object sender, RoutedEventArgs e)
         {

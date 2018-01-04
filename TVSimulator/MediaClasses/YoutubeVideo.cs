@@ -9,7 +9,7 @@ namespace MediaClasses
         private string photoURL;
         private string channelId;
         private int id;
-
+        public YoutubeVideo() { }
         public YoutubeVideo(string path, string name, string duration = "", string genre = "", string channelId ="",string photoURL = "") : base(path, name, duration, genre)
         {
             this.channelId = channelId;

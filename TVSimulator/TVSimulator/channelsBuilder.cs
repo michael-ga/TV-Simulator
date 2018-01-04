@@ -77,14 +77,21 @@ namespace TVSimulator
                 channelNumber++;
             }
 
-            //buildYouTubeChannels();
+            buildYouTubeChannels();
         }
 
-        //public void buildYouTubeChannels()
-        //{
-        //    var channelNumber = localChannels.Count()+1;
-        //    localChannels.Add(new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, ""));
-        //}
+        public void buildYouTubeChannels()
+        {
+            var channels = db.getYoutubeChannelList();
+            var channelNumber = localChannels.Count() + 1;
+            for (var i = 0; i < channels.Count(); i++)
+            {
+                localChannels.Add(new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, ""));
+                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = channels[i].Path;
+                channelNumber++;
+            }
+               
+        }
         public void buildUserChannel() {}
 
         #endregion

@@ -23,6 +23,8 @@ namespace HelperClasses
         LiteCollection<Movie> movieCollection;
         LiteCollection<Music> musicCollection;
         LiteCollection<YouTubeChannel> youtube_channelCollection;
+        LiteCollection<YoutubeVideo> youtube_videoCollection;
+
 
         public LiteCollection<Media> MediaCollection { get => mediaCollection; set => mediaCollection = value; }
 
@@ -35,6 +37,7 @@ namespace HelperClasses
             TVCollection = db.GetCollection<TvSeries>(Constants.TV_SERIES_COLLECTION);
             movieCollection = db.GetCollection<Movie>(Constants.MOVIE_COLLECTION);
             musicCollection = db.GetCollection<Music>(Constants.MUSIC_COLLECTION);
+            youtube_videoCollection = db.GetCollection<YoutubeVideo>(Constants.YOUTUBE_VIDEO_COLLECTION);
             youtube_channelCollection = db.GetCollection<YouTubeChannel>(Constants.YOUTUBE_CHANNEL_COLLECTION);
         }
         #endregion
@@ -142,7 +145,25 @@ namespace HelperClasses
             return false;
         }
 
-       
+        public bool insertYoutubeVideoList(List<YoutubeVideo> videos)
+        {
+            foreach (YoutubeVideo item in videos)
+            {
+                //var exist = checkIfIDExsis(item.Id.ToString(), Constants.YOUTUBE_VIDEO_COLLECTION, "Id");
+                //if (!exist)
+                //{
+                youtube_videoCollection.Insert(item);
+                //    }
+                //    return false;
+                //}
+                //return true;
+            }
+            return true;
+        }
+        public List<YoutubeVideo> getYotubeVIdeos()
+        {
+            return youtube_videoCollection.FindAll().ToList();
+        }
 
 
         #endregion
