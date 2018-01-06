@@ -64,19 +64,21 @@ namespace YoutubeImporter
             return channels;
         }
         //  get list of all 50 videos from channel
-        public async Task<List<YoutubeVideo>> GetVideosFromChannelAsync(string ytChannelId,int maxResults = 30)
+        public async Task<List<YoutubeVideo>> GetVideosFromChannelAsync(string ytChannelId,int maxResults = 50)
         {
             List<SearchResult> res = new List<SearchResult>();
+            List<SearchResult> res1 = new List<SearchResult>();
             List<YoutubeVideo> videoList = new List<YoutubeVideo>();
             string dur;
             string nextpagetoken = " ";
 
-            while (nextpagetoken != null)
+            while (nextpagetoken != null && res.Count<maxResults)
             {
                 var searchListRequest = myService.Search.List("snippet");
-                searchListRequest.MaxResults = 50;
+                searchListRequest.MaxResults = 30;
                 searchListRequest.ChannelId = ytChannelId;
                 searchListRequest.PageToken = nextpagetoken;
+                searchListRequest.Order = Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum.Date;// otions are date rating relevance  title videoCount viewCount 
                 searchListRequest.Type = "video";
 
                 var searchListResponse = searchListRequest.Execute();   // Call the search.list method to retrieve results matching the specified query term.
@@ -85,6 +87,16 @@ namespace YoutubeImporter
             }
             foreach (var item in res)
             {
+                //var searchvid = myService.Search.List("contentDetails");
+                //searchvid.MaxResults = 50;
+                //searchvid.ChannelId = ytChannelId;
+                //searchvid.PageToken = nextpagetoken;
+
+                //var response2 = searchvid.Execute();
+                //res1.AddRange(response2.Items);
+                //nextpagetoken = response2.NextPageToken;
+
+
                 // problem getting video duration
                 //dur = await durationReq(item.Id.VideoId.ToString());
                 //dur = extractDuration(dur);

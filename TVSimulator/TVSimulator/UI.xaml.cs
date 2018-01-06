@@ -1,5 +1,4 @@
-﻿
-using HelperClasses;
+﻿using HelperClasses;
 using MediaClasses;
 using System;
 using System.Collections.Generic;
@@ -143,7 +142,6 @@ namespace TVSimulator
         }
 
         #endregion Media player functions
-
         #region Youtube media player functions
         private async void playYoutubeChannel(Channel curChannel)
         {
@@ -153,6 +151,7 @@ namespace TVSimulator
             
             //TODO: CHECK WHEN VIDEO DONE PLAYING AND SET THE NEXT ONE AFTER
             YtbTxtVideoId.Text = videos[2].Path;
+            lblBroadcastNow.Content = videos[2].Name;
         } 
         #endregion
 
