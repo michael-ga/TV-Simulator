@@ -20,9 +20,11 @@ namespace TVSimulator
         private FileImporter fileImporter;
         private bool infoPressed = true;
         public event EventHandler Tick;
+
         public DateTime timeNow;
         public Database db;
         public ChannelsBuilder cb = new ChannelsBuilder();
+        private Channel currentChannel;
         public int curChannelNum = 1;
         #endregion fields
 
@@ -145,14 +147,21 @@ namespace TVSimulator
         #region Youtube media player functions
         private async void playYoutubeChannel(Channel curChannel)
         {
-            //BUG:: BAR IS NOT SYNCED WITH YOUTUBE CHANNELS.
-            var searcher = new YoutubeImporter.Search();
-            var videos = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
-            
-            //TODO: CHECK WHEN VIDEO DONE PLAYING AND SET THE NEXT ONE AFTER
-            YtbTxtVideoId.Text = videos[2].Path;
-            lblBroadcastNow.Content = videos[2].Name;
-        } 
+
+            try
+            {
+                var searcher = new YoutubeImporter.Search();
+                currentChannel.YoutubeVideoList = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
+                YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path;
+                lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
+            }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show("Connection Error: please check your internter connction");
+            }
+        }
+
+        
         #endregion
 
         #region subMethods
@@ -192,6 +201,8 @@ namespace TVSimulator
 
 
         }
+
+
 
         //for get the mouse point
         [DllImport("user32.dll")]
@@ -236,6 +247,7 @@ namespace TVSimulator
 
         private void playFromChannel(Channel curChannel)
         {
+            currentChannel = curChannel;
             if (curChannel.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
             {
                 switchMediaControl(Constants.playerSwitch.Youtube);
@@ -378,6 +390,17 @@ namespace TVSimulator
                 return 0;
             else
                 return channelNumber - 1;
+        }
+        private void playNextYoutubeVideo()    
+        {
+            Dispatcher.Invoke(new Action(() => youtubePlayer.AutoPlay = true));
+           currentChannel.YoutubeVideoIndex++;
+           Dispatcher.Invoke(new Action(() => YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path));    // play the next video from the list
+        }
+
+        private void youtubePlayer_videoEnded(object sender, EventArgs e)
+        {
+            playNextYoutubeVideo();
         }
 
         public int switchChannel(int channelNumber, int incOrDec)
