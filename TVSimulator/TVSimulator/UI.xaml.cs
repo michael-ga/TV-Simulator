@@ -2,13 +2,13 @@
 using MediaClasses;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
+
 
 namespace TVSimulator
 {
@@ -41,16 +41,8 @@ namespace TVSimulator
 
         #region button listeners
 
-        private void chooseFolderBtn_Click(object sender, RoutedEventArgs e)
-        {
-            using (var folderDialog = new FolderBrowserDialog())
-            {
-                if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    fileImporter.getAllMediaFromDirectory(folderDialog.SelectedPath, isSubfolders);
-                }
-            }
-        }
+       
+
 
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
@@ -72,10 +64,7 @@ namespace TVSimulator
 
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            isSubfolders = !isSubfolders;
-        }
+        
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
@@ -198,8 +187,6 @@ namespace TVSimulator
             //Random r = new Random();
             //int x = r.Next(arg.Count);
             //folderPathTextbox.Text = arg.ElementAt(x).Name;     //check the name of media
-
-
         }
 
 

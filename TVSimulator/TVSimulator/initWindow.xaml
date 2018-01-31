@@ -4,19 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="initWindow" Height="500" Width="500">
+        Title="initWindow"  WindowStartupLocation="CenterScreen"  Height="500" Width="500" ResizeMode="NoResize">
     <Window.Background>
         <ImageBrush ImageSource="Resources/fileImporterScreen.PNG"/>
     </Window.Background>
-    <Grid>
+        <xctk:BusyIndicator 
+        IsBusy="False"   x:Name="loader"   BusyContent="Please Wait while Loading Files"  Background="White" Foreground="DarkBlue" >
+        <Grid>
+            
         <Grid.Background>
             <ImageBrush/>
         </Grid.Background>
-        <Button x:Name="getFolderBtn"  Content="Browse" HorizontalAlignment="Left" Margin="334,283,0,0" Width="100" Height="23" VerticalAlignment="Top" />
-        <CheckBox x:Name="subfolderBtn" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,258,0,0" VerticalAlignment="Top" Foreground="White"/>
-        <TextBox HorizontalAlignment="Left" Margin="18,283,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" TextChanged="TextBox_TextChanged_1" Foreground="#FF050442" Text="C://"/>
-        <Button x:Name="btnSubmit" Content="Start" HorizontalAlignment="Left" Margin="207,416,0,0" VerticalAlignment="Top" Width="75" Height="24"/>
+        <Button x:Name="getFolderBtn"  Content="Browse" HorizontalAlignment="Left" Margin="334,283,0,0" Click="chooseFolderBtn_Click" Width="100" Height="23" VerticalAlignment="Top" />
+        <CheckBox x:Name="SubfoldersCheckBox" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,258,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Margin="18,283,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" Foreground="#FF050442" />
+        <Button x:Name="btnSubmit"  Content="Start" HorizontalAlignment="Left" Margin="207,416,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnSubmit_Click"/>
+        <Button x:Name="youtubeBtn" Content="Add Youtube Channels" Click="youtubeBtn_Click" HorizontalAlignment="Left" Margin="109,356,0,0" VerticalAlignment="Top" Width="75"/>
+        </Grid>
 
-    </Grid>
+    </xctk:BusyIndicator>
+
 </Window>
