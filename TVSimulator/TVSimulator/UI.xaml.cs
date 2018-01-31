@@ -141,6 +141,13 @@ namespace TVSimulator
                 var searcher = new YoutubeImporter.Search();
                 currentChannel.YoutubeVideoList = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
                 YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path;
+                lblMediaName.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
+                lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
+                lblStartTime.Content = "";
+                lblEndTime.Content = "";
+                lblChannelNumber.Content = curChannel.ChannelNumber;
+                if (currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1] != null)
+                     lblBroadcastNext.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1].Name;
                 lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
             }
             catch (Exception e)
@@ -166,7 +173,11 @@ namespace TVSimulator
             {
                 mediaPlayer.Visibility = Visibility.Visible;
                 mediaPlayer.Play();
-                youtubePlayer.Visibility = Visibility.Hidden;
+                if(youtubePlayer != null)
+                {
+                    youtubePlayer.Visibility = Visibility.Hidden;
+                    youtubePlayer.Stop();
+                }
             }
 
             
@@ -289,6 +300,7 @@ namespace TVSimulator
 
         private void changeLabels(Channel c,int time,int mediaNum)
         {
+            
             lblChannelNumber.Content = c.ChannelNumber;
             string strMediaName = c.Genre + " - " +c.Media.ElementAt(mediaNum).Name;
             string broadCastNow = "Now: " + c.Media.ElementAt(mediaNum).Name;

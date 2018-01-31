@@ -200,7 +200,6 @@
     </Compile>
     <Compile Include="Channel.cs" />
     <Compile Include="ChannelsBuilder.cs" />
-    <Compile Include="Date.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="FileImporter.cs" />
     <Compile Include="IFileImporter.cs" />
