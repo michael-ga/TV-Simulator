@@ -206,10 +206,11 @@ namespace YoutubeImporter.Cef
             Dispatcher.Invoke(() => PlayerState = e);
         }
 
-        private void Stop()
+        public void Stop()
         {
             // raise event here for the next video...
-            WebBrowser.ExecuteScriptAsync("setPlayerState", stopVideoParam);
+            if (IsloadingDone())
+                WebBrowser.ExecuteScriptAsync("setPlayerState", stopVideoParam);
         }
 
         private void CheckkIfLoadingDone(object sender, LoadingStateChangedEventArgs e)

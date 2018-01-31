@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace YoutubeImporter
 {
-    class Command : ICommand
+    public class Command : ICommand
     {
         private Action _executeAction;
 
