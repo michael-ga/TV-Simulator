@@ -144,7 +144,7 @@ namespace HelperClasses
             }
             return false;
         }
-
+        // for debug only
         public bool insertYoutubeVideoList(List<YoutubeVideo> videos)
         {
             foreach (YoutubeVideo item in videos)
@@ -160,6 +160,7 @@ namespace HelperClasses
             }
             return true;
         }
+        // for debug only
         public List<YoutubeVideo> getYotubeVIdeos()
         {
             return youtube_videoCollection.FindAll().ToList();

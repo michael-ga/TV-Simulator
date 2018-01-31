@@ -1,24 +1,16 @@
 ﻿using CefSharp;
-using CefSharp.Wpf;
 using MyToolkit.Multimedia;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace YoutubeImporter.Cef
 {
+
+    
     /// <summary>
     /// Interaction logic for CefYoutubeController.xaml
     /// 
@@ -27,10 +19,12 @@ namespace YoutubeImporter.Cef
     /// </summary>
     public partial class CefYoutubeController : UserControl, IYoutubeController
     {
+        
+
         private static readonly bool DebuggingSubProcess = Debugger.IsAttached;
         static CefYoutubeController()
         {
-            var settings = new CefSettings();
+        var settings = new CefSettings();
             settings.RegisterScheme(new CefCustomScheme
             {
                 SchemeName = CefSharpSchemeHandlerFactory.SchemeName,
@@ -175,6 +169,8 @@ namespace YoutubeImporter.Cef
         YouTubeQuality IYoutubeController.CurrentQuality { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #region startup
+        public delegate void videoEnded(object sender, EventArgs e);
+        public event videoEnded OnVideoEnded;
 
         private bool _browserLoaded = false;
         private bool _iframePlayerLoaded = false;
@@ -203,11 +199,16 @@ namespace YoutubeImporter.Cef
 
         private void BoundOnPlayerPlayingChanged(object sender, YoutubePlayerState e)
         {
+            if(e == YoutubePlayerState.ended)
+            {
+                OnVideoEnded(this,null);
+            }
             Dispatcher.Invoke(() => PlayerState = e);
         }
 
         private void Stop()
         {
+            // raise event here for the next video...
             WebBrowser.ExecuteScriptAsync("setPlayerState", stopVideoParam);
         }
 

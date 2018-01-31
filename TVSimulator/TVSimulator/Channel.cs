@@ -23,7 +23,11 @@ namespace TVSimulator
         public string Genre { get => genre; set => genre = value; }
         public string TypeOfMedia { get => typeOfMedia; set => typeOfMedia = value; }
         public string YoutubeChannelID { get => youtubeChannelID; set => youtubeChannelID = value; }
+        public int YoutubeVideoIndex { get => youtubeVideoIndex; set => youtubeVideoIndex = value; }
+        public List<YoutubeVideo> YoutubeVideoList { get => youtubeVideoList; set => youtubeVideoList = value; }
 
+        private int youtubeVideoIndex = 0;
+        private List<YoutubeVideo> youtubeVideoList;
         //private /*MediaSchedule*/ schedule;
 
         public Channel()
