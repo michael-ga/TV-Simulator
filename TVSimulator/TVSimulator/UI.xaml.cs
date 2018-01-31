@@ -28,7 +28,6 @@ namespace TVSimulator
         public int curChannelNum = 1;
         #endregion fields
 
-
         public MainWindow()
         {
             InitializeComponent();

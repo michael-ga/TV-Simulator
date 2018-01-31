@@ -10,18 +10,44 @@
     <Window.Background>
         <ImageBrush ImageSource="Resources/fileImporterScreen.PNG"/>
     </Window.Background>
-        <xctk:BusyIndicator 
-        IsBusy="False"   x:Name="loader"   BusyContent="Please Wait while Loading Files"  Background="White" Foreground="DarkBlue" >
+    <xctk:BusyIndicator 
+        IsBusy="False" x:Name="loader" BusyContent="Please Wait while Loading Files" Background="White" Foreground="DarkBlue" >
         <Grid>
+
+            <Grid.Background>
+                <ImageBrush/>
+            </Grid.Background>
+            <Button x:Name="getFolderBtn" Content="Browse" HorizontalAlignment="Left" Margin="334,283,0,0" Click="chooseFolderBtn_Click" Width="95" Height="23" VerticalAlignment="Top" BorderThickness="1" BorderBrush="Black" >
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3650DD" Offset="1"/>
+                        <GradientStop Color="#FFEDDEDE"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
             
-        <Grid.Background>
-            <ImageBrush/>
-        </Grid.Background>
-        <Button x:Name="getFolderBtn"  Content="Browse" HorizontalAlignment="Left" Margin="334,283,0,0" Click="chooseFolderBtn_Click" Width="100" Height="23" VerticalAlignment="Top" />
-        <CheckBox x:Name="SubfoldersCheckBox" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,258,0,0" VerticalAlignment="Top" Foreground="White"/>
-        <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Margin="18,283,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" Foreground="#FF050442" />
-        <Button x:Name="btnSubmit"  Content="Start" HorizontalAlignment="Left" Margin="207,416,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnSubmit_Click"/>
-        <Button x:Name="youtubeBtn" Content="Add Youtube Channels" Click="youtubeBtn_Click" HorizontalAlignment="Left" Margin="109,356,0,0" VerticalAlignment="Top" Width="75"/>
+            <CheckBox x:Name="SubfoldersCheckBox" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,258,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Margin="18,283,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" Foreground="#FF050442" />
+            
+            <Button x:Name="btnSubmit" Content="Start" HorizontalAlignment="Left" Margin="208,424,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnSubmit_Click" BorderBrush="Black">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3650DD" Offset="1"/>
+                        <GradientStop Color="#FFEDDEDE"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            
+            <Button x:Name="youtubeBtn" Content="Add YouTube" Click="youtubeBtn_Click" HorizontalAlignment="Left" Margin="16,349,0,0" VerticalAlignment="Top" Width="103" Height="22" BorderBrush="Black">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3650DD" Offset="1"/>
+                        <GradientStop Color="#FFEDDEDE"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label x:Name="lblAddYouTube" Content="Select your favorite YouTube channel." HorizontalAlignment="Left" Margin="13,317,0,0" VerticalAlignment="Top" Width="416" FontFamily="Sitka Heading" FontSize="18" Foreground="White" Opacity="0.7" Height="27"/>
         </Grid>
 
     </xctk:BusyIndicator>

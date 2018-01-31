@@ -5,16 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YoutubeImporter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
-    <Grid Margin="-1,0,-0.333,-3.333" HorizontalAlignment="Right" Width="800" Height="600" VerticalAlignment="Bottom">
+        Title="MainWindow" WindowStartupLocation="CenterScreen" Height="400" Width="750">
+    <Window.Background>
+        <ImageBrush ImageSource="Resources/blbc.jpg"/>
+    </Window.Background>
+    <Grid Margin="0,0,-0.4,-3.6" HorizontalAlignment="Right" Width="694" Height="374" VerticalAlignment="Bottom">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="342*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="49*"/>
-            <RowDefinition Height="275*"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="159*"/>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Right" Margin="0,46,693,496" TextWrapping="Wrap" Text="Search:" Grid.RowSpan="2"/>
-        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Margin="124,24,0,2.667" Height="20" Width="212" KeyDown="SearchBox_KeyDown"/>
-        <Button  x:Name="searchBtn" Content="Search" HorizontalAlignment="Left" Margin="364,44,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Search_Click"/>
-        <ListView x:Name="mListView" ItemsSource="{Binding Channels}" Margin="0,3.333,1,3" Grid.Row="1" HorizontalAlignment="Right" Width="676">
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Margin="-13,25,0,0" Width="212" KeyDown="SearchBox_KeyDown" Height="18" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <ListView x:Name="mListView" ItemsSource="{Binding Channels}" Margin="-49,50,1.4,2.4" HorizontalAlignment="Right" Width="742" Grid.Row="1" Grid.ColumnSpan="2">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="5" HorizontalAlignment="Stretch"/>
@@ -29,12 +34,48 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="856,22,-131,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="addChannelBtn" Content="add channel" HorizontalAlignment="Left" Margin="454,44,0,0" VerticalAlignment="Top" Width="79" Click="addChannelBtn_Click"/>
-        <Button x:Name="removeChannelBtn" Content="remove channel" HorizontalAlignment="Left" Margin="558,43,0,0" VerticalAlignment="Top" Width="75" Click="removeChannelBtn_Click"/>
-        <Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Margin="655,42,0,0" VerticalAlignment="Top" Width="75" Click="playBtn_Click"/>
-        <Button x:Name="showMyChannelsBtn" Content="show my channels" HorizontalAlignment="Left" Margin="20,20.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="showMyChannelsBtn_Click"/>
-        <Button x:Name="showVideosBtn" Content="show videos" HorizontalAlignment="Left" Margin="24,65.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="showVideosBtn_Click"/>
+
+        <Button  x:Name="searchBtn" Content="Search" HorizontalAlignment="Left" Margin="202.6,25,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Search_Click" Grid.Column="1" BorderBrush="Black">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3650DD" Offset="1"/>
+                    <GradientStop Color="#FFEDDEDE"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+
+        <Button x:Name="addChannelBtn" Content="add channel" HorizontalAlignment="Left" Margin="-13,8,0,0" VerticalAlignment="Top" Width="79" Click="addChannelBtn_Click" Grid.Row="1" Height="20" Grid.ColumnSpan="2">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3650DD" Offset="1"/>
+                    <GradientStop Color="#FFEDDEDE"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="removeChannelBtn" Content="remove channel" HorizontalAlignment="Left" Margin="74.6,8,0,0" VerticalAlignment="Top" Width="100" Click="removeChannelBtn_Click" Grid.Row="1" Height="20" Grid.Column="1" BorderBrush="Black">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3650DD" Offset="1"/>
+                    <GradientStop Color="#FFEDDEDE"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="showMyChannelsBtn" Content="show my channels" HorizontalAlignment="Left" Margin="193.6,8,0,0" VerticalAlignment="Top" Width="113" Click="showMyChannelsBtn_Click" Grid.Row="1" Height="20" Grid.Column="1" BorderBrush="Black">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3650DD" Offset="1"/>
+                    <GradientStop Color="#FFEDDEDE"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <!--<Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Margin="655,42,0,0" VerticalAlignment="Top" Width="75" Click="playBtn_Click"/>-->
+        <Image Grid.Column="1" Source="Resources/YouTubeLogo.png" HorizontalAlignment="Left" Height="54" Margin="536.6,30,0,0" VerticalAlignment="Top" Width="137" Grid.RowSpan="2"/>
+        <!--<Button x:Name="showVideosBtn" Content="show videos" HorizontalAlignment="Left" Margin="24,65.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="showVideosBtn_Click"/>-->
     </Grid>
+
+
 
 </Window>
