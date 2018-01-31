@@ -5,12 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-        Title="initWindow" Height="300" Width="500">
+        Title="initWindow" Height="500" Width="500">
+    <Window.Background>
+        <ImageBrush ImageSource="Resources/fileImporterScreen.PNG"/>
+    </Window.Background>
     <Grid>
-        <Button x:Name="submitBtn" Content="submit" HorizontalAlignment="Left" Margin="185,136,0,0" VerticalAlignment="Top" Width="125" Click="Button_Click"/>
-        <TextBlock HorizontalAlignment="Left" Margin="65,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="363" Text="Please select the main folder where you store your media contents"/>
-        <Button x:Name="browseBtn" Content="Browse" HorizontalAlignment="Left" Margin="338,84,0,0" VerticalAlignment="Top" Width="74" Click="browseBtn_Click"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="68,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" TextChanged="TextBox_TextChanged"/>
+        <Grid.Background>
+            <ImageBrush/>
+        </Grid.Background>
+        <Button x:Name="getFolderBtn"  Content="Browse" HorizontalAlignment="Left" Margin="334,283,0,0" Width="100" Height="23" VerticalAlignment="Top" />
+        <CheckBox x:Name="subfolderBtn" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,258,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <TextBox HorizontalAlignment="Left" Margin="18,283,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" TextChanged="TextBox_TextChanged_1" Foreground="#FF050442" Text="C://"/>
+        <Button x:Name="btnSubmit" Content="Start" HorizontalAlignment="Left" Margin="207,416,0,0" VerticalAlignment="Top" Width="75" Height="24"/>
 
     </Grid>
 </Window>

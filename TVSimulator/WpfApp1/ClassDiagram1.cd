@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="YoutubeImporter.Cef.BoundObject">
+    <Position X="9.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAFAAAAAAAAAABAAAAAAAAIAAEAAAAAAAAAA=</HashCode>
+      <FileName>cefSharpPackageFiles\BoundObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YoutubeImporter.Cef.CefSharpSchemeHandlerFactory">
+    <Position X="7.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAA=</HashCode>
+      <FileName>cefSharpPackageFiles\CefSharpSchemeHandlerFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YoutubeImporter.Cef.CefSharpSchemeHandler">
+    <Position X="9" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAABAAAAAAAAAAAAAQAEAAAAAAAAAAAACAAhAIAIAAA=</HashCode>
+      <FileName>cefSharpPackageFiles\CefSharpSchemeHandlerFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TVSimulator.Channel">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAQIEAAACAQAAAAAAIAAAAGAAAAAAAhAAAABEAAACQ=</HashCode>
+      <FileName>Channel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TVSimulator.ChannelsBuilder">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAQACRECAEgBEgAgABAIAAAABAAAAQAAAAAAA=</HashCode>
+      <FileName>channelsBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TVSimulator.FileImporter" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="TVSimulator.FileImporter.videoLoaded" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FileImporter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIICgBQAACAQIEAIACAQIAAAEABQAiCAAAAAgACAAAA=</HashCode>
+      <FileName>FileImporter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TVSimulator.initWindow" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAEAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>initWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TVSimulator.SettingWindow" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAIAAAAAIAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>SettingWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TVSimulator.MainWindow">
+    <Position X="11.5" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="TVSimulator.MainWindow.Win32Point" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UI.xaml.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CgEKAAwgAIAQAgAAoAUQACoAABAAiEABBAEIAAEAWAg=</HashCode>
+      <FileName>UI.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelperClasses.Constants">
+    <Position X="3" Y="2.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="HelperClasses.Constants.channelSwitch" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Constants.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="HelperClasses.Constants.playerSwitch" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Constants.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AQGBAAIAABAAAAAAAIAgAAQAEAAQQAAQAQAAAAAAAAA=</HashCode>
+      <FileName>Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HelperClasses.Database">
+    <Position X="23.5" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAwCAQCAQACAAASASAEAAAAAAMBDCAAAAAAAAIoI=</HashCode>
+      <FileName>Database.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YoutubeImporter.Command" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAACAAQAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Command.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="YoutubeImporter.Search">
+    <Position X="3" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgEAAAAAAAACCAAAACAAAIAAAQAAAAAA=</HashCode>
+      <FileName>YoutubeImporter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="YoutubeImporter.YoutubeStateExtensions">
+    <Position X="5.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>YoutubePlayerState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaClasses.Media">
+    <Position X="19.75" Y="5.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABCAEIAAAACAAIEAABCAAQCAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Media.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaClasses.MediaSchedule">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAARAQAAQA=</HashCode>
+      <FileName>MediaSchedule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaClasses.Movie">
+    <Position X="22.5" Y="9.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAGABAABBAwAAAQIAAEAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Movie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaClasses.Music">
+    <Position X="24.5" Y="9.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAGAAAABAAAAAAAAAAAgAAAAIAgAAAIIAAACAAAAgA=</HashCode>
+      <FileName>Music.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaClasses.TvSeries">
+    <Position X="17" Y="9.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAHAAABBRAgAQAQIAAEAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>TvSeries.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaClasses.YouTubeChannel">
+    <Position X="18.75" Y="9.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAIAAAAAAAAAAAAAAAAAAAAgAAAgI=</HashCode>
+      <FileName>YouTubeChannel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MediaClasses.YoutubeVideo">
+    <Position X="20.5" Y="9.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAgAEAgI=</HashCode>
+      <FileName>YoutubeVideo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Window" Collapsed="true">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="TVSimulator.IDatabase">
+    <Position X="21.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAQAAgQAAAAAAAAAAAAIAAAAAIAAAAAEQAA=</HashCode>
+      <FileName>IDatabase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="TVSimulator.IFileImporter">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACABAAACAAAEAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>IFileImporter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="YoutubeImporter.IYoutubeController">
+    <Position X="3" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAIAAAAACABIAAABBAAA=</HashCode>
+      <FileName>IYoutubeController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="YoutubeImporter.YoutubePlayerState">
+    <Position X="5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAwAAAAAAAAgAAAAAAAgAAACAAAAAAAAAIAA=</HashCode>
+      <FileName>YoutubePlayerState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="YoutubeImporter.YoutubeQuality">
+    <Position X="6.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAAAAAAAAAAACAAAAAgAAAAQBCAAAAQAAAAAAQ=</HashCode>
+      <FileName>YoutubeQuality.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
