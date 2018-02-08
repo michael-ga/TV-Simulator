@@ -270,27 +270,29 @@ namespace TVSimulator
 
             var a = DateTime.Parse(Constants.START_CYCLE);
             var b = DateTime.Now;
-            var diff = ((b.Subtract(a)).TotalMinutes) % totalDur;
+            var diff = ((b.Subtract(a)).TotalSeconds) % totalDur;
 
             for (var i = 0; i < curChannel.DurationList.Count(); i++)
             {
                 if (diff < curChannel.DurationList.ElementAt(i))
                 {
                     TimeSpan t;
-                    int min;
+                    int sec,min;
                     if (i == 0)
                     {
-                        min = (int)diff;
-                        t = new TimeSpan(0, min, 0);
+                        sec = (int)diff;
+                        t = new TimeSpan(0, 0, sec);
                         playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
+                        min = (int)t.TotalMinutes;
                         changeLabels(curChannel, min, i);
                         return;
                     }
                     else
                     {
-                        min = (int)diff - curChannel.DurationList.ElementAt(i - 1);
-                        t = new TimeSpan(0, min, 0);
+                        sec = (int)diff - (int)curChannel.DurationList.ElementAt(i - 1);
+                        t = new TimeSpan(0, 0, sec);
                         playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
+                        min = (int)t.TotalMinutes;
                         changeLabels(curChannel, min, i);
                         return;
                     }
@@ -332,7 +334,7 @@ namespace TVSimulator
             //change times labels
             var b = DateTime.Now;
             lblStartTime.Content = (b.AddMinutes(time*(-1))).ToShortTimeString();
-            int x;
+            double x;
             if (mediaNum != 0)
             {
                 x = c.DurationList.ElementAt(mediaNum) - c.DurationList.ElementAt(mediaNum - 1) - time;

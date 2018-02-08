@@ -84,5 +84,13 @@ namespace TVSimulator
             YoutubeImporter.MainWindow importer = new YoutubeImporter.MainWindow();
             importer.Show();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            TimeSpan a = new TimeSpan(2,17,32);
+            string str = a.ToString();
+            TimeSpan b = TimeSpan.Parse(str); ;
+            test.Content = b.ToString();
+        }
     }
 }
