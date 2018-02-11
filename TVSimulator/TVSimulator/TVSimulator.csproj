@@ -198,7 +198,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Channel.cs" />
     <Compile Include="ChannelsBuilder.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="FileImporter.cs" />

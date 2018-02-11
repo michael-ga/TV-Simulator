@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TVSimulator
+namespace HelperClasses
 {
     public class Channel
     {
@@ -16,6 +16,9 @@ namespace TVSimulator
         private Database db;
         private DateTime StartCycleTime;
         private string youtubeChannelID;
+        private int youtubeVideoIndex = 0;
+        private List<YoutubeVideo> youtubeVideoList;
+        private int id;
 
         public List<Media> Media { get => media; set => media = value; }
         public List<double> DurationList { get => durationList; set => durationList = value; }
@@ -25,9 +28,9 @@ namespace TVSimulator
         public string YoutubeChannelID { get => youtubeChannelID; set => youtubeChannelID = value; }
         public int YoutubeVideoIndex { get => youtubeVideoIndex; set => youtubeVideoIndex = value; }
         public List<YoutubeVideo> YoutubeVideoList { get => youtubeVideoList; set => youtubeVideoList = value; }
+        public int Id { get => id; set => id = value; }
 
-        private int youtubeVideoIndex = 0;
-        private List<YoutubeVideo> youtubeVideoList;
+
         //private /*MediaSchedule*/ schedule;
 
         public Channel()
@@ -43,9 +46,9 @@ namespace TVSimulator
             this.durationList = new List<double>();
 
             this.db = new Database();
-            this.StartCycleTime = DateTime.Parse(Constants.START_CYCLE); 
+            this.StartCycleTime = DateTime.Parse(Constants.START_CYCLE);
 
-
+            this.YoutubeVideoList = new List<YoutubeVideo>();
             //this.schedule = schedule;
             //TODO:playNow and playNext is done when the schedule will be ready
         }

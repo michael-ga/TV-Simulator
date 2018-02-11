@@ -24,6 +24,7 @@ namespace HelperClasses
         LiteCollection<Music> musicCollection;
         LiteCollection<YouTubeChannel> youtube_channelCollection;
         LiteCollection<YoutubeVideo> youtube_videoCollection;
+        LiteCollection<Channel> channelCollection;
 
 
         public LiteCollection<Media> MediaCollection { get => mediaCollection; set => mediaCollection = value; }
@@ -39,6 +40,7 @@ namespace HelperClasses
             musicCollection = db.GetCollection<Music>(Constants.MUSIC_COLLECTION);
             youtube_videoCollection = db.GetCollection<YoutubeVideo>(Constants.YOUTUBE_VIDEO_COLLECTION);
             youtube_channelCollection = db.GetCollection<YouTubeChannel>(Constants.YOUTUBE_CHANNEL_COLLECTION);
+            channelCollection = db.GetCollection<Channel>(Constants.CHANNEL_COLLECTION);
         }
         #endregion
         //TODO: CHECK QUERIES 
@@ -50,10 +52,15 @@ namespace HelperClasses
             musicCollection.Delete(Query.All(Query.Descending));
         }
 
-        
-        #region Collection queries
-        // remove whole collection
-        public void removeMediaCollection()
+        public void removeChannelCollection()
+        {
+            channelCollection.Delete(Query.Descending);
+        }
+
+
+            #region Collection queries
+            // remove whole collection
+            public void removeMediaCollection()
         {
             MediaCollection.Delete(Query.All(Query.Descending));
         }
@@ -83,6 +90,11 @@ namespace HelperClasses
                 Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
                 MediaCollection.Insert(temp);
             }
+        }
+
+        public void insertChannel(Channel c)
+        {
+            channelCollection.Insert(c);
         }
         
 
