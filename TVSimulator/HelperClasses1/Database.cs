@@ -86,7 +86,6 @@ namespace HelperClasses
                 return;
             foreach (Media obj in mediaList)
             {
-                //var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
                 Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
                 MediaCollection.Insert(temp);
             }
@@ -136,6 +135,12 @@ namespace HelperClasses
         {
             var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             return media.FindAll().ToList();
+        }
+
+        public List<Channel> getChannelList()
+        {
+            var channel = db.GetCollection<Channel>(Constants.CHANNEL_COLLECTION);
+            return channel.FindAll().ToList();
         }
         #endregion
 

@@ -9,8 +9,6 @@ using System.Windows.Input;
 
 namespace YoutubeImporter.Cef
 {
-
-    
     /// <summary>
     /// Interaction logic for CefYoutubeController.xaml
     /// 
@@ -19,8 +17,6 @@ namespace YoutubeImporter.Cef
     /// </summary>
     public partial class CefYoutubeController : UserControl, IYoutubeController
     {
-        
-
         private static readonly bool DebuggingSubProcess = Debugger.IsAttached;
         static CefYoutubeController()
         {

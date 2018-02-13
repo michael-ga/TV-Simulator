@@ -72,7 +72,7 @@ namespace HelperClasses
                 {
                     media.Add((Media)m);
                     durTime = m.getDurationTimespan();
-                    sum += durTime.TotalMilliseconds;
+                    sum += durTime.TotalSeconds;
                     durationList.Add(sum);
                 }
         }
@@ -88,7 +88,7 @@ namespace HelperClasses
                 {
                     media.Add((Media)t);
                     durTime = t.getDurationTimespan();    
-                    sum += durTime.TotalMilliseconds;
+                    sum += durTime.TotalSeconds;
                     durationList.Add(sum);
                 }
         }
