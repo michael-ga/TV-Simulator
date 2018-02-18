@@ -34,8 +34,8 @@ namespace TVSimulator
             db = new Database();
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
-            //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
             cb.buildLocalChannels();
+            //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
         }
 
         #region button listeners
@@ -132,6 +132,7 @@ namespace TVSimulator
         }
 
         #endregion Media player functions
+
         #region Youtube media player functions
         private async void playYoutubeChannel(Channel curChannel)
         {
@@ -145,6 +146,8 @@ namespace TVSimulator
                 lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
                 lblStartTime.Content = "";
                 lblEndTime.Content = "";
+                editChannelNumber.Text = currentChannel.ChannelNumber.ToString();
+
                 lblChannelNumber.Content = curChannel.ChannelNumber;
                 if (currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1] != null)
                      lblBroadcastNext.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1].Name;
@@ -302,6 +305,7 @@ namespace TVSimulator
         {
             
             lblChannelNumber.Content = c.ChannelNumber;
+            editChannelNumber.Text = c.ChannelNumber.ToString();
             string strMediaName = c.Genre + " - " +c.Media.ElementAt(mediaNum).Name;
             string broadCastNow = "Now: " + c.Media.ElementAt(mediaNum).Name;
             string broadCastNext = "";

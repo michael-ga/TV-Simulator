@@ -23,6 +23,8 @@ namespace HelperClasses
         LiteCollection<Movie> movieCollection;
         LiteCollection<Music> musicCollection;
         LiteCollection<YouTubeChannel> youtube_channelCollection;
+        LiteCollection<YoutubePlaylistChannel> youtube_Playlist_channelCollection;
+
         LiteCollection<YoutubeVideo> youtube_videoCollection;
 
 
@@ -39,6 +41,7 @@ namespace HelperClasses
             musicCollection = db.GetCollection<Music>(Constants.MUSIC_COLLECTION);
             youtube_videoCollection = db.GetCollection<YoutubeVideo>(Constants.YOUTUBE_VIDEO_COLLECTION);
             youtube_channelCollection = db.GetCollection<YouTubeChannel>(Constants.YOUTUBE_CHANNEL_COLLECTION);
+            youtube_Playlist_channelCollection = db.GetCollection<YoutubePlaylistChannel>(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION);
         }
         #endregion
         //TODO: CHECK QUERIES 
@@ -49,7 +52,6 @@ namespace HelperClasses
             TVCollection.Delete(Query.All(Query.Descending)); 
             musicCollection.Delete(Query.All(Query.Descending));
         }
-
         
         #region Collection queries
         // remove whole collection
@@ -127,7 +129,6 @@ namespace HelperClasses
         }
         #endregion
 
-
         #region youtube
         public List<YouTubeChannel> getYoutubeChannelList()
         {
@@ -144,6 +145,7 @@ namespace HelperClasses
             }
             return false;
         }
+        
         // for debug only
         public bool insertYoutubeVideoList(List<YoutubeVideo> videos)
         {
@@ -160,6 +162,25 @@ namespace HelperClasses
             }
             return true;
         }
+
+        public bool updateYoutubeChannel(YouTubeChannel ytbChannel)
+        {
+            //removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, ytbChannel.Path);
+            return youtube_channelCollection.Update(ytbChannel);
+        }
+
+        public bool insertPlaylistChannel(YoutubePlaylistChannel channel)
+        {
+            var exist = checkIfIDExsis(channel.Path, Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, "Path");
+            if (!exist)
+            {
+                youtube_Playlist_channelCollection.Insert(channel);
+                return true;
+            }
+            return false;
+        }
+
+        
         // for debug only
         public List<YoutubeVideo> getYotubeVIdeos()
         {
@@ -168,6 +189,19 @@ namespace HelperClasses
 
 
         #endregion
+
+
+        public YoutubePlaylistChannel getPlayListChannelByChannelID(string id)
+        {
+            return youtube_Playlist_channelCollection.Find(Query.EQ("ChannelId",id)).First();
+        }
+
+        public List<YoutubePlaylistChannel> getPlaylistChannels()
+        {
+            return youtube_Playlist_channelCollection.FindAll().ToList();
+        }
+
+
         #region Helper Functions
         // helper currenty adjusted to youtube channel only
         private bool checkIfIDExsis(string uniqueField, string collectionName, string colName)
@@ -194,10 +228,18 @@ namespace HelperClasses
                         return true;
                     }
                     return false;
-                    //......continue for each media type
-                    //
-                    //
-                    //....
+                //......continue for each media type
+                //
+                //
+                //....
+                case Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION:
+                    var isExist = youtube_Playlist_channelCollection.Exists(Query.EQ("Path", compareArg));
+                    if (isExist)
+                    {
+                        youtube_Playlist_channelCollection.Delete(Query.EQ("Path", compareArg));
+                        return true;
+                    }
+                    return false;
                 default:
                     break;
             }

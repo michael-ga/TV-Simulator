@@ -11,6 +11,8 @@ namespace MediaClasses
         private int id;
         private int currentVideoIndex;
         private List<YoutubeVideo> videoList;
+        private DateTime lastUpdated;
+
         public YouTubeChannel() { }
 
         public YouTubeChannel(string path, string name, string duration = "", string genre = "",string photoURL="") : base(path, name, duration, genre)
@@ -18,6 +20,8 @@ namespace MediaClasses
             this.Description = Description;
             this.photoURL = photoURL;
             currentVideoIndex = 0;
+            lastUpdated = DateTime.MinValue;
+            videoList = null;
         }
 
         public string Description { get => description; set => description = value; }
@@ -25,5 +29,6 @@ namespace MediaClasses
         public int Id { get => id; set => id = value; }
         public int CurrentVideoIndex { get => currentVideoIndex; set => currentVideoIndex = value; }
         public List<YoutubeVideo> VideoList { get => videoList; set => videoList = value; }
+        public DateTime LastUpdated { get => lastUpdated; set => lastUpdated = value; }
     }
 }

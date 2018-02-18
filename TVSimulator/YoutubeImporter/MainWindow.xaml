@@ -73,6 +73,25 @@
         </Button>
         <!--<Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Margin="655,42,0,0" VerticalAlignment="Top" Width="75" Click="playBtn_Click"/>-->
         <Image Grid.Column="1" Source="Resources/YouTubeLogo.png" HorizontalAlignment="Left" Height="54" Margin="536.6,30,0,0" VerticalAlignment="Top" Width="137" Grid.RowSpan="2"/>
+        <Button Content="Show Playlist" Click="showPlaylistClick"  Grid.Column="1" Margin="327,7,282,289" Grid.Row="1">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3650DD" Offset="1"/>
+                    <GradientStop Color="#FFEDDEDE"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="showVideosBtn" Content="Show videos" Click="showVideosBtn_Click" Grid.Column="1" HorizontalAlignment="Left" Margin="422,6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="88" Height="21">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3650DD" Offset="1"/>
+                    <GradientStop Color="#FFEDDEDE"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button Content="Show my playlist channels" Grid.Column="1" HorizontalAlignment="Left" Margin="331,29,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button x:Name="addPlaylistChanneleBtn" Content="add playlist channel" Grid.Column="1" HorizontalAlignment="Left" Margin="444,27,0,0" VerticalAlignment="Top" Width="75" Click="addPlaylistChanneleBtn_Click"/>
+
         <!--<Button x:Name="showVideosBtn" Content="show videos" HorizontalAlignment="Left" Margin="24,65.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="showVideosBtn_Click"/>-->
     </Grid>
 
