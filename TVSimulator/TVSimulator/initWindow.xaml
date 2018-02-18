@@ -48,6 +48,7 @@
             </Button>
             <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label x:Name="lblAddYouTube" Content="Select your favorite YouTube channel." HorizontalAlignment="Left" Margin="13,317,0,0" VerticalAlignment="Top" Width="416" FontFamily="Sitka Heading" FontSize="18" Foreground="White" Opacity="0.7" Height="27"/>
+            <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Height="90" Margin="119,115,0,0" VerticalAlignment="Top" Width="271" Click="Button_Click_1" FontSize="8"/>
         </Grid>
 
     </xctk:BusyIndicator>

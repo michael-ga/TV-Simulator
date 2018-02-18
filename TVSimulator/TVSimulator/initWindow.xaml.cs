@@ -1,4 +1,5 @@
-﻿using MediaClasses;
+﻿using HelperClasses;
+using MediaClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace TVSimulator
     public partial class initWindow : Window
     {
         FileImporter fileImporter;
-
+        public Database db;
+ 
         public initWindow()
         {
             InitializeComponent();
@@ -83,6 +85,14 @@ namespace TVSimulator
         {
             YoutubeImporter.MainWindow importer = new YoutubeImporter.MainWindow();
             importer.Show();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            /*TimeSpan a = new TimeSpan(2,17,32);
+            string str = a.ToString();
+            TimeSpan b = TimeSpan.Parse(str); ;
+            test.Content = b.ToString();*/
         }
     }
 }

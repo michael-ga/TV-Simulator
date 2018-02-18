@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TVSimulator
+namespace HelperClasses
 {
     public class Channel
     {
@@ -12,22 +12,25 @@ namespace TVSimulator
         private string typeOfMedia;       //movies,tv serias,music or youtube stream
         private string genre;             //the name should be channel main genre
         private List<Media> media;
-        private List<int> durationList;
+        private List<double> durationList;
         private Database db;
         private DateTime StartCycleTime;
         private string youtubeChannelID;
+        private int youtubeVideoIndex = 0;
+        private List<YoutubeVideo> youtubeVideoList;
+        private int id;
 
         public List<Media> Media { get => media; set => media = value; }
-        public List<int> DurationList { get => durationList; set => durationList = value; }
+        public List<double> DurationList { get => durationList; set => durationList = value; }
         public int ChannelNumber { get => channelNumber; set => channelNumber = value; }
         public string Genre { get => genre; set => genre = value; }
         public string TypeOfMedia { get => typeOfMedia; set => typeOfMedia = value; }
         public string YoutubeChannelID { get => youtubeChannelID; set => youtubeChannelID = value; }
         public int YoutubeVideoIndex { get => youtubeVideoIndex; set => youtubeVideoIndex = value; }
         public List<YoutubeVideo> YoutubeVideoList { get => youtubeVideoList; set => youtubeVideoList = value; }
+        public int Id { get => id; set => id = value; }
 
-        private int youtubeVideoIndex = 0;
-        private List<YoutubeVideo> youtubeVideoList;
+
         //private /*MediaSchedule*/ schedule;
 
         public Channel()
@@ -40,12 +43,12 @@ namespace TVSimulator
             this.typeOfMedia = typeOfMedia;
 
             this.media = new List<Media>();
-            this.durationList = new List<int>();
+            this.durationList = new List<double>();
 
             this.db = new Database();
-            this.StartCycleTime = DateTime.Parse(Constants.START_CYCLE); 
+            this.StartCycleTime = DateTime.Parse(Constants.START_CYCLE);
 
-
+            this.YoutubeVideoList = new List<YoutubeVideo>();
             //this.schedule = schedule;
             //TODO:playNow and playNext is done when the schedule will be ready
         }
@@ -61,33 +64,32 @@ namespace TVSimulator
         public void buildMovieSchedule()
         {
             List<Movie> movies = db.getMovieList();
-            var sum = 0;
+            double sum = 0;
+            var durTime = new TimeSpan();
+
             foreach (Movie m in movies)
                 if (m.getFirstGenre().Equals(genre))
                 {
-                    if (m.getDurationInMin() != -1)
-                    {
-                        media.Add((Media)m);
-                        sum += m.getDurationInMin();
-                        durationList.Add(sum);
-                    }
+                    media.Add((Media)m);
+                    durTime = m.getDurationTimespan();
+                    sum += durTime.TotalSeconds;
+                    durationList.Add(sum);
                 }
         }
 
         public void buildTVSchedule()
         {
             List<TvSeries> tvs = db.getTVList();
-            var sum = 0;
+            double sum = 0;
+            var durTime = new TimeSpan();
 
             foreach (TvSeries t in tvs)
                 if (t.getFirstGenre().Equals(genre))
                 {
-                    if (t.getDurationInMin() != -1)
-                    {
-                        media.Add((Media)t);
-                        sum += t.getDurationInMin();
-                        durationList.Add(sum);
-                    }
+                    media.Add((Media)t);
+                    durTime = t.getDurationTimespan();    
+                    sum += durTime.TotalSeconds;
+                    durationList.Add(sum);
                 }
         }
         

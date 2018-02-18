@@ -90,8 +90,8 @@ namespace TVSimulator
                 }
                 else
                 {
-                    //var dur = getDuration(filePath);
-                    var dur = getDuration(filePath).TotalMinutes.ToString(); dur += ".";
+                    //var dur = getfilePath);
+                    var dur = getDuration(filePath).ToString();
                     allMedia.Add(new Media(filePath, fileInfo.Name,dur));
                 }
                 return true;
@@ -166,7 +166,7 @@ namespace TVSimulator
                 else
                     songName = tag.Title;
 
-                var dur = getDuration(path).TotalMinutes.ToString(); dur += ".";
+                var dur = getDuration(path).ToString();
 
                 Music music = new Music(path, songName, dur, tag.FirstGenre, tag.FirstPerformer, tag.Album, tag.Year.ToString(), tag.Lyrics);
                 allMedia.Add((Media)music);
@@ -192,10 +192,10 @@ namespace TVSimulator
             OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(Constants.OMDB_APIKEY, false);
             var x = await client.GetItemByTitle(videoName);     // return object with properties
             var id = x.imdbID;
+            string duration = getDuration(path).ToString();
 
             if (type.Equals(Constants.MOVIE))
             {
-                string duration = getDuration(path).TotalMinutes.ToString();duration += ".";
                 Movie movie;
                 if (id == null)
                     movie = new Movie(path,videoName,duration);
@@ -206,7 +206,6 @@ namespace TVSimulator
             }
             else if (type.Equals(Constants.TVSERIES))
             {
-                string duration = getDuration(path).TotalMinutes.ToString() + ".";
                 string[] data = getSeasonAndEpisode(originalName);      //  data[0] = season , data[1] = episode
                 TvSeries TvSeries;
                 

@@ -60,8 +60,10 @@ namespace TVSimulator
 
             for (var i = 0; i < gMovie.Count(); i++)
             {
-                localChannels.Add(new Channel(channelNumber, Constants.MOVIE, gMovie.ElementAt(i)));
+                var chan = new Channel(channelNumber, Constants.MOVIE, gMovie.ElementAt(i));
+                localChannels.Add(chan);
                 localChannels.ElementAt(channelNumber-1).buildSchedule();
+                db.insertChannel(chan);
                 channelNumber++;
             }
 
@@ -72,8 +74,10 @@ namespace TVSimulator
             gTV = gTV.Distinct().ToList();
             for (var i = 0; i < gTV.Count(); i++)
             {
-                localChannels.Add(new Channel(channelNumber, Constants.TVSERIES, gTV.ElementAt(i)));
+                var chan = new Channel(channelNumber, Constants.TVSERIES, gTV.ElementAt(i));
+                localChannels.Add(chan);
                 localChannels.ElementAt(channelNumber-1).buildSchedule();
+                db.insertChannel(chan);
                 channelNumber++;
             }
 
@@ -86,8 +90,10 @@ namespace TVSimulator
             var channelNumber = localChannels.Count() + 1;
             for (var i = 0; i < channels.Count(); i++)
             {
-                localChannels.Add(new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, ""));
+                var chan = new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, "");
+                localChannels.Add(chan);
                 localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = channels[i].Path;
+                db.insertChannel(chan);
                 channelNumber++;
             }
                

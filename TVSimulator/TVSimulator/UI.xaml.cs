@@ -24,6 +24,7 @@ namespace TVSimulator
         public DateTime timeNow;
         public Database db;
         public ChannelsBuilder cb = new ChannelsBuilder();
+        private List<Channel> chanList;
         private Channel currentChannel;
         public int curChannelNum = 1;
         #endregion fields
@@ -34,14 +35,13 @@ namespace TVSimulator
             db = new Database();
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
-            cb.buildLocalChannels();
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
+            chanList = db.getChannelList();
+            if (chanList.Count() == 0 || chanList == null)
+                cb.buildLocalChannels();
         }
 
         #region button listeners
-
-       
-
 
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
@@ -63,11 +63,9 @@ namespace TVSimulator
 
         }
 
-        
-
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
-            if(cb.LocalChannels == null)
+            if(chanList == null)
             {
                 System.Windows.MessageBox.Show("no channels");
                 return;
@@ -76,20 +74,20 @@ namespace TVSimulator
             curChannelNum = switchChannel(curChannelNum,1);         // second paramter 1 for increament
             int index = parseChanneltoIndex(curChannelNum);
 
-            var c = cb.LocalChannels.ElementAt(index);
+            var c = chanList[index];
             playFromChannel(c);
         }
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
         {
-            if(cb.LocalChannels == null)
+            if(chanList == null)
             {
                 System.Windows.MessageBox.Show("no channels");
                 return;
             }
             curChannelNum = switchChannel(curChannelNum, -1);    // second paramter -1 for decreament
             int index = parseChanneltoIndex(curChannelNum);
-            var c = cb.LocalChannels.ElementAt(index);
+            var c = chanList[index];
             playFromChannel(c);
         }
 
@@ -132,11 +130,9 @@ namespace TVSimulator
         }
 
         #endregion Media player functions
-
         #region Youtube media player functions
         private async void playYoutubeChannel(Channel curChannel)
         {
-
             try
             {
                 var searcher = new YoutubeImporter.Search();
@@ -146,8 +142,6 @@ namespace TVSimulator
                 lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
                 lblStartTime.Content = "";
                 lblEndTime.Content = "";
-                editChannelNumber.Text = currentChannel.ChannelNumber.ToString();
-
                 lblChannelNumber.Content = curChannel.ChannelNumber;
                 if (currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1] != null)
                      lblBroadcastNext.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1].Name;
@@ -181,17 +175,14 @@ namespace TVSimulator
                     youtubePlayer.Visibility = Visibility.Hidden;
                     youtubePlayer.Stop();
                 }
-            }
-
-            
+            }     
         }
 
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
         private void onVideoRecievedHandler(Object o, List<Media> arg)
         {
-            cb.buildLocalChannels();
-            Window_Loaded(this, new RoutedEventArgs());
+            //Window_Loaded(this, new RoutedEventArgs());
             //if (arg.ElementAt(x) is Music)
             //    musicImage.Visibility = Visibility.Visible;
             //else
@@ -221,7 +212,7 @@ namespace TVSimulator
             var point = GetMousePosition();
 
             var heigth = System.Windows.SystemParameters.PrimaryScreenHeight;
-            if (point.Y > heigth - menuBar.Height -100)
+            if (point.Y > heigth - menuBar.Height - 100)
                 menuBar.Visibility = Visibility.Visible;
             else
                 menuBar.Visibility = Visibility.Hidden;
@@ -229,11 +220,11 @@ namespace TVSimulator
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (cb.LocalChannels == null || cb.LocalChannels.Count < 1)
-                return;
+            if (chanList == null || chanList.Count() < 1)
+                chanList = db.getChannelList();
 
             var index = parseChanneltoIndex(curChannelNum);
-            var c0 = cb.LocalChannels.ElementAt(index);
+            var c0 = chanList[index];
             playFromChannel(c0);
             
             timeNow = DateTime.Now;
@@ -262,7 +253,6 @@ namespace TVSimulator
 
         private void playLocalChannel(Channel curChannel)
         {
-            
             if (curChannel == null || curChannel.DurationList.Count < 1)
             {
                 System.Windows.MessageBox.Show("Error playing channel");
@@ -273,28 +263,30 @@ namespace TVSimulator
 
             var a = DateTime.Parse(Constants.START_CYCLE);
             var b = DateTime.Now;
-            var diff = ((b.Subtract(a)).TotalMinutes) % totalDur;
+            var diff = ((b.Subtract(a)).TotalSeconds) % totalDur;
 
             for (var i = 0; i < curChannel.DurationList.Count(); i++)
             {
                 if (diff < curChannel.DurationList.ElementAt(i))
                 {
                     TimeSpan t;
-                    int min;
+                    int sec,min;
                     if (i == 0)
                     {
-                        min = (int)diff;
-                        t = new TimeSpan(0, min, 0);
+                        sec = (int)diff;
+                        t = new TimeSpan(0, 0, sec);
                         playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
-                        changeLabels(curChannel, min, i);
+                        min = (int)t.TotalMinutes;
+                        changeLabels(curChannel, sec, i);
                         return;
                     }
                     else
                     {
-                        min = (int)diff - curChannel.DurationList.ElementAt(i - 1);
-                        t = new TimeSpan(0, min, 0);
+                        sec = (int)diff - (int)curChannel.DurationList.ElementAt(i - 1);
+                        t = new TimeSpan(0, 0, sec);
                         playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
-                        changeLabels(curChannel, min, i);
+                        min = (int)t.TotalMinutes;
+                        changeLabels(curChannel, sec, i);
                         return;
                     }
                 }
@@ -303,9 +295,7 @@ namespace TVSimulator
 
         private void changeLabels(Channel c,int time,int mediaNum)
         {
-            
             lblChannelNumber.Content = c.ChannelNumber;
-            editChannelNumber.Text = c.ChannelNumber.ToString();
             string strMediaName = c.Genre + " - " +c.Media.ElementAt(mediaNum).Name;
             string broadCastNow = "Now: " + c.Media.ElementAt(mediaNum).Name;
             string broadCastNext = "";
@@ -335,8 +325,9 @@ namespace TVSimulator
 
             //change times labels
             var b = DateTime.Now;
-            lblStartTime.Content = (b.AddMinutes(time*(-1))).ToShortTimeString();
-            int x;
+            var bbb = b.AddSeconds(time * (-1));
+            lblStartTime.Content = (bbb).ToShortTimeString();
+            double x;
             if (mediaNum != 0)
             {
                 x = c.DurationList.ElementAt(mediaNum) - c.DurationList.ElementAt(mediaNum - 1) - time;
@@ -349,7 +340,7 @@ namespace TVSimulator
             }
             mediaProgressBar.Value = time * 60;
         
-            lblEndTime.Content = b.AddMinutes(x).ToShortTimeString();
+            lblEndTime.Content = b.AddSeconds(x).ToShortTimeString();
 
             //change Description
             if (c.TypeOfMedia.Equals(Constants.MOVIE))
@@ -369,7 +360,7 @@ namespace TVSimulator
         {
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
-            mediaProgressBar.Value +=15;            
+            mediaProgressBar.Value +=900;            
         }
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -386,8 +377,8 @@ namespace TVSimulator
 
         public int parseChanneltoIndex(int channelNumber)
         {
-            if (channelNumber == cb.LocalChannels.Count())
-                return cb.LocalChannels.Count() - 1;
+            if (channelNumber == chanList.Count())
+                return chanList.Count() - 1;
             else if (channelNumber == 1)
                 return 0;
             else
@@ -407,7 +398,7 @@ namespace TVSimulator
 
         public int switchChannel(int channelNumber, int incOrDec)
         {
-            var c = cb.LocalChannels;
+            var c = chanList;
 
             if(incOrDec == 1)
             {

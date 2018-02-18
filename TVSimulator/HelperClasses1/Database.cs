@@ -26,6 +26,7 @@ namespace HelperClasses
         LiteCollection<YoutubePlaylistChannel> youtube_Playlist_channelCollection;
 
         LiteCollection<YoutubeVideo> youtube_videoCollection;
+        LiteCollection<Channel> channelCollection;
 
 
         public LiteCollection<Media> MediaCollection { get => mediaCollection; set => mediaCollection = value; }
@@ -42,6 +43,7 @@ namespace HelperClasses
             youtube_videoCollection = db.GetCollection<YoutubeVideo>(Constants.YOUTUBE_VIDEO_COLLECTION);
             youtube_channelCollection = db.GetCollection<YouTubeChannel>(Constants.YOUTUBE_CHANNEL_COLLECTION);
             youtube_Playlist_channelCollection = db.GetCollection<YoutubePlaylistChannel>(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION);
+            channelCollection = db.GetCollection<Channel>(Constants.CHANNEL_COLLECTION);
         }
         #endregion
         //TODO: CHECK QUERIES 
@@ -52,10 +54,16 @@ namespace HelperClasses
             TVCollection.Delete(Query.All(Query.Descending)); 
             musicCollection.Delete(Query.All(Query.Descending));
         }
-        
-        #region Collection queries
-        // remove whole collection
-        public void removeMediaCollection()
+
+        public void removeChannelCollection()
+        {
+            channelCollection.Delete(Query.Descending);
+        }
+
+
+            #region Collection queries
+            // remove whole collection
+            public void removeMediaCollection()
         {
             MediaCollection.Delete(Query.All(Query.Descending));
         }
@@ -81,10 +89,14 @@ namespace HelperClasses
                 return;
             foreach (Media obj in mediaList)
             {
-                //var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
                 Media temp = new Media(obj.Path, obj.Name, obj.Duration, obj.Gnere);
                 MediaCollection.Insert(temp);
             }
+        }
+
+        public void insertChannel(Channel c)
+        {
+            channelCollection.Insert(c);
         }
         
 
@@ -127,6 +139,12 @@ namespace HelperClasses
             var media = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             return media.FindAll().ToList();
         }
+
+        public List<Channel> getChannelList()
+        {
+            var channel = db.GetCollection<Channel>(Constants.CHANNEL_COLLECTION);
+            return channel.FindAll().ToList();
+        }
         #endregion
 
         #region youtube
@@ -145,7 +163,6 @@ namespace HelperClasses
             }
             return false;
         }
-        
         // for debug only
         public bool insertYoutubeVideoList(List<YoutubeVideo> videos)
         {
