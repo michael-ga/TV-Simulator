@@ -6,6 +6,7 @@ using MediaClasses;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -25,6 +26,16 @@ namespace YoutubeImporter
         {
             myService = getService();
             db = new Database();
+        }
+
+        private void progressChangeEvent(object sender, ProgressChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void fetchData(object sender, DoWorkEventArgs e)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -152,15 +163,18 @@ namespace YoutubeImporter
             {
                 dur = await durationReq(item.Snippet.ResourceId.VideoId);
                 dur = extractDuration(dur);
-                YoutubeVideo temp;
-                var thumbnail = item.Snippet.Thumbnails.Default__.Url;
-                if (thumbnail != null)
-                    temp = new YoutubeVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId, item.Snippet.Thumbnails.Default__.Url);
-                else
-                    temp = new YoutubeVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId,"");
+                if (dur != "0")
+                {
+                    YoutubeVideo temp;
+                    var thumbnail = item.Snippet.Thumbnails;
+                    if (thumbnail != null && thumbnail.Default__.Url != null)
+                        temp = new YoutubeVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId, item.Snippet.Thumbnails.Default__.Url);
+                    else
+                        temp = new YoutubeVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId,"");
 
-                videoList.Add(temp);
-                System.Diagnostics.Debug.WriteLine(videoList.Count);
+                    videoList.Add(temp);
+                    System.Diagnostics.Debug.WriteLine(videoList.Count);
+                }
             }
             return videoList;
         }
@@ -173,7 +187,7 @@ namespace YoutubeImporter
             string nextpagetoken = " ";
             List<SearchResult> res = new List<SearchResult>();
             List<YoutubePlaylist> playlists = new List<YoutubePlaylist>();
-            YoutubePlaylistChannel newChannel = new YoutubePlaylistChannel(ytChannel.Path, "Playlist - " + ytChannel.Name, "", "", "", ytChannel.PhotoURL,"");
+            YoutubePlaylistChannel newChannel = new YoutubePlaylistChannel(ytChannel.Path, "Playlist - " + ytChannel.Name,"","", ytChannel.PhotoURL);
 
             while (nextpagetoken != null)
             {
@@ -191,11 +205,6 @@ namespace YoutubeImporter
 
             for (int i = 0; i < res.Count; i++)
             {
-                if (i == 1) // do it only once, make shure there is at least one playlist.
-                {
-                    newChannel.ChannelId = res[i].Snippet.ChannelId;
-                    newChannel.ChannelTitle = res[i].Snippet.ChannelTitle;
-                }
                 var temp = new YoutubePlaylist(res[i].Id.PlaylistId, res[i].Snippet.Title, "", "", extractThumbnail(res[i].Snippet));
                 playlists.Add(temp);
             }
@@ -231,43 +240,18 @@ namespace YoutubeImporter
             }
             return playlists;
         }
-
-
         #endregion
 
-        //public async Task<bool> syncYoutubePlaylistChannels()
-        //{
-        //    List<YouTubeChannel> ytbChannels = db.getYoutubeChannelList();
-        //    foreach (YouTubeChannel channel in ytbChannels)
-        //    {
-        //        await syncOnePlaylistChannel(channel);
-        //    }
-        //    return true;
-        //}
-
         #region SYNC
-        public async Task<bool> syncOnePlaylistChannel(YouTubeChannel ytbChannel)
-        {
-            if (DateTime.Now.Subtract(ytbChannel.LastUpdated).Days > 7 || ytbChannel.VideoList == null)     // check if one week has passed since last update
-            {
-                if (ytbChannel.VideoList != null)
-                    ytbChannel.VideoList.Clear();
-                ytbChannel.VideoList = await GetVideosFromChannelAsync(ytbChannel.Path);
-                ytbChannel.LastUpdated = DateTime.Now;
-                db.updateYoutubeChannel(ytbChannel);
-            }
-            return true;
-        }
+        
 
-
+        // sync all regular channels - check if need to update and get videos if needed
         public async Task<bool> syncYoutubeChannels()
         {
             List<YouTubeChannel> ytbChannels = db.getYoutubeChannelList();
             foreach (YouTubeChannel channel in ytbChannels)
             {
                 await syncOneChannel(channel);
-                await syncOnePlaylistChannel(channel);
-
             }
             return true;
         }
@@ -276,7 +260,7 @@ namespace YoutubeImporter
         {
             if (DateTime.Now.Subtract(ytbChannel.LastUpdated).Days > 7 || ytbChannel.VideoList == null)     // check if one week has passed since last update
             {
-                if (ytbChannel.VideoList != null)
+                if (ytbChannel.VideoList != null)       // clear all videos and reload
                     ytbChannel.VideoList.Clear();
                 ytbChannel.VideoList = await GetVideosFromChannelAsync(ytbChannel.Path);
                 ytbChannel.LastUpdated = DateTime.Now;
@@ -284,6 +268,31 @@ namespace YoutubeImporter
             }
             return true;
         }
+
+        public async Task<bool> syncYoutubePlaylistChannels()
+        {
+            List<YoutubePlaylistChannel> ytbPlsChannels = db.getPlaylistChannels();
+            foreach (YoutubePlaylistChannel channel in ytbPlsChannels)
+            {
+                await syncOnePlaylistChannel(channel);
+            }
+            return true;
+        }
+        public async Task<bool> syncOnePlaylistChannel(YoutubePlaylistChannel plsChannel)
+        {
+            if (DateTime.Now.Subtract(plsChannel.LastUpdated).Days > 7 || plsChannel.Playlist_list == null)     // check if one week has passed since last update
+            {
+                foreach (var item in plsChannel.Playlist_list)
+                {
+                    item.Videos = await GetVideosFromPlaylistAsync(item.Path);
+                    plsChannel.LastUpdated = DateTime.Now;
+                    db.updateYoutubePlaylistChannel(plsChannel);
+                }
+            }
+            return true;
+        }
+
+        
         #endregion
 
         #region HELPER METHODS
@@ -301,10 +310,17 @@ namespace YoutubeImporter
         }
         private string extractDuration(string response)
         {
-            dynamic data = JObject.Parse(response);
-            string duration = data.items[0].contentDetails.duration;
-            TimeSpan ts = System.Xml.XmlConvert.ToTimeSpan(duration);
-            return ts.TotalSeconds.ToString();
+            try
+            {
+                dynamic data = JObject.Parse(response);
+                string duration = data.items[0].contentDetails.duration;
+                TimeSpan ts = System.Xml.XmlConvert.ToTimeSpan(duration);
+                return ts.TotalSeconds.ToString();
+            }
+            catch (Exception)
+            {
+                return "0";
+            }
         }
 
 

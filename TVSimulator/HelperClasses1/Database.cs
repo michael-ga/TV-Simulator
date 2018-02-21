@@ -6,8 +6,6 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HelperClasses
 {
@@ -182,8 +180,12 @@ namespace HelperClasses
 
         public bool updateYoutubeChannel(YouTubeChannel ytbChannel)
         {
-            //removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, ytbChannel.Path);
             return youtube_channelCollection.Update(ytbChannel);
+        }
+
+        public bool updateYoutubePlaylistChannel(YoutubePlaylistChannel ytbChannel)
+        {
+            return youtube_Playlist_channelCollection.Update(ytbChannel);
         }
 
         public bool insertPlaylistChannel(YoutubePlaylistChannel channel)
@@ -210,7 +212,19 @@ namespace HelperClasses
 
         public YoutubePlaylistChannel getPlayListChannelByChannelID(string id)
         {
-            return youtube_Playlist_channelCollection.Find(Query.EQ("ChannelId",id)).First();
+            return youtube_Playlist_channelCollection.Find(Query.EQ("Path",id)).First();
+        }
+
+        public YoutubePlaylist getPlayListByPlaylistID(string PlaylistChannelID,string playlistID)
+        {
+            var temp = getPlayListChannelByChannelID(PlaylistChannelID);
+            var playlists = temp.Playlist_list;
+            foreach (var item in playlists)
+            {
+                if (item.Path.Equals(playlistID))
+                    return item;
+            }
+            return null;
         }
 
         public List<YoutubePlaylistChannel> getPlaylistChannels()
@@ -227,6 +241,11 @@ namespace HelperClasses
             if (collectionName.Equals(Constants.YOUTUBE_CHANNEL_COLLECTION))
             {
                 if (youtube_channelCollection.Exists(Query.EQ(colName, uniqueField)))
+                    res = true;
+            }
+            if (collectionName.Equals(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION))
+            {
+                if (youtube_Playlist_channelCollection.Exists(Query.EQ(colName, uniqueField)))
                     res = true;
             }
             return res;

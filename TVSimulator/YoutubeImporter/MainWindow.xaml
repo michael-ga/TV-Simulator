@@ -35,66 +35,16 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Button  x:Name="searchBtn" Content="Search" HorizontalAlignment="Left" Margin="202.6,25,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Search_Click" Grid.Column="1" BorderBrush="Black">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF3650DD" Offset="1"/>
-                    <GradientStop Color="#FFEDDEDE"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-
-
-        <Button x:Name="addChannelBtn" Content="add channel" HorizontalAlignment="Left" Margin="-13,8,0,0" VerticalAlignment="Top" Width="79" Click="addChannelBtn_Click" Grid.Row="1" Height="20" Grid.ColumnSpan="2">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF3650DD" Offset="1"/>
-                    <GradientStop Color="#FFEDDEDE"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="removeChannelBtn" Content="remove channel" HorizontalAlignment="Left" Margin="74.6,8,0,0" VerticalAlignment="Top" Width="100" Click="removeChannelBtn_Click" Grid.Row="1" Height="20" Grid.Column="1" BorderBrush="Black">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF3650DD" Offset="1"/>
-                    <GradientStop Color="#FFEDDEDE"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-
-        <Button x:Name="showMyChannelsBtn" Content="show my channels" HorizontalAlignment="Left" Margin="193.6,8,0,0" VerticalAlignment="Top" Width="113" Click="showMyChannelsBtn_Click" Grid.Row="1" Height="20" Grid.Column="1" BorderBrush="Black">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF3650DD" Offset="1"/>
-                    <GradientStop Color="#FFEDDEDE"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <!--<Button x:Name="playBtn" Content="Play" HorizontalAlignment="Left" Margin="655,42,0,0" VerticalAlignment="Top" Width="75" Click="playBtn_Click"/>-->
+        <Button  x:Name="searchBtn" Content="Search" Style="{StaticResource gradientButton}" HorizontalAlignment="Left" Margin="202.6,25,0,0" Width="75" Height="20" VerticalAlignment="Top" Click="Search_Click" Grid.Column="1" BorderBrush="Black"/>
+        <Button x:Name="addChannelBtn" Content="add channel" HorizontalAlignment="Left" Margin="292,25,0,0" VerticalAlignment="Top"  Click="addChannelBtn_Click" Style="{StaticResource gradientButton}" Grid.Column="1" />
+        <Button x:Name="removeChannelBtn" Style="{StaticResource gradientButton}" Content="remove channel" HorizontalAlignment="Left" Margin="531,27,0,0" VerticalAlignment="Top" Width="100" Click="removeChannelBtn_Click" Grid.Row="1" Grid.Column="1" BorderBrush="Black"/>
+        <Button x:Name="showMyChannelsBtn" Content="show my channels" HorizontalAlignment="Left" Margin="166,1,0,0" VerticalAlignment="Top" Width="113" Click="showMyChannelsBtn_Click" Grid.Row="1" Height="20" Grid.Column="1" BorderBrush="Black" Style="{StaticResource gradientButton}"/>
         <Image Grid.Column="1" Source="Resources/YouTubeLogo.png" HorizontalAlignment="Left" Height="54" Margin="536.6,30,0,0" VerticalAlignment="Top" Width="137" Grid.RowSpan="2"/>
-        <Button Content="Show Playlist" Click="showPlaylistClick"  Grid.Column="1" Margin="327,7,282,289" Grid.Row="1">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF3650DD" Offset="1"/>
-                    <GradientStop Color="#FFEDDEDE"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button x:Name="showVideosBtn" Content="Show videos" Click="showVideosBtn_Click" Grid.Column="1" HorizontalAlignment="Left" Margin="422,6,0,0" Grid.Row="1" VerticalAlignment="Top" Width="88" Height="21">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                    <GradientStop Color="#FF3650DD" Offset="1"/>
-                    <GradientStop Color="#FFEDDEDE"/>
-                </LinearGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button Content="Show my playlist channels" Grid.Column="1" HorizontalAlignment="Left" Margin="331,29,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <Button x:Name="addPlaylistChanneleBtn" Content="add playlist channel" Grid.Column="1" HorizontalAlignment="Left" Margin="444,27,0,0" VerticalAlignment="Top" Width="75" Click="addPlaylistChanneleBtn_Click"/>
-
-        <!--<Button x:Name="showVideosBtn" Content="show videos" HorizontalAlignment="Left" Margin="24,65.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="showVideosBtn_Click"/>-->
+        <Button Content="Show Playlist" Click="showPlaylistClick"  Grid.Column="1" Margin="293,1,305,297" Grid.Row="1" Style="{StaticResource gradientButton}" Width="Auto" RenderTransformOrigin="0.233,0.467"/>
+        <Button x:Name="showVideosBtn" Style="{StaticResource gradientButton}" Content="Show videos" Click="showVideosBtn_Click" Grid.Column="1" HorizontalAlignment="Left" Margin="399,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="88" Height="21"/>
+        <Button Content="Show my playlist channels" Style="{StaticResource gradientButton}" HorizontalAlignment="Left" Margin="-9,2,0,0" VerticalAlignment="Top" Width="166" Click="Button_Click" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <Button x:Name="addPlaylistChanneleBtn"  Content="add playlist channel" Grid.Column="1" HorizontalAlignment="Left" Margin="401,26,0,0" VerticalAlignment="Top" Width="118" Click="addPlaylistChanneleBtn_Click" Style="{StaticResource gradientButton}"/>
+        <CheckBox x:Name="isPlaylistMod" Content="search playlists" HorizontalAlignment="Left" Margin="-4,7,0,0" VerticalAlignment="Top" Foreground="White" Grid.ColumnSpan="2"/>
+        <Button x:Name="syncBtn" Content="Sync" Style="{StaticResource gradientButton}" Grid.Column="1" HorizontalAlignment="Left" Margin="410,26,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="syncBtn_Click"/>
     </Grid>
-
-
-
 </Window>
