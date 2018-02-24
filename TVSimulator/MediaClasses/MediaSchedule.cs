@@ -8,7 +8,7 @@ namespace MediaClasses
     {
         private Dictionary<DateTime, string> boardSchedule;
     
-        private Media playNow;   //which media played right now
+        private Media playNow;   //which media played right 
         private Media playNext;  // optional
 
         public MediaSchedule() { }
