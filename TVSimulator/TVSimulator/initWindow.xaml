@@ -13,11 +13,16 @@
     <xctk:BusyIndicator 
         IsBusy="False" x:Name="loader" BusyContent="Please Wait while Loading Files" Background="White" Foreground="DarkBlue" >
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="203*"/>
+                <RowDefinition Height="268*"/>
+            </Grid.RowDefinitions>
 
             <Grid.Background>
                 <ImageBrush/>
             </Grid.Background>
-            <Button x:Name="getFolderBtn" Content="Browse" HorizontalAlignment="Left" Margin="334,283,0,0" Click="chooseFolderBtn_Click" Width="95" Height="23" VerticalAlignment="Top" BorderThickness="1" BorderBrush="Black" >
+            <Image x:Name="secondBackground" Margin="0,0,-0.4,0.4" Source="Resources/setTimeView.jpg" Grid.RowSpan="2" Visibility="Hidden"/>
+            <Button x:Name="getFolderBtn" Content="Browse" HorizontalAlignment="Left" Margin="334,80.4,0,0" Click="chooseFolderBtn_Click" Width="95" Height="23" VerticalAlignment="Top" BorderThickness="1" BorderBrush="Black" Grid.Row="1" >
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF3650DD" Offset="1"/>
@@ -25,11 +30,11 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            
-            <CheckBox x:Name="SubfoldersCheckBox" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,258,0,0" VerticalAlignment="Top" Foreground="White"/>
-            <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Margin="18,283,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" Foreground="#FF050442" />
-            
-            <Button x:Name="btnSubmit" Content="Start" HorizontalAlignment="Left" Margin="208,424,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnSubmit_Click" BorderBrush="Black">
+
+            <CheckBox x:Name="SubfoldersCheckBox" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,55.4,0,0" VerticalAlignment="Top" Foreground="White" Grid.Row="1"/>
+            <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Margin="18,80.4,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" Foreground="#FF050442" Grid.Row="1" />
+
+            <Button x:Name="btnSubmit" Content="Start" HorizontalAlignment="Left" Margin="391,224.4,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnSubmit_Click" BorderBrush="Black" Grid.Row="1">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF3650DD" Offset="1"/>
@@ -37,8 +42,8 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            
-            <Button x:Name="youtubeBtn" Content="Add YouTube" Click="youtubeBtn_Click" HorizontalAlignment="Left" Margin="16,349,0,0" VerticalAlignment="Top" Width="103" Height="22" BorderBrush="Black">
+
+            <Button x:Name="youtubeBtn" Content="Add YouTube" Click="youtubeBtn_Click" HorizontalAlignment="Left" Margin="16,146.4,0,0" VerticalAlignment="Top" Width="103" Height="22" BorderBrush="Black" Grid.Row="1">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF3650DD" Offset="1"/>
@@ -47,8 +52,35 @@
                 </Button.Background>
             </Button>
             <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <Label x:Name="lblAddYouTube" Content="Select your favorite YouTube channel." HorizontalAlignment="Left" Margin="13,317,0,0" VerticalAlignment="Top" Width="416" FontFamily="Sitka Heading" FontSize="18" Foreground="White" Opacity="0.7" Height="27"/>
-            <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Height="90" Margin="119,115,0,0" VerticalAlignment="Top" Width="271" Click="Button_Click_1" FontSize="8"/>
+            <Label x:Name="lblAddYouTube" Content="Select your favorite YouTube channel." HorizontalAlignment="Left" Margin="13,114.4,0,0" VerticalAlignment="Top" Width="416" FontFamily="Sitka Heading" FontSize="18" Foreground="White" Opacity="0.7" Height="27" Grid.Row="1"/>
+            <Button x:Name="btnNext" Content="Next" HorizontalAlignment="Left" Margin="391,224.4,0,0" VerticalAlignment="Top" Width="75" Height="24" BorderBrush="Black" Click="btnNext_Click" Grid.Row="1">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3650DD" Offset="1"/>
+                        <GradientStop Color="#FFEDDEDE"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <CheckBox x:Name="isSetupAuto" Content="" HorizontalAlignment="Left" Margin="31,93,0,0" VerticalAlignment="Top" Checked="isSetupAuto_Checked" Unchecked="isSetupAuto_Checked" Visibility="Hidden"/>
+            <Grid x:Name="timeFieldsGrid" HorizontalAlignment="Left" Height="63" Margin="78,178,0,0" VerticalAlignment="Top" Width="388" Grid.RowSpan="2" Visibility="Hidden">
+
+                <ComboBox x:Name="ST1" HorizontalAlignment="Left" Margin="2,4,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10" SelectionChanged="SelectionChanged"/>
+                <ComboBox x:Name="ST2" HorizontalAlignment="Left" Margin="57,4,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10" SelectionChanged="SelectionChanged"/>
+                <ComboBox x:Name="ST3" HorizontalAlignment="Left" Margin="112,4,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10" SelectionChanged="SelectionChanged"/>
+                <ComboBox x:Name="ST4" HorizontalAlignment="Left" Margin="166,4,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10" SelectionChanged="SelectionChanged"/>
+                <ComboBox x:Name="ST5" HorizontalAlignment="Left" Margin="220,4,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10" SelectionChanged="SelectionChanged"/>
+                <ComboBox x:Name="ST6" HorizontalAlignment="Left" Margin="275,4,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10" SelectionChanged="SelectionChanged"/>
+                <ComboBox x:Name="ST7" HorizontalAlignment="Left" Margin="330,4,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10" SelectionChanged="SelectionChanged"/>
+                <ComboBox x:Name="ET1" HorizontalAlignment="Left" Margin="2,40,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10"/>
+                <ComboBox x:Name="ET2" HorizontalAlignment="Left" Margin="57,40,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10"/>
+                <ComboBox x:Name="ET3" HorizontalAlignment="Left" Margin="112,40,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10"/>
+                <ComboBox x:Name="ET4" HorizontalAlignment="Left" Margin="166,40,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10"/>
+                <ComboBox x:Name="ET5" HorizontalAlignment="Left" Margin="220,40,0,0" VerticalAlignment="Top"  Height="23" Width="53" RenderTransformOrigin="0.44,0.026" FontSize="10"/>
+                <ComboBox x:Name="ET6" Margin="275,40,0,0" VerticalAlignment="Top"  Height="23" RenderTransformOrigin="0.44,0.026" HorizontalAlignment="Left" Width="53" FontSize="10"/>
+                <ComboBox x:Name="ET7" HorizontalAlignment="Left" Margin="330,40,0,0" VerticalAlignment="Top"  Height="23" Width="53"  RenderTransformOrigin="0.44,0.026" FontSize="10"/>
+
+
+            </Grid>
         </Grid>
 
     </xctk:BusyIndicator>

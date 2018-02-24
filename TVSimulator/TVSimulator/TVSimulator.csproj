@@ -241,6 +241,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\setTimeView.jpg" />
     <Resource Include="Resources\fileImporterScreen.PNG" />
     <Resource Include="Resources\volume.png" />
     <Resource Include="Resources\settings.png" />

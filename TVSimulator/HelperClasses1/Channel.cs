@@ -91,7 +91,65 @@ namespace HelperClasses
                     durationList.Add(sum);
                 }
         }
-        
+
+        public void addMedia()
+        {
+            if (typeOfMedia.Equals(Constants.MOVIE))
+            {
+                List<Movie> movies = db.getMovieList();
+
+                foreach (Movie m in movies)
+                    if (m.getFirstGenre().Equals(genre))
+                        media.Add((Media)m);
+            }
+            if (typeOfMedia.Equals(Constants.TVSERIES))
+            {
+                List<TvSeries> tvs = db.getTVList();
+
+                foreach (TvSeries t in tvs)
+                    if (t.getFirstGenre().Equals(genre))
+                        media.Add((Media)t);
+            }
+        }
+
+        public void bs(DateTime startDate)
+        {
+            Dictionary<DateTime, string> board = new Dictionary<DateTime, string>();
+            int numOfDays = 7;
+            var startTime = db.getTimes().StartTime;
+            var endTime = db.getTimes().EndTime;
+            DateTime date = startDate;
+            DateTime temp;
+
+            TimeSpan mediaDuration;
+            var i = 0;
+            var j = 0;  // run all over the movies
+            var k = 0;
+            var mediaLength = media.Count;
+
+
+            while(k < numOfDays || j < mediaLength)
+            {
+                i = (int)date.DayOfWeek;
+                DateTime finalHourDate = new DateTime(date.Year, date.Month, date.Day);
+                finalHourDate = finalHourDate.AddHours(endTime[i]);
+                mediaDuration = media[j % mediaLength].getDurationTimespan();
+                temp = date.Add(mediaDuration);
+                if(DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
+                {
+                    board.Add(date, media[j % mediaLength].Name);
+                    date = temp;
+                    j++;
+                }
+                else
+                {
+                    temp = date.AddDays(1);
+                    i = (int)temp.DayOfWeek;
+                    date = new DateTime(temp.Year, temp.Month, temp.Day , startTime[i], 0, 0);
+                    k++;
+                }
+            }
+        }
 
     }
 }

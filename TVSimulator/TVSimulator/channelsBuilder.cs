@@ -62,6 +62,9 @@ namespace TVSimulator
             {
                 var chan = new Channel(channelNumber, Constants.MOVIE, gMovie.ElementAt(i));
                 localChannels.Add(chan);
+                localChannels.ElementAt(channelNumber - 1).addMedia();
+                localChannels.ElementAt(channelNumber - 1).bs(getDateCycle());
+
                 localChannels.ElementAt(channelNumber-1).buildSchedule();
                 db.insertChannel(chan);
                 channelNumber++;
@@ -114,5 +117,32 @@ namespace TVSimulator
 
         #endregion
 
+        private DateTime getDateCycle()
+        {
+            int numOfDays = 7;
+            BroadcastTime bt = db.getTimes();
+            var timeNow = bt.StartCycleTime;
+            var i = (int)timeNow.DayOfWeek;     //get number of day 0-sunday,1-monday,2-tuesday... 6-saturday
+            var hourNow = timeNow.TimeOfDay.Hours;
+
+            DateTime temp = new DateTime(timeNow.Year, timeNow.Month, timeNow.Day, 0, 0, 0);
+            if (hourNow < bt.StartTime[i])
+            {
+                temp = temp.AddHours(bt.StartTime[i]);
+                return temp;
+            }
+            else if (hourNow > bt.StartTime[i] && hourNow < bt.EndTime[i])
+            {
+                return timeNow;
+            }
+            else if (hourNow > bt.EndTime[i])
+            {
+                temp = temp.AddDays(1);
+                temp = temp.AddHours(bt.StartTime[(i + 1) % numOfDays]);
+                return temp;
+            }
+            return timeNow;
+
+        }
     }
 }

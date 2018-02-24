@@ -22,6 +22,7 @@ namespace TVSimulator
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //TODO:: check if database doesn't contain any collection
             if ( !File.Exists(@"C:\TVSimulatorDB\MyData.db"))
             {
                 initWindow iw = new initWindow();

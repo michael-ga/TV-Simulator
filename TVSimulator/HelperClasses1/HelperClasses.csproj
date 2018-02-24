@@ -65,6 +65,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BroadcastTime.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Database.cs" />

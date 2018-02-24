@@ -25,6 +25,7 @@ namespace HelperClasses
 
         LiteCollection<YoutubeVideo> youtube_videoCollection;
         LiteCollection<Channel> channelCollection;
+        LiteCollection<BroadcastTime> timeCollection;
 
 
         public LiteCollection<Media> MediaCollection { get => mediaCollection; set => mediaCollection = value; }
@@ -42,6 +43,8 @@ namespace HelperClasses
             youtube_channelCollection = db.GetCollection<YouTubeChannel>(Constants.YOUTUBE_CHANNEL_COLLECTION);
             youtube_Playlist_channelCollection = db.GetCollection<YoutubePlaylistChannel>(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION);
             channelCollection = db.GetCollection<Channel>(Constants.CHANNEL_COLLECTION);
+            timeCollection = db.GetCollection<BroadcastTime>(Constants.TIME_COLLECTION);
+
         }
         #endregion
         //TODO: CHECK QUERIES 
@@ -96,7 +99,11 @@ namespace HelperClasses
         {
             channelCollection.Insert(c);
         }
-        
+
+        public void insertBroadcastTime(BroadcastTime bt)
+        {
+            timeCollection.Insert(bt);
+        }
 
         // insert to 3 collections by type
         public void insertByType(List<Media> mediaList)
@@ -142,6 +149,12 @@ namespace HelperClasses
         {
             var channel = db.GetCollection<Channel>(Constants.CHANNEL_COLLECTION);
             return channel.FindAll().ToList();
+        }
+
+        public BroadcastTime getTimes()
+        {
+            var bt = db.GetCollection<BroadcastTime>(Constants.TIME_COLLECTION);
+            return bt.FindById(1);
         }
         #endregion
 

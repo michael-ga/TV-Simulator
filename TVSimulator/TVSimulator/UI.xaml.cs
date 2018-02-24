@@ -396,6 +396,36 @@ namespace TVSimulator
             playNextYoutubeVideo();
         }
 
+        /*private void test_Click(object sender, RoutedEventArgs e)
+        {
+            TimeSpan[] x = new TimeSpan[7];
+            TimeSpan[] x0 = new TimeSpan[7];
+
+            TimeSpan y = new TimeSpan(8, 0, 0); 
+            var str = "";
+            DateTime z;
+            z = DateTime.Now;
+            
+            for(var i=0;i<7;i++)
+            {
+                x[i] = y;
+            }
+
+            BroadcastTime w = new BroadcastTime(z, x, x0);
+
+            for (var i = 0; i < 7; i++)
+            {
+                str += w.StartTime[i].ToString() + " <----> " + w.EndTime[i].ToString() + "\n";
+            }
+
+            str += w.StartCycleTime.ToString();
+
+
+            System.Windows.MessageBox.Show(str);
+
+
+        }*/
+
         public int switchChannel(int channelNumber, int incOrDec)
         {
             var c = chanList;
