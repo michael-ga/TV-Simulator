@@ -1,6 +1,7 @@
 ﻿using MediaClasses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace HelperClasses
@@ -86,7 +87,7 @@ namespace HelperClasses
                 if (t.getFirstGenre().Equals(genre))
                 {
                     media.Add((Media)t);
-                    durTime = t.getDurationTimespan();    
+                    durTime = t.getDurationTimespan();
                     sum += durTime.TotalSeconds;
                     durationList.Add(sum);
                 }
@@ -114,10 +115,10 @@ namespace HelperClasses
 
         public void bs(DateTime startDate)
         {
-            Dictionary<DateTime, string> board = new Dictionary<DateTime, string>();
+            Dictionary<DateTime, Media> board = new Dictionary<DateTime, Media>();
             int numOfDays = 7;
-            var startTime = db.getTimes().StartTime;
-            var endTime = db.getTimes().EndTime;
+            var startTime = db.getTimes().StartTime;        // init lists from DB
+            var endTime = db.getTimes().EndTime;            // init lists from DB
             DateTime date = startDate;
             DateTime temp;
 
@@ -127,17 +128,21 @@ namespace HelperClasses
             var k = 0;
             var mediaLength = media.Count;
 
+            //create live broadcast media
 
-            while(k < numOfDays || j < mediaLength)
+            while (k < numOfDays || j < mediaLength)
             {
                 i = (int)date.DayOfWeek;
+
                 DateTime finalHourDate = new DateTime(date.Year, date.Month, date.Day);
-                finalHourDate = finalHourDate.AddHours(endTime[i]);
+                finalHourDate = finalHourDate.AddHours(endTime[i]);     //end time in one day
+
                 mediaDuration = media[j % mediaLength].getDurationTimespan();
-                temp = date.Add(mediaDuration);
-                if(DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
+                temp = date.Add(mediaDuration);                     // current date + media duration
+
+                if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
                 {
-                    board.Add(date, media[j % mediaLength].Name);
+                    board.Add(date, media[j % mediaLength]);
                     date = temp;
                     j++;
                 }
@@ -145,11 +150,53 @@ namespace HelperClasses
                 {
                     temp = date.AddDays(1);
                     i = (int)temp.DayOfWeek;
-                    date = new DateTime(temp.Year, temp.Month, temp.Day , startTime[i], 0, 0);
+                    date = new DateTime(temp.Year, temp.Month, temp.Day, startTime[i], 0, 0);
                     k++;
                 }
             }
-        }
+            //create repeat broadcast media
 
+            i = j = k = 0;
+            date = startDate;
+            // set the last date for adding media until this date 
+            var fd = board.Keys.Last().AddDays(1);          //day after final day 
+            var stfs = startTime[(int)fd.DayOfWeek];        //start time of final day
+            DateTime finalDate = new DateTime(fd.Year, fd.Month, fd.Day, stfs, 0, 0);
+
+            Dictionary<DateTime, Media> tempList = new Dictionary<DateTime, Media>();
+
+            while (DateTime.Compare(date, finalDate) < 0)
+            {
+                for (i = 0; i < board.Count; i++)
+                {
+                    var day = board.Keys.ElementAt(i).Day;
+                    var month = board.Keys.ElementAt(i).Month;
+                    var year = board.Keys.ElementAt(i).Year;
+                    if (date.Year == year && date.Month == month && date.Day == day)
+                        tempList.Add(board.Keys.ElementAt(i), board.Values.ElementAt(i));
+                }
+                temp = tempList.Keys.Last().Add(tempList.Values.Last().getDurationTimespan());      // start time to add repeat media
+                
+                DateTime startHourDate = new DateTime(date.Year, date.Month, date.Day);
+                startHourDate = startHourDate.AddDays(1);
+                startHourDate = startHourDate.AddHours(startTime[(int)startHourDate.DayOfWeek]);     //start time in one day
+
+                while(DateTime.Compare(temp, startHourDate) < 0)     //if temp is earlier than startHourDate
+                {
+                    board.Add(temp, tempList.ElementAt(j % tempList.Count).Value);
+                    var mediaDur = tempList.ElementAt(j % tempList.Count).Value.getDurationTimespan();
+                    temp = temp.Add(mediaDur);
+                    j++;
+                }
+                tempList.Clear();
+                date = startHourDate;
+                j = 0;
+            }
+
+            var l = board.OrderBy(key => key.Key);
+            board = l.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
+
+        }
     }
 }
+

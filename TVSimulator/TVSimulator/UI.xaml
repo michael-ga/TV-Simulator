@@ -15,7 +15,7 @@
         <Cef1:CefYoutubeController x:Name="youtubePlayer"  OnVideoEnded="youtubePlayer_videoEnded" VideoId="{Binding Text, ElementName=YtbTxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,-40"  Visibility="Hidden"/>
         <TextBox x:Name="YtbTxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Hidden" />
 
-        <Grid x:Name="menuBar" Margin="5,0,0.6,0" Height="161" VerticalAlignment="Bottom" >
+        <Grid x:Name="menuBar" Margin="0,0,1,-2" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="120*"/>
                 <RowDefinition Height="41*"/>

@@ -20,6 +20,7 @@ namespace HelperClasses
         public const string MUSIC_COLLECTION = "music";
         public const string YOUTUBE_CHANNEL_COLLECTION = "youtube_channel";
         public const string YOUTUBE_VIDEO_COLLECTION = "youtube_video";
+        public const string YOUTUBE_PLAYLIST_CHANNEL_COLLECTION = "youtube_playlist";
         public const string CHANNEL_COLLECTION = "channel";
         public const string TIME_COLLECTION = "times";
         //times constants 
