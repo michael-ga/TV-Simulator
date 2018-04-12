@@ -6,19 +6,18 @@ namespace MediaClasses
 {
     public class MediaSchedule
     {
-        private Dictionary<DateTime, string> boardSchedule;
-    
+        private Dictionary<DateTime, Media> boardSchedule;
         private Media playNow;   //which media played right 
         private Media playNext;  // optional
 
         public MediaSchedule() { }
 
-        public MediaSchedule(Dictionary<DateTime, string> boardSchedule)
+        public MediaSchedule(Dictionary<DateTime, Media> boardSchedule)
         {
             this.boardSchedule = boardSchedule;
         }
 
-        public Dictionary<DateTime, string> BoardSchedule { get => boardSchedule; set => boardSchedule = value; }
+        public Dictionary<DateTime, Media> BoardSchedule { get => boardSchedule; set => boardSchedule = value; }
         public Media PlayNow { get => playNow; set => playNow = value; }
         public Media PlayNext { get => playNext; set => playNext = value; }
 
