@@ -18,8 +18,10 @@ namespace HelperClasses
         private string youtubeChannelID;
         private int youtubeVideoIndex = 0;
         private List<YoutubeVideo> youtubeVideoList;
-        private MediaSchedule schedule;
+        private Dictionary<DateTime, Media> boardSchedule;
         private int id;
+
+        public const int PROMO_TIME = 7;
 
         public List<Media> Media { get => media; set => media = value; }
         public List<double> DurationList { get => durationList; set => durationList = value; }
@@ -30,7 +32,8 @@ namespace HelperClasses
         public int YoutubeVideoIndex { get => youtubeVideoIndex; set => youtubeVideoIndex = value; }
         public List<YoutubeVideo> YoutubeVideoList { get => youtubeVideoList; set => youtubeVideoList = value; }
         public int Id { get => id; set => id = value; }
-        public MediaSchedule Schedule { get => schedule; set => schedule = value; }
+        public Dictionary<DateTime, Media> BoardSchedule { get => boardSchedule; set => boardSchedule = value; }
+
 
 
         //private /*MediaSchedule*/ schedule;
@@ -149,6 +152,7 @@ namespace HelperClasses
                 {
                     board.Add(date, media[j % mediaLength]);
                     date = temp;
+                    date = date.AddSeconds(PROMO_TIME);
                     j++;
                 }
                 else
@@ -161,8 +165,7 @@ namespace HelperClasses
             }
 
             board = createRepeatMedia(startDate, board,startTime,endTime);
-            MediaSchedule newBoard = new MediaSchedule(board);
-            schedule = newBoard;
+            BoardSchedule = board;
         }
 
 
@@ -205,6 +208,7 @@ namespace HelperClasses
                 {
                     board.Add(date, listOfSeries[curTvS].ElementAt(capOfLists[curTvS]));
                     date = temp;
+                    date = date.AddSeconds(PROMO_TIME);
                     capOfLists[curTvS] -= 1;
                     g++;
                 }
@@ -218,8 +222,7 @@ namespace HelperClasses
             }
             board = createRepeatMedia(startDate, board, startTime, endTime);
 
-            MediaSchedule newBoard = new MediaSchedule(board);
-            schedule = newBoard;
+            BoardSchedule = board;
         }
 
         private Dictionary<DateTime, Media> createRepeatMedia(DateTime startDate, Dictionary<DateTime, Media> board, int[] startTime, int[] endTime)
@@ -258,6 +261,7 @@ namespace HelperClasses
                     board.Add(temp, tempList.ElementAt(j % tempList.Count).Value);
                     var mediaDur = tempList.ElementAt(j % tempList.Count).Value.getDurationTimespan();
                     temp = temp.Add(mediaDur);
+                    temp = temp.AddSeconds(PROMO_TIME);
                     j++;
                 }
                 tempList.Clear();

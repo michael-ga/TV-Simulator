@@ -63,9 +63,7 @@ namespace TVSimulator
                 var chan = new Channel(channelNumber, Constants.MOVIE, gMovie.ElementAt(i));
                 localChannels.Add(chan);
                 localChannels.ElementAt(channelNumber - 1).addMedia();
-      //          localChannels.ElementAt(channelNumber - 1).bs(getDateCycle());
-
-                localChannels.ElementAt(channelNumber-1).buildSchedule();
+                localChannels.ElementAt(channelNumber - 1).bs(getDateCycle());
                 db.insertChannel(chan);
                 channelNumber++;
             }
@@ -81,8 +79,6 @@ namespace TVSimulator
                 localChannels.Add(chan);
                 localChannels.ElementAt(channelNumber - 1).addMedia();
                 localChannels.ElementAt(channelNumber - 1).bTVs(getDateCycle());
-
-                localChannels.ElementAt(channelNumber-1).buildSchedule();
                 db.insertChannel(chan);
                 channelNumber++;
             }

@@ -241,6 +241,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\promo.mp4" />
     <Resource Include="Resources\setTimeView.jpg" />
     <Resource Include="Resources\fileImporterScreen.PNG" />
     <Resource Include="Resources\volume.png" />
