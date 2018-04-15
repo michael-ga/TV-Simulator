@@ -425,20 +425,19 @@ namespace TVSimulator
         {
             if (!promoIsPlay)
             {
+                promoIsPlay = true;
                 string dir = Directory.GetCurrentDirectory();
                 dir = dir.Substring(0, dir.IndexOf("TVSimulator")) + "TVSimulator\\TVSimulator\\Resources\\promo.mp4";
                 mediaPlayer.Source = new Uri(dir);
                 mediaPlayer.Play();
-                promoIsPlay = true;
 
             }
             else
             {
+                promoIsPlay = false;
                 var index = parseChanneltoIndex(curChannelNum);
                 var c0 = chanList[index];
                 playFromChannel(c0);
-                promoIsPlay = false;
-
             }
 
             /*var t = new Task(() =>
