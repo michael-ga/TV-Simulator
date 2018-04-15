@@ -94,23 +94,31 @@ namespace YoutubeImporter
 
         private void removeChannelBtn_Click(object sender, RoutedEventArgs e)
         {
-           
-            if(type == (int)SelectionType.channel)
+
+            try
             {
-                bool res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currChannelSelection.Path);
-                if (res)
-                    Channels = db.getYoutubeChannelList();
-                else
-                    Debug.WriteLine("nothing happened");
+                if (type == (int)SelectionType.channel)
+                {
+                    bool res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currChannelSelection.Path);
+                    if (res)
+                        Channels = db.getYoutubeChannelList();
+                    else
+                        Debug.WriteLine("nothing happened");
+                }
+                // remove playlist channels related
+                if (type == (int)SelectionType.playlistChannel)
+                {
+                    bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
+                    if (res1)
+                        PlaylistChannels = db.getPlaylistChannels();
+                    else
+                        Debug.WriteLine("nothing happened");
+                }
             }
-            // remove playlist channels related
-            if (type == (int)SelectionType.playlistChannel)
+            catch (Exception)
             {
-                bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
-                if (res1)
-                    PlaylistChannels = db.getPlaylistChannels();
-                else
-                    Debug.WriteLine("nothing happened");
+
+                Debug.WriteLine("remove failed");
             }
         }
 
@@ -144,6 +152,7 @@ namespace YoutubeImporter
         }
 
 
+
         private void showPlaylistClick(Object sender, RoutedEventArgs e)
         {
             //if (type == (int)SelectionType.channel && currChannelSelection != null)
@@ -167,8 +176,8 @@ namespace YoutubeImporter
 
         private void syncBtn_Click(object sender, RoutedEventArgs e)
         {
-            //var t = new Task(()=> searcher.syncYoutubeChannels());
-            var t = new Task(() => searcher.syncYoutubePlaylistChannels());
+            var t = new Task(() => searcher.syncYoutubeChannels());
+            //var t = new Task(() => searcher.syncYoutubePlaylistChannels());
             //t.ContinueWith(a => searcher.syncYoutubePlaylistChannels());
             t.Start();
         }

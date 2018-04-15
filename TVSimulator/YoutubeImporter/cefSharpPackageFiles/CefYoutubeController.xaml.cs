@@ -2,6 +2,7 @@
 using MyToolkit.Multimedia;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -69,13 +70,29 @@ namespace YoutubeImporter.Cef
             set { SetValue(VideoIdProperty, value); }
         }
 
+        public string StartSec
+        {
+            get { return (string)GetValue(VideoStartSecProperty); }
+            set { SetValue(VideoStartSecProperty, value); }
+        }
+
         public static readonly DependencyProperty VideoIdProperty =
             DependencyProperty.Register("VideoId", typeof(string), typeof(CefYoutubeController), new PropertyMetadata("", VideoIdChanged));
+
+        public static readonly DependencyProperty VideoStartSecProperty =
+           DependencyProperty.Register("StartSec", typeof(string), typeof(CefYoutubeController), new PropertyMetadata("", VideoStartSecChanged));
+
 
         private static void VideoIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var playerController = (CefYoutubeController)d;
             playerController.SetVideoId((string)e.NewValue);
+        }
+
+        private static void VideoStartSecChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var playerController = (CefYoutubeController)d;
+            playerController.SetStartSec((string)e.NewValue);
         }
 
         public int Volume
@@ -294,9 +311,32 @@ namespace YoutubeImporter.Cef
             }
             if (IsloadingDone())
             {
-                WebBrowser.ExecuteScriptAsync("setVideoId", videoId);
+                try
+                {
+
+                    if (int.Parse(StartSec) != 0)// try to parse to int, if fail play from default position
+                        WebBrowser.ExecuteScriptAsync("setVideoId", videoId, StartSec);
+                   
+                }
+                catch (Exception)               // in case start sec is empty or not A number 
+                {
+                    WebBrowser.ExecuteScriptAsync("setVideoId", videoId, 0);
+                    throw;
+                }
             }
         }
+
+        private void SetStartSec(string videoStartSec)
+        {
+            if (haventRun)
+                haventRun = false;
+            if (IsloadingDone())
+            {
+                WebBrowser.ExecuteScriptAsync("setVideoId", VideoId, videoStartSec);
+            }
+
+        }
+
 
         private void SetAutoPlay(bool autoPlay)
         {

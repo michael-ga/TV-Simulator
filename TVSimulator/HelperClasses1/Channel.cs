@@ -18,10 +18,7 @@ namespace HelperClasses
         private string youtubeChannelID;
         private int youtubeVideoIndex = 0;
         private List<YoutubeVideo> youtubeVideoList;
-        private Dictionary<DateTime, Media> boardSchedule;
         private int id;
-
-        public const int PROMO_TIME = 7;
 
         public List<Media> Media { get => media; set => media = value; }
         public List<double> DurationList { get => durationList; set => durationList = value; }
@@ -32,8 +29,6 @@ namespace HelperClasses
         public int YoutubeVideoIndex { get => youtubeVideoIndex; set => youtubeVideoIndex = value; }
         public List<YoutubeVideo> YoutubeVideoList { get => youtubeVideoList; set => youtubeVideoList = value; }
         public int Id { get => id; set => id = value; }
-        public Dictionary<DateTime, Media> BoardSchedule { get => boardSchedule; set => boardSchedule = value; }
-
 
 
         //private /*MediaSchedule*/ schedule;
@@ -115,9 +110,6 @@ namespace HelperClasses
                 foreach (TvSeries t in tvs)
                     if (t.getFirstGenre().Equals(genre))
                         media.Add((Media)t);
-
-                /*var c = createFakeMedia();
-                media.AddRange(c);*/
             }
         }
 
@@ -152,7 +144,6 @@ namespace HelperClasses
                 {
                     board.Add(date, media[j % mediaLength]);
                     date = temp;
-                    date = date.AddSeconds(PROMO_TIME);
                     j++;
                 }
                 else
@@ -163,75 +154,10 @@ namespace HelperClasses
                     k++;
                 }
             }
-
-            board = createRepeatMedia(startDate, board,startTime,endTime);
-            BoardSchedule = board;
-        }
-
-
-        public void bTVs(DateTime startDate)
-        {
-            Dictionary<DateTime, Media> board = new Dictionary<DateTime, Media>();
-            int numOfDays = 7;
-            var startTime = db.getTimes().StartTime;        // init lists from DB
-            var endTime = db.getTimes().EndTime;            // init lists from DB
-            DateTime date = startDate;
-            DateTime temp;
-            TimeSpan mediaDuration;
-
-            var listOfSeries = sortTvSeries();                          // list of all tv series sorted by seasons and episodes 
-            List<int> capOfLists = createCapList(listOfSeries);  // list of capacities of tv seiries lists
-            int longestSeries = getMostLength(listOfSeries);            // number of episodes of the longest tv series
-            int mediaLength = listOfSeries.Count();
-
-            var i = 0;  // run over days
-            var j = 0;  // run all over the movies
-            var k = 0;  //count 7 days at least
-
-            int g = 0;
-
-            while (k < numOfDays || g < longestSeries)
-            {
-                i = (int)date.DayOfWeek;
-
-                DateTime finalHourDate = new DateTime(date.Year, date.Month, date.Day);
-                finalHourDate = finalHourDate.AddHours(endTime[i]);     //end time in one day
-
-                int curTvS = (g / 2) % mediaLength;
-                if (capOfLists[curTvS] < 0)
-                    capOfLists[curTvS] = listOfSeries[curTvS].Count() - 1;
-
-                mediaDuration = listOfSeries[curTvS].ElementAt(capOfLists[curTvS]).getDurationTimespan();
-                temp = date.Add(mediaDuration);                     // current date + media duration
-
-                if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
-                {
-                    board.Add(date, listOfSeries[curTvS].ElementAt(capOfLists[curTvS]));
-                    date = temp;
-                    date = date.AddSeconds(PROMO_TIME);
-                    capOfLists[curTvS] -= 1;
-                    g++;
-                }
-                else
-                {
-                    temp = date.AddDays(1);
-                    i = (int)temp.DayOfWeek;
-                    date = new DateTime(temp.Year, temp.Month, temp.Day, startTime[i], 0, 0);
-                    k++;
-                }
-            }
-            board = createRepeatMedia(startDate, board, startTime, endTime);
-
-            BoardSchedule = board;
-        }
-
-        private Dictionary<DateTime, Media> createRepeatMedia(DateTime startDate, Dictionary<DateTime, Media> board, int[] startTime, int[] endTime)
-        {
             //create repeat broadcast media
-            var i = 0;
-            var j = 0;
-            DateTime date = startDate;
-            DateTime temp;
+
+            i = j = k = 0;
+            date = startDate;
             // set the last date for adding media until this date 
             var fd = board.Keys.Last().AddDays(1);          //day after final day 
             var stfs = startTime[(int)fd.DayOfWeek];        //start time of final day
@@ -246,22 +172,20 @@ namespace HelperClasses
                     var day = board.Keys.ElementAt(i).Day;
                     var month = board.Keys.ElementAt(i).Month;
                     var year = board.Keys.ElementAt(i).Year;
-                    var hour = board.Keys.ElementAt(i).Hour;
-                    if (date.Year == year && date.Month == month && date.Day == day && date.Hour <= hour )
+                    if (date.Year == year && date.Month == month && date.Day == day)
                         tempList.Add(board.Keys.ElementAt(i), board.Values.ElementAt(i));
                 }
                 temp = tempList.Keys.Last().Add(tempList.Values.Last().getDurationTimespan());      // start time to add repeat media
-
+                
                 DateTime startHourDate = new DateTime(date.Year, date.Month, date.Day);
                 startHourDate = startHourDate.AddDays(1);
                 startHourDate = startHourDate.AddHours(startTime[(int)startHourDate.DayOfWeek]);     //start time in one day
 
-                while (DateTime.Compare(temp, startHourDate) < 0)     //if temp is earlier than startHourDate
+                while(DateTime.Compare(temp, startHourDate) < 0)     //if temp is earlier than startHourDate
                 {
                     board.Add(temp, tempList.ElementAt(j % tempList.Count).Value);
                     var mediaDur = tempList.ElementAt(j % tempList.Count).Value.getDurationTimespan();
                     temp = temp.Add(mediaDur);
-                    temp = temp.AddSeconds(PROMO_TIME);
                     j++;
                 }
                 tempList.Clear();
@@ -271,104 +195,7 @@ namespace HelperClasses
 
             var l = board.OrderBy(key => key.Key);
             board = l.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
-            return board;
-        }
 
-
-        private List<int> createCapList(List<List<TvSeries>> listOfSeries)
-        {
-            List<int> cap = new List<int>();
-            for (var i = 0; i < listOfSeries.Count(); i++)
-                cap.Add(listOfSeries[i].Count()-1);
-            return cap;
-        }
-
-        private int getMostLength(List<List<TvSeries>> listOfSeries) // dont try to understand that alone..
-        {
-            int noe = 0;    //num of episodes
-            int index = -1;
-            for (var i = 0; i < listOfSeries.Count(); i++)
-                if (noe <= listOfSeries[i].Count())
-                {
-                    noe = listOfSeries[i].Count();
-                    index = i;
-                }
-
-            int len = listOfSeries.Count();
-            int del,x;
-
-            //maximum of episodes in the board is (neo/2)*length of the tv series lists *2 
-
-            if (noe % 2 == 0)
-            {
-                del = noe / 2;
-                x = 2 * len * del - (len * 2 - (2 * index+1)) + 1;
-            }
-            else
-            {
-                del = (noe + 1) / 2;
-                x = 2 * len * del - (len * 2 - (2 * index+1));
-            }
-
-            return x;
-        }
-
-        private List<List<TvSeries>> sortTvSeries()
-        {
-            List<Media> SortedList = media.OrderBy(o => o.Name).ToList();
-            var name = SortedList[0].Name;
-            List<List<TvSeries>> all = new List<List<TvSeries>>();
-            var first = new List<TvSeries>();
-            first.Add(SortedList[0] as TvSeries);
-            all.Add(first);
-
-            for(var i=1;i<SortedList.Count();i++)       // add each series to one list
-            {
-                if (SortedList[i].Name.Equals(name))
-                    all.Last().Add(SortedList[i] as TvSeries);
-                else
-                {
-                    name = SortedList[i].Name;
-                    var newTvSeries = new List<TvSeries>();
-                    newTvSeries.Add(SortedList[i] as TvSeries);
-                    all.Add(newTvSeries);
-                }
-            }
-
-            for(var j=0;j<all.Count;j++)    //sorted by seasons and episodes - order by desc
-            {
-                all[j] = all[j].OrderByDescending(o => int.Parse(o.Episode)).ToList();
-                all[j] = all[j].OrderByDescending(o => int.Parse(o.Season)).ToList();
-            }
-            return all;
-        }
-        public List<Media> createFakeMedia()
-        {
-            Random rnd = new Random();
-            var numOfTvSeries = 5;
-            List<Media> tv = new List<Media>();
-            string tname = "a";
-            TimeSpan dur = new TimeSpan(0, 30, 00);
-            for (var i=0;i<numOfTvSeries;i++)
-            {
-                int numOfEpisodes = rnd.Next(10, 24);
-                for (var j = 0; j < numOfEpisodes; j++)
-                {
-                    if (i % 5 == 0)
-                        tname = "b";
-                    if (i % 5 == 1)
-                        tname = "t";
-                    if (i % 5 == 2)
-                        tname = "c";
-                    if (i % 5 == 3)
-                        tname = "far";
-                    if (i % 5 == 4)
-                        tname = "a";
-                    tv.Add(new TvSeries("somePath", tname, dur.ToString(), "Action", "01", "" + (j+1)));
-                }
-            }
-
-            return tv;
         }
     }
 }

@@ -53,13 +53,26 @@ function setVolume(volume){
 	player.setVolume(volume);
 }
 
-function setVideoId(videoId){
-	if(autoPlay){
-		player.loadVideoById(videoId,0,quality);
+function setVideoId(videoId, startPos) {
+    if (autoPlay) {
+        alert(startPos + " " + videoId);
+        player.pauseVideo();
+        player.loadVideoById(videoId, startPos);
+        player.play();
 	}
 	else{
-		player.cueVideoById(videoId,0,quality);
+		player.cueVideoById(videoId,startPos);
 	}
+}
+
+function setVideoFromPos(videoId, startSecond) {
+    if (autoPlay) {
+        player.loadVideoById(videoId, startSecond, quality);
+    }
+    else {
+        player.cueVideoById(videoId, startSecond, quality);
+    }
+    player.playVideo();
 }
 
 function setQuality(quality){
