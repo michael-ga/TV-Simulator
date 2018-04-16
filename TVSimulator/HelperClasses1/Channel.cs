@@ -113,7 +113,7 @@ namespace HelperClasses
             }
         }
 
-        public void bs(DateTime startDate)
+        public void bs(DateTime startDate)          // michael hoo michael 
         {
             Dictionary<DateTime, Media> board = new Dictionary<DateTime, Media>();
             int numOfDays = 7;

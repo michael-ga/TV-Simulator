@@ -2,8 +2,11 @@
 using MediaClasses;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -19,6 +22,7 @@ namespace TVSimulator
         private bool isLocal = true;
         private FileImporter fileImporter;
         private bool infoPressed = true;
+        private bool promoIsPlay = false;
         public event EventHandler Tick;
 
         public DateTime timeNow;
@@ -27,6 +31,13 @@ namespace TVSimulator
         private List<Channel> chanList;
         private Channel currentChannel;
         public int curChannelNum = 1;
+        private List<int> indBoard; // indexes in all boards to get results faster - roy
+        private Media playNow;
+        private Media playNext;
+
+        public Media PlayNow { get => playNow; set => playNow = value; }
+        public Media PlayNext { get => playNext; set => playNext = value; }
+
         #endregion fields
 
         public MainWindow()
@@ -37,9 +48,39 @@ namespace TVSimulator
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
             chanList = db.getChannelList();
-           // if (chanList.Count() == 0 || chanList == null)
+            if (chanList.Count() == 0 || chanList == null)
                 cb.buildLocalChannels();
-            cb.buildYouTubeChannels();
+            indBoard = getIndexes();
+        }
+
+        private List<int> getIndexes()
+        {
+            List<int> a = new List<int>();
+            int i = 0;
+            int j = 0;
+
+            DateTime thisDay = DateTime.Now;
+            thisDay = thisDay.AddHours(-thisDay.Hour);
+            thisDay = thisDay.AddMinutes(-thisDay.Minute);
+            thisDay = thisDay.AddSeconds(-thisDay.Second);
+            thisDay = thisDay.AddMilliseconds(-thisDay.Millisecond);
+
+            while (i<chanList.Count())
+            {
+                var temp = chanList[i].BoardSchedule.ElementAt(j).Key;
+                if (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than finalhourDate
+                    j++;
+                else
+                {
+                    i++;
+                    if (j == 0)
+                        a.Add(0);
+                    else
+                        a.Add(j - 1);
+                    j = 0;
+                }
+            }
+            return a;
         }
 
         #region button listeners
@@ -61,7 +102,7 @@ namespace TVSimulator
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
-
+            mediaPlayer_MediaEnded(mediaPlayer, new RoutedEventArgs());
         }
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
@@ -136,10 +177,9 @@ namespace TVSimulator
         {
             try
             {
-                currentChannel.YoutubeVideoList = db.getYoutubeVideosfromChannel(curChannel.YoutubeChannelID);
-                string tempVideoInfo = "o0hfZuCjny4" + "|" + "25";
-
-                YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[2].Path;//currentChannel.YoutubeVideoList[3].Path;
+                var searcher = new YoutubeImporter.Search();
+                currentChannel.YoutubeVideoList = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
+                YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path;
                 lblMediaName.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
                 lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
                 lblStartTime.Content = "";
@@ -154,7 +194,6 @@ namespace TVSimulator
                 System.Windows.MessageBox.Show("Connection Error: please check your internter connction");
             }
         }
-
         
         #endregion
 
@@ -180,22 +219,8 @@ namespace TVSimulator
             }     
         }
 
-
         // event handler raised when data of enterred pathes is loaded on fileImporter.
-        private void onVideoRecievedHandler(Object o, List<Media> arg)
-        {
-            //Window_Loaded(this, new RoutedEventArgs());
-            //if (arg.ElementAt(x) is Music)
-            //    musicImage.Visibility = Visibility.Visible;
-            //else
-            //    musicImage.Visibility = Visibility.Hidden;
-            //playVideoFromPosition(arg.ElementAt(x).Path, new TimeSpan(0,0,0)); 
-            //Random r = new Random();
-            //int x = r.Next(arg.Count);
-            //folderPathTextbox.Text = arg.ElementAt(x).Name;     //check the name of media
-        }
-
-
+        private void onVideoRecievedHandler(Object o, List<Media> arg) { }
 
         //for get the mouse point
         [DllImport("user32.dll")]
@@ -255,107 +280,105 @@ namespace TVSimulator
 
         private void playLocalChannel(Channel curChannel)
         {
-            if (curChannel == null || curChannel.DurationList.Count < 1)
+            if (curChannel == null)
             {
                 System.Windows.MessageBox.Show("Error playing channel");
                 return;
             }
-            var durLength = curChannel.DurationList.Count();
-            var totalDur = curChannel.DurationList.ElementAt(durLength - 1);
 
-            var a = DateTime.Parse(Constants.START_CYCLE);
-            var b = DateTime.Now;
-            var diff = ((b.Subtract(a)).TotalSeconds) % totalDur;
-
-            for (var i = 0; i < curChannel.DurationList.Count(); i++)
+            DateTime timeNow = DateTime.Now;
+            int i = indBoard[parseChanneltoIndex(curChannelNum)];
+            var temp = curChannel.BoardSchedule.ElementAt(i).Key;
+        
+            while (DateTime.Compare(temp, timeNow) < 0) //if temp is earlier than timeNow
             {
-                if (diff < curChannel.DurationList.ElementAt(i))
-                {
-                    TimeSpan t;
-                    int sec,min;
-                    if (i == 0)
-                    {
-                        sec = (int)diff;
-                        t = new TimeSpan(0, 0, sec);
-                        playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
-                        min = (int)t.TotalMinutes;
-                        changeLabels(curChannel, sec, i);
-                        return;
-                    }
-                    else
-                    {
-                        sec = (int)diff - (int)curChannel.DurationList.ElementAt(i - 1);
-                        t = new TimeSpan(0, 0, sec);
-                        playVideoFromPosition(curChannel.Media.ElementAt(i).Path, t);
-                        min = (int)t.TotalMinutes;
-                        changeLabels(curChannel, sec, i);
-                        return;
-                    }
-                }
+                i++;
+                temp = curChannel.BoardSchedule.ElementAt(i).Key;
             }
-        }
+            var sec = 0;
+            var dateShow = new DateTime();
+            if (i==0) // incase this time is earlier than the first show in the broad scedule
+            {
+                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
 
-        private void changeLabels(Channel c,int time,int mediaNum)
+                System.Windows.MessageBox.Show("the program will start tommorow acordiing to your views setting");
+                return;
+            }
+            else
+            {
+                playNow = curChannel.BoardSchedule.ElementAt(i-1).Value;
+                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
+                dateShow = curChannel.BoardSchedule.ElementAt(i - 1).Key;
+
+                var diff = (timeNow.Subtract(dateShow)).TotalSeconds;
+                sec = (int)diff;
+                var t = new TimeSpan(0, 0, sec);
+                playVideoFromPosition(playNow.Path, t);
+            }
+
+            TimeSpan dateShowTS = new TimeSpan(dateShow.Hour, dateShow.Minute, 0);
+
+            changeLabels(curChannel, dateShowTS,sec);
+
+        }
+        private void changeLabels(Channel c,TimeSpan startTime,int timeLeft)
         {
             lblChannelNumber.Content = c.ChannelNumber;
-            string strMediaName = c.Genre + " - " +c.Media.ElementAt(mediaNum).Name;
-            string broadCastNow = "Now: " + c.Media.ElementAt(mediaNum).Name;
-            string broadCastNext = "";
+            string strMediaName = c.Genre + " - " + playNow.Name;
+            string broadCastNow = "Now: " + playNow.Name;
+            string broadCastNext = "Next: " + playNext.Name;
 
-            if (mediaNum < c.Media.Count() - 1)
-                broadCastNext = "Next: " + c.Media.ElementAt(mediaNum + 1).Name;
-            else
-                broadCastNext = "Next: " + c.Media.ElementAt(0).Name;
-
-            if (c.TypeOfMedia.Equals(Constants.TVSERIES))
+            if(c.TypeOfMedia.Equals(Constants.TVSERIES))
             {
-                TvSeries tvNow = c.Media.ElementAt(mediaNum) as TvSeries;
+                TvSeries tvNow = playNow as TvSeries;
                 TvSeries tvNext;
                 strMediaName += " - Season " + tvNow.Season + " Episode " + tvNow.Episode;
                 broadCastNow += " - Season " + tvNow.Season + " Episode " + tvNow.Episode;
-                if (mediaNum < c.Media.Count() - 1)
-                    tvNext = c.Media.ElementAt(mediaNum + 1) as TvSeries;
-                else
-                    tvNext = c.Media.ElementAt(0) as TvSeries;
 
+                tvNext = playNext as TvSeries;
                 broadCastNext += " - Season " + tvNext.Season + " Episode " + tvNext.Episode;
             }
             lblMediaName.Content = strMediaName;
             lblBroadcastNow.Content = broadCastNow;
             lblBroadcastNext.Content = broadCastNext;
+
+            //change times labels 
+            var et = startTime.Add(playNow.getDurationTimespan());
+            lblStartTime.Content = timesToString(startTime.Hours, startTime.Minutes);
+            lblEndTime.Content = timesToString(et.Hours, et.Minutes);
+
+            mediaProgressBar.Maximum = (int)playNow.getDurationTimespan().TotalSeconds * 60;
+            mediaProgressBar.Value = timeLeft * 60;
             
-
-            //change times labels
-            var b = DateTime.Now;
-            var bbb = b.AddSeconds(time * (-1));
-            lblStartTime.Content = (bbb).ToShortTimeString();
-            double x;
-            if (mediaNum != 0)
-            {
-                x = c.DurationList.ElementAt(mediaNum) - c.DurationList.ElementAt(mediaNum - 1) - time;
-                mediaProgressBar.Maximum = (c.DurationList.ElementAt(mediaNum) - c.DurationList.ElementAt(mediaNum - 1)) * 60;
-            }
-            else
-            {
-                mediaProgressBar.Maximum = c.DurationList.ElementAt(mediaNum) * 60;
-                x = c.DurationList.ElementAt(mediaNum) - time;
-            }
-            mediaProgressBar.Value = time * 60;
-        
-            lblEndTime.Content = b.AddSeconds(x).ToShortTimeString();
-
             //change Description
             if (c.TypeOfMedia.Equals(Constants.MOVIE))
             {
-                Movie m = c.Media.ElementAt(mediaNum) as Movie;
+                Movie m = playNow as Movie;
                 txtDescription.Text = m.Description + "  - IMDB Rating: " + m.ImdbRating;
             }
-            if(c.TypeOfMedia.Equals(Constants.TVSERIES))
+            if (c.TypeOfMedia.Equals(Constants.TVSERIES))
             {
-                TvSeries t = c.Media.ElementAt(mediaNum) as TvSeries;
-                txtDescription.Text = t.Description + "  - IMDB Rating: " + t.ImdbRating;
+                TvSeries t = playNow as TvSeries;
+                txtDescription.Text = t.Name +  " - Season " + t.Season + " Episode " + t.Episode + " - " + t.Description + "  - IMDB Rating: " + t.ImdbRating;
             }
-            
+        }
+
+        private String timesToString(int hours, int minutes)
+        {
+            var str = "";
+            if (hours < 10)
+                str += "0" + hours;
+            else
+                str += hours;
+
+            str += ":";
+
+            if (minutes < 10)
+                str += "0" + minutes;
+            else
+                str += minutes;
+
+            return str;   
         }
 
         private void tickevent(object sender,EventArgs e)
@@ -398,46 +421,44 @@ namespace TVSimulator
             playNextYoutubeVideo();
         }
 
-        private void test_Click(object sender, RoutedEventArgs e)
+        private void mediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
         {
-            youtubePlayer.StartSec = "30";
+            if (!promoIsPlay)
+            {
+                promoIsPlay = true;
+                string dir = Directory.GetCurrentDirectory();
+                dir = dir.Substring(0, dir.IndexOf("TVSimulator")) + "TVSimulator\\TVSimulator\\Resources\\promo.mp4";
+                mediaPlayer.Source = new Uri(dir);
+                mediaPlayer.Play();
+
+            }
+            else
+            {
+                promoIsPlay = false;
+                var index = parseChanneltoIndex(curChannelNum);
+                var c0 = chanList[index];
+                playFromChannel(c0);
+            }
+
+            /*var t = new Task(() =>
+            {
+                Thread.Sleep(7000);
+                
+            });
+            t.ContinueWith( ()=>
+            {
+                var index = parseChanneltoIndex(curChannelNum);
+                var c0 = chanList[index];
+                playFromChannel(c0);
+            }
+            t.Start();*/
         }
-
-        /*private void test_Click(object sender, RoutedEventArgs e)
-        {
-            TimeSpan[] x = new TimeSpan[7];
-            TimeSpan[] x0 = new TimeSpan[7];
-
-            TimeSpan y = new TimeSpan(8, 0, 0); 
-            var str = "";
-            DateTime z;
-            z = DateTime.Now;
-            
-            for(var i=0;i<7;i++)
-            {
-                x[i] = y;
-            }
-
-            BroadcastTime w = new BroadcastTime(z, x, x0);
-
-            for (var i = 0; i < 7; i++)
-            {
-                str += w.StartTime[i].ToString() + " <----> " + w.EndTime[i].ToString() + "\n";
-            }
-
-            str += w.StartCycleTime.ToString();
-
-
-            System.Windows.MessageBox.Show(str);
-
-
-        }*/
 
         public int switchChannel(int channelNumber, int incOrDec)
         {
             var c = chanList;
 
-            if(incOrDec == 1)
+            if(incOrDec == 1)   //increase channel
             {
                 if (channelNumber == c.Count())
                     return 1;
@@ -453,7 +474,7 @@ namespace TVSimulator
             }
         }
 
-
+     
         #endregion helper methods
     }
 }
