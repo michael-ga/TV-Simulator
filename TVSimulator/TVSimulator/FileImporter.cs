@@ -251,14 +251,9 @@ namespace TVSimulator
 
         private string[] getSeasonAndEpisode(string name)
         {
-            if (name.Contains("S0") || name.Contains("S1"))    //need to extend this 
+            if (name.Contains("S0"))    //need to extend this 
             {
-                int x;
-                if (name.Contains("S0"))
-                    x = name.IndexOf("S0")+1;
-                else
-                    x = name.IndexOf("S1") + 1;
-
+                int x = name.IndexOf("S0")+1;
                 int y = name.IndexOf("E")+1;
                 string season = name.Substring(x, 2);
                 string episode = name.Substring(y,2);
