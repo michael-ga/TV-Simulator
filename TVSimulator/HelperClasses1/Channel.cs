@@ -20,7 +20,7 @@ namespace HelperClasses
         private List<YoutubeVideo> youtubeVideoList;
         private Dictionary<DateTime, Media> boardSchedule;
         private int id;
-
+        // change
         public const int PROMO_TIME = 7;
 
         public List<Media> Media { get => media; set => media = value; }
