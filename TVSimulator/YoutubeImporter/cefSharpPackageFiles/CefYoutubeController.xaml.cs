@@ -142,7 +142,8 @@ namespace YoutubeImporter.Cef
                 case YoutubePlayerState.unstarted:
                     break;
                 case YoutubePlayerState.ended:
-                    p.Stop();
+                    //p.Stop();
+                   // p.Pause();
                     break;
                 case YoutubePlayerState.playing:
                     p.Start();
@@ -297,6 +298,7 @@ namespace YoutubeImporter.Cef
         {
             if (haventRun)
             {
+
                 haventRun = false;
             }
             if (IsloadingDone())
@@ -317,6 +319,7 @@ namespace YoutubeImporter.Cef
         {
             if (haventRun)
                 haventRun = false;
+            CheckForStartupSettings();
             if (IsloadingDone())
             {
                 WebBrowser.ExecuteScriptAsync("setVideoId", VideoId, videoStartSec);

@@ -89,13 +89,17 @@ namespace TVSimulator
 
         public void buildYouTubeChannels()
         {
-            var channels = db.getYoutubeChannelList();
+            var ytbChannels = db.getYoutubeChannelList();
             var channelNumber = localChannels.Count() + 1;
-            for (var i = 0; i < channels.Count(); i++)
+            for (var i = 0; i < ytbChannels.Count(); i++)
             {
                 var chan = new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, "");
                 localChannels.Add(chan);
-                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = channels[i].Path;
+                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = ytbChannels[i].Path;
+                //localChannels.ElementAt(channelNumber - 1).addMedia();
+                localChannels.ElementAt(channelNumber - 1).buildSchedule(); // add media here
+                localChannels.ElementAt(channelNumber - 1).bs(getDateCycle());  // build Dictionary schedule - Main algorithm
+
                 db.insertChannel(chan);
                 channelNumber++;
             }

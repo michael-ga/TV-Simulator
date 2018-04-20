@@ -54,12 +54,14 @@ function setVolume(volume){
 }
 
 function setVideoId(videoId,startPos){
-	if(autoPlay){
+    if (autoPlay) {
         player.loadVideoById(videoId, startPos);
         player.play();
 	}
     else {
-        player.cueVideoById(videoId, startPos);
+        player.loadVideoById(videoId, startPos);
+        player.play();
+
 	}
 }
 

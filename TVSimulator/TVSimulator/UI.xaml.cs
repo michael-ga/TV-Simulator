@@ -48,7 +48,7 @@ namespace TVSimulator
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
             chanList = db.getChannelList();
-            if (chanList.Count() == 0 || chanList == null)
+            //if (chanList.Count() == 0 || chanList == null)
                 cb.buildLocalChannels();
             indBoard = getIndexes();
         }
@@ -67,7 +67,7 @@ namespace TVSimulator
 
             while (i<chanList.Count())
             {
-                var temp = chanList[i].BoardSchedule.ElementAt(j).Key;
+                var temp = chanList[i].BoardSchedule.ElementAt(j).Key;// add null check!!!
                 if (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than finalhourDate
                     j++;
                 else
@@ -173,26 +173,65 @@ namespace TVSimulator
 
         #endregion Media player functions
         #region Youtube media player functions
-        private async void playYoutubeChannel(Channel curChannel)
+        private void playYoutubeChannel(Channel curChannel)
         {
-            try
+
+            if (curChannel == null)
             {
-                var searcher = new YoutubeImporter.Search();
-                currentChannel.YoutubeVideoList = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
-                YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path;
-                lblMediaName.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
-                lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
-                lblStartTime.Content = "";
-                lblEndTime.Content = "";
-                lblChannelNumber.Content = curChannel.ChannelNumber;
-                if (currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1] != null)
-                     lblBroadcastNext.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1].Name;
-                lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
+                System.Windows.MessageBox.Show("Error playing channel");
+                return;
             }
-            catch (Exception e)
+
+            DateTime timeNow = DateTime.Now;
+            int i = indBoard[parseChanneltoIndex(curChannelNum)];
+            var temp = curChannel.BoardSchedule.ElementAt(i).Key;
+
+            while (DateTime.Compare(temp, timeNow) < 0) //if temp is earlier than timeNow
             {
-                System.Windows.MessageBox.Show("Connection Error: please check your internter connction");
+                i++;
+                temp = curChannel.BoardSchedule.ElementAt(i).Key;
             }
+            var sec = 0;
+            var dateShow = new DateTime();
+            if (i == 0) // incase this time is earlier than the first show in the broad scedule
+            {
+                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
+
+                System.Windows.MessageBox.Show("the program will start tommorow acordiing to your views setting");
+                return;
+            }
+            else
+            {
+                playNow = curChannel.BoardSchedule.ElementAt(i - 1).Value;
+                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
+                dateShow = curChannel.BoardSchedule.ElementAt(i - 1).Key;
+
+                var diff = (timeNow.Subtract(dateShow)).TotalSeconds;
+                sec = (int)diff;
+                youtubePlayer.VideoId = playNow.Path;
+                youtubePlayer.StartSec = sec.ToString();
+
+            }
+
+            TimeSpan dateShowTS = new TimeSpan(dateShow.Hour, dateShow.Minute, 0);
+
+            changeLabels(curChannel, dateShowTS, sec);
+            //try
+            //{
+            //    YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path;
+            //    lblMediaName.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
+            //    lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
+            //    lblStartTime.Content = "";
+            //    lblEndTime.Content = "";
+            //    lblChannelNumber.Content = curChannel.ChannelNumber;
+            //    if (currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1] != null)
+            //         lblBroadcastNext.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1].Name;
+            //    lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
+            //}
+            //catch (Exception e)
+            //{
+            //    System.Windows.MessageBox.Show("Connection Error: please check your internter connction");
+            //}
         }
         
         #endregion
@@ -411,14 +450,17 @@ namespace TVSimulator
         }
         private void playNextYoutubeVideo()    
         {
-            Dispatcher.Invoke(new Action(() => youtubePlayer.AutoPlay = true));
-           currentChannel.YoutubeVideoIndex++;
-           Dispatcher.Invoke(new Action(() => YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path));    // play the next video from the list
+            playFromChannel(currentChannel);
         }
 
         private void youtubePlayer_videoEnded(object sender, EventArgs e)
         {
-            playNextYoutubeVideo();
+            Dispatcher.Invoke(()=>
+            {
+                Channel_Up_Click(new Object(), new RoutedEventArgs());
+                Channel_Down_Click(new Object(), new RoutedEventArgs());
+                //playFromChannel(currentChannel);
+            });
         }
 
         private void mediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
