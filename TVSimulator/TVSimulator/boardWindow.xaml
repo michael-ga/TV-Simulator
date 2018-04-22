@@ -1,0 +1,58 @@
+﻿<Window x:Class="TVSimulator.boardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TVSimulator"
+        mc:Ignorable="d"
+        Title="boardWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Height="500" Width="800">
+    <Window.Background>
+        <ImageBrush TileMode="FlipY"/>
+    </Window.Background>
+    <Grid Margin="-1,0,0.6,0.4">
+        <Grid.Background>
+            <ImageBrush ImageSource="Resources/boardschedule.jpg"/>
+        </Grid.Background>
+        <Label x:Name="channelName" Content="" Margin="294,51,294,379" FontSize="20" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" BorderBrush="Black" Width="206"/>
+        <Label x:Name="specific_day" Content="" Margin="253,107,256,323" FontSize="20" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" Width="285"/>
+        <Button x:Name="channelDown" Content="Button" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="461,52,0,0" VerticalAlignment="Top" Width="36" Height="30" Click="channelDown_Click"/>
+        <Button x:Name="dayDown" Content="Button" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="523,108,0,0" VerticalAlignment="Top" Width="36" Height="30" Click="dayDown_Click"/>
+        <Button x:Name="channelUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,52,464,0" Width="36" Height="30" VerticalAlignment="Top" Click="channelUp_Click"/>
+        <Button x:Name="dayUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,108,529,0" Width="36" Height="30" VerticalAlignment="Top" RenderTransformOrigin="-0.776,0.662" Click="dayUp_Click"/>
+        <DataGrid x:Name="board" Height="297" Margin="10,163,10,10" VerticalAlignment="Center" HorizontalAlignment="Center" Width="774" HorizontalContentAlignment="Center" BorderBrush="#FF004689" FontSize="15" VerticalContentAlignment="Center">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No" Binding="{Binding no}" Width="35" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="START TIME" Binding="{Binding startTime}" Width="100" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="END TIME" Binding="{Binding endTime}" Width="90" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="NAME" Binding="{Binding name}" Width="170" CanUserSort="False" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="HorizontalAlignment" Value="center" />
+                            <EventSetter Event="KeyDown" Handler="OnTextBoxKeyDown"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="DESCRIPTION" Binding="{Binding description}" Width="350" CanUserSort="False" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="HorizontalAlignment" Value="center" />
+                            <EventSetter Event="KeyDown" Handler="OnTextBoxKeyDown"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

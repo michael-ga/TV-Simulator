@@ -20,7 +20,7 @@ namespace HelperClasses
         private List<YoutubeVideo> youtubeVideoList;
         private Dictionary<DateTime, Media> boardSchedule;
         private int id;
-        // change
+
         public const int PROMO_TIME = 7;
 
         public List<Media> Media { get => media; set => media = value; }
@@ -64,8 +64,6 @@ namespace HelperClasses
                 buildMovieSchedule();
             if (typeOfMedia.Equals(Constants.TVSERIES))
                 buildTVSchedule();
-            if (typeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
-                buildYoutubeSchedule();
         }
 
         public void buildMovieSchedule()
@@ -100,24 +98,6 @@ namespace HelperClasses
                 }
         }
 
-
-        public void buildYoutubeSchedule()
-        {
-            var ytbVideos = db.getYoutubeVideosfromChannel(YoutubeChannelID);
-            double sum = 0;
-
-            var durTime = new TimeSpan();
-
-            foreach (YoutubeVideo ytbvid in ytbVideos)
-            {
-                media.Add(ytbvid);
-                durTime = ytbvid.getDurationTimespan();
-                sum += durTime.TotalSeconds;
-                durationList.Add(sum);
-            }
-        }
-
-
         public void addMedia()
         {
             if (typeOfMedia.Equals(Constants.MOVIE))
@@ -138,13 +118,6 @@ namespace HelperClasses
 
                 /*var c = createFakeMedia();
                 media.AddRange(c);*/
-            }
-            if(typeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
-            {
-                var ytbVideos = db.getYoutubeVideosfromChannel(YoutubeChannelID);
-                foreach(YoutubeVideo vid in ytbVideos)
-                    media.Add(vid);
-                
             }
         }
 

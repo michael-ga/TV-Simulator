@@ -49,11 +49,6 @@ namespace MediaClasses
 
         public TimeSpan getDurationTimespan()
         {
-            if (this is YoutubeVideo)
-            {
-                Double durVal = Double.Parse(duration);
-                return TimeSpan.FromSeconds(durVal);
-            }
             return TimeSpan.Parse(duration);
         }
     }

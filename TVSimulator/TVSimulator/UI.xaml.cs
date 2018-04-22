@@ -29,7 +29,7 @@ namespace TVSimulator
         public Database db;
         public ChannelsBuilder cb = new ChannelsBuilder();
         private List<Channel> chanList;
-        private Channel currentChannel;
+        public Channel currentChannel;
         public int curChannelNum = 1;
         private List<int> indBoard; // indexes in all boards to get results faster - roy
         private Media playNow;
@@ -37,6 +37,8 @@ namespace TVSimulator
 
         public Media PlayNow { get => playNow; set => playNow = value; }
         public Media PlayNext { get => playNext; set => playNext = value; }
+        public Channel CurrentChannel { get => currentChannel; }
+
 
         #endregion fields
 
@@ -48,41 +50,36 @@ namespace TVSimulator
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
             chanList = db.getChannelList();
-            //if (chanList.Count() == 0 || chanList == null)
+            if (chanList.Count() == 0 || chanList == null)
                 cb.buildLocalChannels();
-            indBoard = getIndexes();
+
+            indBoard = new List<int>();
+            for (var i = 0; i < chanList.Count();i++)
+                indBoard.Add(getIndexes(i , getToday()));
         }
 
-        private List<int> getIndexes()
+        public int getIndexes(int indexOfChannel , DateTime thisDay)
         {
-            List<int> a = new List<int>();
-            int i = 0;
             int j = 0;
 
-            DateTime thisDay = DateTime.Now;
-            thisDay = thisDay.AddHours(-thisDay.Hour);
-            thisDay = thisDay.AddMinutes(-thisDay.Minute);
-            thisDay = thisDay.AddSeconds(-thisDay.Second);
-            thisDay = thisDay.AddMilliseconds(-thisDay.Millisecond);
-
-            while (i<chanList.Count())
+            var temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
+            while (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than thisDay
             {
-                var temp = chanList[i].BoardSchedule.ElementAt(j).Key;// add null check!!!
-                if (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than finalhourDate
-                    j++;
-                else
-                {
-                    i++;
-                    if (j == 0)
-                        a.Add(0);
-                    else
-                        a.Add(j - 1);
-                    j = 0;
-                }
+                j++;
+                temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
             }
-            return a;
+            return j;
         }
 
+        private DateTime getToday()
+        {
+            DateTime today = DateTime.Now;
+            today = today.AddHours(-today.Hour);
+            today = today.AddMinutes(-today.Minute);
+            today = today.AddSeconds(-today.Second);
+            today = today.AddMilliseconds(-today.Millisecond);
+            return today;
+        }
         #region button listeners
 
         private void btnInfo_Click(object sender, RoutedEventArgs e)
@@ -102,7 +99,8 @@ namespace TVSimulator
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
-            mediaPlayer_MediaEnded(mediaPlayer, new RoutedEventArgs());
+            boardWindow mw = new boardWindow(this);
+            mw.Show();
         }
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
@@ -173,65 +171,26 @@ namespace TVSimulator
 
         #endregion Media player functions
         #region Youtube media player functions
-        private void playYoutubeChannel(Channel curChannel)
+        private async void playYoutubeChannel(Channel curChannel)
         {
-
-            if (curChannel == null)
+            try
             {
-                System.Windows.MessageBox.Show("Error playing channel");
-                return;
+                var searcher = new YoutubeImporter.Search();
+                CurrentChannel.YoutubeVideoList = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
+                YtbTxtVideoId.Text = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Path;
+                lblMediaName.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Name;
+                lblBroadcastNow.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Name;
+                lblStartTime.Content = "";
+                lblEndTime.Content = "";
+                lblChannelNumber.Content = curChannel.ChannelNumber;
+                if (CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex+1] != null)
+                     lblBroadcastNext.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex+1].Name;
+                lblBroadcastNow.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Name;
             }
-
-            DateTime timeNow = DateTime.Now;
-            int i = indBoard[parseChanneltoIndex(curChannelNum)];
-            var temp = curChannel.BoardSchedule.ElementAt(i).Key;
-
-            while (DateTime.Compare(temp, timeNow) < 0) //if temp is earlier than timeNow
+            catch (Exception e)
             {
-                i++;
-                temp = curChannel.BoardSchedule.ElementAt(i).Key;
+                System.Windows.MessageBox.Show("Connection Error: please check your internter connction");
             }
-            var sec = 0;
-            var dateShow = new DateTime();
-            if (i == 0) // incase this time is earlier than the first show in the broad scedule
-            {
-                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
-
-                System.Windows.MessageBox.Show("the program will start tommorow acordiing to your views setting");
-                return;
-            }
-            else
-            {
-                playNow = curChannel.BoardSchedule.ElementAt(i - 1).Value;
-                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
-                dateShow = curChannel.BoardSchedule.ElementAt(i - 1).Key;
-
-                var diff = (timeNow.Subtract(dateShow)).TotalSeconds;
-                sec = (int)diff;
-                youtubePlayer.VideoId = playNow.Path;
-                youtubePlayer.StartSec = sec.ToString();
-
-            }
-
-            TimeSpan dateShowTS = new TimeSpan(dateShow.Hour, dateShow.Minute, 0);
-
-            changeLabels(curChannel, dateShowTS, sec);
-            //try
-            //{
-            //    YtbTxtVideoId.Text = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Path;
-            //    lblMediaName.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
-            //    lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
-            //    lblStartTime.Content = "";
-            //    lblEndTime.Content = "";
-            //    lblChannelNumber.Content = curChannel.ChannelNumber;
-            //    if (currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1] != null)
-            //         lblBroadcastNext.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex+1].Name;
-            //    lblBroadcastNow.Content = currentChannel.YoutubeVideoList[currentChannel.YoutubeVideoIndex].Name;
-            //}
-            //catch (Exception e)
-            //{
-            //    System.Windows.MessageBox.Show("Connection Error: please check your internter connction");
-            //}
         }
         
         #endregion
@@ -332,7 +291,7 @@ namespace TVSimulator
             while (DateTime.Compare(temp, timeNow) < 0) //if temp is earlier than timeNow
             {
                 i++;
-                temp = curChannel.BoardSchedule.ElementAt(i).Key;
+                temp = curChannel.BoardSchedule.ElementAt(i).Key;       //TODO: need to check if boardschedule is over or not
             }
             var sec = 0;
             var dateShow = new DateTime();
@@ -429,7 +388,7 @@ namespace TVSimulator
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-
+            
         }
 
         public static Point GetMousePosition()
@@ -450,17 +409,14 @@ namespace TVSimulator
         }
         private void playNextYoutubeVideo()    
         {
-            playFromChannel(currentChannel);
+            Dispatcher.Invoke(new Action(() => youtubePlayer.AutoPlay = true));
+           CurrentChannel.YoutubeVideoIndex++;
+           Dispatcher.Invoke(new Action(() => YtbTxtVideoId.Text = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Path));    // play the next video from the list
         }
 
         private void youtubePlayer_videoEnded(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(()=>
-            {
-                Channel_Up_Click(new Object(), new RoutedEventArgs());
-                Channel_Down_Click(new Object(), new RoutedEventArgs());
-                //playFromChannel(currentChannel);
-            });
+            playNextYoutubeVideo();
         }
 
         private void mediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
@@ -481,19 +437,6 @@ namespace TVSimulator
                 var c0 = chanList[index];
                 playFromChannel(c0);
             }
-
-            /*var t = new Task(() =>
-            {
-                Thread.Sleep(7000);
-                
-            });
-            t.ContinueWith( ()=>
-            {
-                var index = parseChanneltoIndex(curChannelNum);
-                var c0 = chanList[index];
-                playFromChannel(c0);
-            }
-            t.Start();*/
         }
 
         public int switchChannel(int channelNumber, int incOrDec)

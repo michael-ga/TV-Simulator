@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="initWindow"  WindowStartupLocation="CenterScreen"  Height="500" Width="500" ResizeMode="NoResize">
     <Window.Background>
-        <ImageBrush ImageSource="Resources/fileImporterScreen.PNG"/>
+        <ImageBrush ImageSource="Resources/fileImporterScreen.jpg"/>
     </Window.Background>
     <xctk:BusyIndicator 
         IsBusy="False" x:Name="loader" BusyContent="Please Wait while Loading Files" Background="White" Foreground="DarkBlue" >
@@ -51,7 +51,6 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label x:Name="lblAddYouTube" Content="Select your favorite YouTube channel." HorizontalAlignment="Left" Margin="13,114.4,0,0" VerticalAlignment="Top" Width="416" FontFamily="Sitka Heading" FontSize="18" Foreground="White" Opacity="0.7" Height="27" Grid.Row="1"/>
             <Button x:Name="btnNext" Content="Next" HorizontalAlignment="Left" Margin="391,224.4,0,0" VerticalAlignment="Top" Width="75" Height="24" BorderBrush="Black" Click="btnNext_Click" Grid.Row="1">
                 <Button.Background>
