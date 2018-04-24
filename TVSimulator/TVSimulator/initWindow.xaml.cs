@@ -2,18 +2,10 @@
 using MediaClasses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 
 namespace TVSimulator
@@ -64,6 +56,11 @@ namespace TVSimulator
                 System.Windows.MessageBox.Show("Please select hours for all the days or setup time automatically");
                 return;
             }
+            if(!CheckForInternetConnection())
+            {
+                System.Windows.MessageBox.Show("Please check your internt connection");
+                return;
+            }   
             
 
             loader.IsBusy = true;
@@ -78,6 +75,24 @@ namespace TVSimulator
             ////    loader.IsBusy = false;
             ////}, TaskScheduler.FromCurrentSynchronizationContext());
             //t.Start();
+        }
+
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (client.OpenRead("http://clients3.google.com/generate_204"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void onVideoRecievedHandler(Object o, List<Media> arg)

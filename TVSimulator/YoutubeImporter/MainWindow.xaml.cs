@@ -94,31 +94,23 @@ namespace YoutubeImporter
 
         private void removeChannelBtn_Click(object sender, RoutedEventArgs e)
         {
-
-            try
+           
+            if(type == (int)SelectionType.channel)
             {
-                if (type == (int)SelectionType.channel)
-                {
-                    bool res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currChannelSelection.Path);
-                    if (res)
-                        Channels = db.getYoutubeChannelList();
-                    else
-                        Debug.WriteLine("nothing happened");
-                }
-                // remove playlist channels related
-                if (type == (int)SelectionType.playlistChannel)
-                {
-                    bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
-                    if (res1)
-                        PlaylistChannels = db.getPlaylistChannels();
-                    else
-                        Debug.WriteLine("nothing happened");
-                }
+                bool res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currChannelSelection.Path);
+                if (res)
+                    Channels = db.getYoutubeChannelList();
+                else
+                    Debug.WriteLine("nothing happened");
             }
-            catch (Exception)
+            // remove playlist channels related
+            if (type == (int)SelectionType.playlistChannel)
             {
-
-                Debug.WriteLine("remove failed");
+                bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
+                if (res1)
+                    PlaylistChannels = db.getPlaylistChannels();
+                else
+                    Debug.WriteLine("nothing happened");
             }
         }
 
@@ -150,7 +142,6 @@ namespace YoutubeImporter
         {
             Channels = db.getYoutubeChannelList();
         }
-
 
 
         private void showPlaylistClick(Object sender, RoutedEventArgs e)

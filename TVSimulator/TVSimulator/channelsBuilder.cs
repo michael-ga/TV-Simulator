@@ -64,8 +64,6 @@ namespace TVSimulator
                 localChannels.Add(chan);
                 localChannels.ElementAt(channelNumber - 1).addMedia();
                 localChannels.ElementAt(channelNumber - 1).bs(getDateCycle());
-
-                localChannels.ElementAt(channelNumber-1).buildSchedule();
                 db.insertChannel(chan);
                 channelNumber++;
             }
@@ -79,7 +77,8 @@ namespace TVSimulator
             {
                 var chan = new Channel(channelNumber, Constants.TVSERIES, gTV.ElementAt(i));
                 localChannels.Add(chan);
-                localChannels.ElementAt(channelNumber-1).buildSchedule();
+                localChannels.ElementAt(channelNumber - 1).addMedia();
+                localChannels.ElementAt(channelNumber - 1).bTVs(getDateCycle());
                 db.insertChannel(chan);
                 channelNumber++;
             }
@@ -90,17 +89,13 @@ namespace TVSimulator
 
         public void buildYouTubeChannels()
         {
-            var ytbChannels = db.getYoutubeChannelList();
+            var channels = db.getYoutubeChannelList();
             var channelNumber = localChannels.Count() + 1;
-            for (var i = 0; i < ytbChannels.Count(); i++)
+            for (var i = 0; i < channels.Count(); i++)
             {
                 var chan = new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, "");
                 localChannels.Add(chan);
-                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = ytbChannels[i].Path;
-                //localChannels.ElementAt(channelNumber - 1).addMedia();
-                localChannels.ElementAt(channelNumber - 1).buildSchedule(); // add media here
-                localChannels.ElementAt(channelNumber - 1).bs(getDateCycle());  // build Dictionary schedule - Main algorithm
-
+                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = channels[i].Path;
                 db.insertChannel(chan);
                 channelNumber++;
             }

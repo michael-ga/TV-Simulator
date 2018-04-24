@@ -227,11 +227,6 @@ namespace HelperClasses
 
         #endregion
 
-        public List<YoutubeVideo> getYoutubeVideosfromChannel(string chnlID)
-        {
-            var channel = youtube_channelCollection.Find(Query.EQ("Path", chnlID)).First();
-            return channel.VideoList;
-        }
 
 
 

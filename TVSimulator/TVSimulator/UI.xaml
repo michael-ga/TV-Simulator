@@ -12,9 +12,8 @@
     <Grid x:Name="mainWindow" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel" Background="Black">
 
         <MediaElement x:Name="mediaPlayer" MediaEnded="mediaPlayer_MediaEnded"  LoadedBehavior="Manual" Margin="0,0,0,0" StretchDirection="Both" Stretch="Fill"/>
-        <Cef1:CefYoutubeController x:Name="youtubePlayer"  OnVideoEnded="youtubePlayer_videoEnded" StartSec="{Binding Text, ElementName=YtbTxtVideoId}"   Margin="5,5,5,-10"  Visibility="Hidden" d:IsHidden="True"/>
+        <Cef1:CefYoutubeController x:Name="youtubePlayer"  OnVideoEnded="youtubePlayer_videoEnded" VideoId="{Binding Text, ElementName=YtbTxtVideoId,UpdateSourceTrigger=Explicit}" Margin="5,5,5,-40"  Visibility="Hidden"/>
         <TextBox x:Name="YtbTxtVideoId"  VerticalAlignment="Center" Width="80" Visibility="Hidden" />
-        <TextBox x:Name="YtbTxtStartSec" Text="0" VerticalAlignment="Center" Width="80" Visibility="Hidden" />
 
         <Grid x:Name="menuBar" Margin="0,0,1,-2" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>

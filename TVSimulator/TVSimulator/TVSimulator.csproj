@@ -182,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="boardWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="initWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +201,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="boardWindow.xaml.cs">
+      <DependentUpon>boardWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChannelsBuilder.cs" />
     <Compile Include="IDatabase.cs" />
@@ -241,8 +248,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\boardschedule.jpg" />
+    <Resource Include="Resources\fileImporterScreen.jpg" />
+    <Content Include="Resources\promo.mp4" />
     <Resource Include="Resources\setTimeView.jpg" />
-    <Resource Include="Resources\fileImporterScreen.PNG" />
     <Resource Include="Resources\volume.png" />
     <Resource Include="Resources\settings.png" />
     <Resource Include="Resources\control.png" />

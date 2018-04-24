@@ -69,31 +69,16 @@ namespace YoutubeImporter.Cef
             set { SetValue(VideoIdProperty, value); }
         }
 
-        public string StartSec
-        {
-            get { return (string) GetValue(VideoStartSecProperty);}
-            set { SetValue(VideoStartSecProperty, value);}
-        }
-
         public static readonly DependencyProperty VideoIdProperty =
             DependencyProperty.Register("VideoId", typeof(string), typeof(CefYoutubeController), new PropertyMetadata("", VideoIdChanged));
 
-        public static readonly DependencyProperty VideoStartSecProperty =
-            DependencyProperty.Register("StartSec", typeof(string), typeof(CefYoutubeController), new PropertyMetadata("", VideoStartSecChanged));
-            
         private static void VideoIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var playerController = (CefYoutubeController)d;
             playerController.SetVideoId((string)e.NewValue);
         }
 
-        private static void VideoStartSecChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var playerController = (CefYoutubeController)d;
-            playerController.SetStartSec((string) e.NewValue);
-        }
-
-    public int Volume
+        public int Volume
         {
             get { return (int)GetValue(VolumeProperty); }
             set { SetValue(VolumeProperty, value); }
@@ -142,8 +127,7 @@ namespace YoutubeImporter.Cef
                 case YoutubePlayerState.unstarted:
                     break;
                 case YoutubePlayerState.ended:
-                    //p.Stop();
-                   // p.Pause();
+                    p.Stop();
                     break;
                 case YoutubePlayerState.playing:
                     p.Start();
@@ -298,36 +282,23 @@ namespace YoutubeImporter.Cef
         {
             if (haventRun)
             {
-
+                //if(WebBrowser.WebBrowser == null)
+                //{
+                //WebBrowser.LoadingStateChanged += SetStartupId;
+                //}
+                //else
+                //{
+                //    WebBrowser.ExecuteScriptAsync("var startUpId = " + VideoId);
+                //}
                 haventRun = false;
             }
             if (IsloadingDone())
             {
-                try
-                {
-                    if (int.Parse(StartSec) != 0)// try to parse to int, if fail play from default position
-                        WebBrowser.ExecuteScriptAsync("setVideoId", videoId, StartSec);
-                }
-                catch (Exception)
-                {
-                    WebBrowser.ExecuteScriptAsync("setVideoId", videoId,0);
-                }
+                WebBrowser.ExecuteScriptAsync("setVideoId", videoId);
             }
         }
 
-        private void SetStartSec(string videoStartSec)
-        {
-            if (haventRun)
-                haventRun = false;
-            CheckForStartupSettings();
-            if (IsloadingDone())
-            {
-                WebBrowser.ExecuteScriptAsync("setVideoId", VideoId, videoStartSec);
-            }
-
-        }
-
-private void SetAutoPlay(bool autoPlay)
+        private void SetAutoPlay(bool autoPlay)
         {
             if (IsloadingDone())
             {
