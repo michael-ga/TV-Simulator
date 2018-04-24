@@ -131,10 +131,10 @@ namespace YoutubeImporter
                 {
                     var temp = db.getPlayListByPlaylistID(currentPlaylistChannelSelection.Path,currentPlaylistSelection.Path);
                     if (temp != null)
-                        Videos = temp.Videos;
+                        PlaylistVideo = temp.Videos;
                 }
                 else
-                    Videos = await searcher.GetVideosFromPlaylistAsync(currentPlaylistSelection.Path);
+                    PlaylistVideo = await searcher.GetVideosFromPlaylistAsync(currentPlaylistSelection.Path);
             }
 
             if (type == (int)SelectionType.channel && currChannelSelection != null)
@@ -176,9 +176,11 @@ namespace YoutubeImporter
 
         private void syncBtn_Click(object sender, RoutedEventArgs e)
         {
-            var t = new Task(() => searcher.syncYoutubeChannels());
+            var t = new Task(() =>
+            //searcher.syncYoutubeChannels());
             //var t = new Task(() => searcher.syncYoutubePlaylistChannels());
-            //t.ContinueWith(a => searcher.syncYoutubePlaylistChannels());
+            //t.ContinueWith(a => 
+            searcher.syncYoutubePlaylistChannels());
             t.Start();
         }
         #endregion
@@ -222,7 +224,8 @@ namespace YoutubeImporter
             channel,
             videos,
             playlist,
-            playlistChannel
+            playlistChannel,
+            playlistVideo
         }
 
 
@@ -259,6 +262,19 @@ namespace YoutubeImporter
                 type = (int)SelectionType.videos;
                 videos = value;
                 mListView.ItemsSource = Videos;
+            }
+
+        }
+
+        private List<YoutubePlaylistVideo> ytb_playlist_videos;
+        public List<YoutubePlaylistVideo> PlaylistVideo
+        {
+            get { return ytb_playlist_videos; }
+            set
+            {
+                type = (int)SelectionType.playlistVideo;
+                ytb_playlist_videos = value;
+                mListView.ItemsSource = PlaylistVideo;
             }
 
         }

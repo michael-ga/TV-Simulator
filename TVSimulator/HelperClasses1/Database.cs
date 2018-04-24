@@ -163,6 +163,11 @@ namespace HelperClasses
         {
             return youtube_channelCollection.FindAll().ToList();
         }
+
+        public List<YoutubePlaylistChannel> getYoutubePlaylistChannelList()
+        {
+            return youtube_Playlist_channelCollection.FindAll().ToList();
+        }
         // this function inserts if channel not exist
         public bool insertYoutubechannel(YouTubeChannel channel)
         {
@@ -228,6 +233,20 @@ namespace HelperClasses
             return channel.VideoList;
         }
 
+
+
+        public List<Media> getYoutubePlaylistVideosFromPlaylist(string channelID)
+        {
+            List<Media> listToReturn = new List<Media>();
+            var playlistChannel = youtube_Playlist_channelCollection.Find(Query.EQ("Path", channelID)).First(); // find the playlist channel by the channel ID
+            var playlist = playlistChannel.Playlist_list;
+            foreach (var item in playlist)
+            {
+                listToReturn.AddRange(item.Videos);
+            }
+            return listToReturn;
+        }
+
     public YoutubePlaylistChannel getPlayListChannelByChannelID(string id)
         {
             return youtube_Playlist_channelCollection.Find(Query.EQ("Path",id)).First();
@@ -248,6 +267,11 @@ namespace HelperClasses
         public List<YoutubePlaylistChannel> getPlaylistChannels()
         {
             return youtube_Playlist_channelCollection.FindAll().ToList();
+        }
+
+        public int getLastChannelIndex()
+        {
+            return channelCollection.Count();
         }
 
 

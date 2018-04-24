@@ -84,7 +84,8 @@ namespace TVSimulator
                 channelNumber++;
             }
 
-            buildYouTubeChannels();
+            //buildYouTubeChannels();
+            buildYouTubePlaylistChannels();
         }
 
         public void buildYouTubeChannels()
@@ -104,6 +105,26 @@ namespace TVSimulator
                 channelNumber++;
             }
                
+        }
+
+        public void buildYouTubePlaylistChannels()
+        {
+            var ytbPlaylistChannels = db.getYoutubePlaylistChannelList();
+            var channelNumber = db.getLastChannelIndex() + 1;
+            localChannels = db.getChannelList();
+            for (var i = 0; i < ytbPlaylistChannels.Count(); i++)
+            {
+                var chan = new Channel(channelNumber, Constants.YOUTUBE_PLAYLIST_CHANNEL, "");
+                localChannels.Add(chan);
+                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = ytbPlaylistChannels[i].Path;
+                //localChannels.ElementAt(channelNumber - 1).addMedia();
+                localChannels.ElementAt(channelNumber - 1).buildSchedule(); // add media here
+                localChannels.ElementAt(channelNumber - 1).bTVs_YT(getDateCycle());  // build Dictionary schedule - Main algorithm
+
+                db.insertChannel(chan);
+                channelNumber++;
+            }
+
         }
         public void buildUserChannel() {}
 

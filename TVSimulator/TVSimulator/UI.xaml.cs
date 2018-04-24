@@ -49,7 +49,8 @@ namespace TVSimulator
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
             chanList = db.getChannelList();
             //if (chanList.Count() == 0 || chanList == null)
-                cb.buildLocalChannels();
+            //cb.buildLocalChannels();
+           // cb.buildYouTubePlaylistChannels();
             indBoard = getIndexes();
         }
 
@@ -67,17 +68,20 @@ namespace TVSimulator
 
             while (i<chanList.Count())
             {
-                var temp = chanList[i].BoardSchedule.ElementAt(j).Key;// add null check!!!
-                if (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than finalhourDate
-                    j++;
-                else
+                if (chanList[i].BoardSchedule != null)
                 {
-                    i++;
-                    if (j == 0)
-                        a.Add(0);
+                    var temp = chanList[i].BoardSchedule.ElementAt(j).Key;// add null check!!!
+                    if (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than finalhourDate
+                        j++;
                     else
-                        a.Add(j - 1);
-                    j = 0;
+                    {
+                        i++;
+                        if (j == 0)
+                            a.Add(0);
+                        else
+                            a.Add(j - 1);
+                        j = 0;
+                    }
                 }
             }
             return a;
@@ -456,7 +460,7 @@ namespace TVSimulator
         private void youtubePlayer_videoEnded(object sender, EventArgs e)
         {
             Dispatcher.Invoke(()=>
-            {
+            {   // reload the channel to play next video
                 Channel_Up_Click(new Object(), new RoutedEventArgs());
                 Channel_Down_Click(new Object(), new RoutedEventArgs());
                 //playFromChannel(currentChannel);

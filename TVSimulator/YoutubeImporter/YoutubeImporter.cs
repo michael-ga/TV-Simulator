@@ -140,11 +140,15 @@ namespace YoutubeImporter
        
 
         //  get list of all  videos from playlist
-        public async Task<List<YoutubeVideo>> GetVideosFromPlaylistAsync(string playlistId)
+        public async Task<List<YoutubePlaylistVideo>> GetVideosFromPlaylistAsync(string playlistId)
         {
             List<PlaylistItem> res = new List<PlaylistItem>();
             List<SearchResult> res1 = new List<SearchResult>();
-            List<YoutubeVideo> videoList = new List<YoutubeVideo>();
+            //List<YoutubeVideo> videoList = new List<YoutubeVideo>();
+            List<YoutubePlaylistVideo> videoList = new List<YoutubePlaylistVideo>();
+            int episodeIndex =0 ;
+            string episodeVal;
+
             string dur;
             string nextpagetoken = " ";
 
@@ -165,12 +169,17 @@ namespace YoutubeImporter
                 dur = extractDuration(dur);
                 if (dur != "0")
                 {
-                    YoutubeVideo temp;
+                    if (episodeIndex < 10)
+                        episodeVal = "0" + episodeIndex.ToString();
+                    else
+                        episodeVal = episodeIndex.ToString();
+                    episodeIndex++;
+                    YoutubePlaylistVideo temp;
                     var thumbnail = item.Snippet.Thumbnails;
                     if (thumbnail != null && thumbnail.Default__.Url != null)
-                        temp = new YoutubeVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId, item.Snippet.Thumbnails.Default__.Url);
+                        temp = new YoutubePlaylistVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId, item.Snippet.Thumbnails.Default__.Url, episodeVal);
                     else
-                        temp = new YoutubeVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId,"");
+                        temp = new YoutubePlaylistVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId,"", episodeVal);
 
                     videoList.Add(temp);
                     System.Diagnostics.Debug.WriteLine(videoList.Count);
