@@ -49,7 +49,8 @@ namespace TVSimulator
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
-            chanList = db.getChannelList();
+            chanList = db.getChannelList().Distinct().ToList();
+            removeEmtpyScheduleChannels();
             if (chanList.Count() == 0 || chanList == null)
                 cb.buildLocalChannels();
 
@@ -58,15 +59,33 @@ namespace TVSimulator
                 indBoard.Add(getIndexes(i , getToday()));
         }
 
+        private void removeEmtpyScheduleChannels()
+        {
+            for (int i =0; i< chanList.Count(); i++)
+            {
+                if (chanList[i].BoardSchedule == null)
+                {
+                    chanList.RemoveAt(i);
+                    for (int j=i; j < chanList.Count(); j++)    // fix channel numbers
+                    {
+                        chanList[j].ChannelNumber--; 
+                    }
+                }
+            }
+        }
+
         public int getIndexes(int indexOfChannel , DateTime thisDay)
         {
             int j = 0;
-
-            var temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
-            while (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than thisDay
+            if(chanList[indexOfChannel].BoardSchedule != null)
             {
-                j++;
-                temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
+
+                var temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
+                while (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than thisDay
+                {
+                    j++;
+                    temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
+                }
             }
             return j;
         }
@@ -171,30 +190,53 @@ namespace TVSimulator
 
         #endregion Media player functions
         #region Youtube media player functions
-        private async void playYoutubeChannel(Channel curChannel)
+        private void playYoutubeChannel(Channel curChannel)
         {
-            try
+            if (curChannel == null)
             {
-                var searcher = new YoutubeImporter.Search();
-                CurrentChannel.YoutubeVideoList = await searcher.GetVideosFromChannelAsync(curChannel.YoutubeChannelID);
-                YtbTxtVideoId.Text = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Path;
-                lblMediaName.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Name;
-                lblBroadcastNow.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Name;
-                lblStartTime.Content = "";
-                lblEndTime.Content = "";
-                lblChannelNumber.Content = curChannel.ChannelNumber;
-                if (CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex+1] != null)
-                     lblBroadcastNext.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex+1].Name;
-                lblBroadcastNow.Content = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Name;
+                System.Windows.MessageBox.Show("Error playing channel");
+                return;
             }
-            catch (Exception e)
-            {
-                System.Windows.MessageBox.Show("Connection Error: please check your internter connction");
-            }
-        }
-        
-        #endregion
 
+            DateTime timeNow = DateTime.Now;
+            int i = indBoard[parseChanneltoIndex(curChannelNum)];
+            var temp = curChannel.BoardSchedule.ElementAt(i).Key;
+
+            while (DateTime.Compare(temp, timeNow) < 0) //if temp is earlier than timeNow
+            {
+                i++;
+                temp = curChannel.BoardSchedule.ElementAt(i).Key;       //TODO: need to check if boardschedule is over or not
+            }
+            var sec = 0;
+            var dateShow = new DateTime();
+            if (i == 0) // incase this time is earlier than the first show in the broad scedule
+            {
+                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
+
+                System.Windows.MessageBox.Show("the program will start tommorow acordiing to your views setting");
+                return;
+            }
+            else
+            {
+                playNow = curChannel.BoardSchedule.ElementAt(i - 1).Value;
+                playNext = curChannel.BoardSchedule.ElementAt(i).Value;
+                dateShow = curChannel.BoardSchedule.ElementAt(i - 1).Key;
+
+                var diff = (timeNow.Subtract(dateShow)).TotalSeconds;
+                sec = (int)diff;
+                var t = new TimeSpan(0, 0, sec);
+
+                youtubePlayer.VideoId = playNow.Path;
+                youtubePlayer.StartSec = sec.ToString();
+            }
+
+            TimeSpan dateShowTS = new TimeSpan(dateShow.Hour, dateShow.Minute, 0);
+
+            changeLabels(curChannel, dateShowTS, sec);
+
+        }
+
+        #endregion
         #region subMethods
 
         private void switchMediaControl(Constants.playerSwitch mode)
@@ -264,15 +306,16 @@ namespace TVSimulator
         private void playFromChannel(Channel curChannel)
         {
             currentChannel = curChannel;
-            if (curChannel.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
-            {
-                switchMediaControl(Constants.playerSwitch.Youtube);
-                playYoutubeChannel(curChannel);
-            }
-            else
+            if (curChannel.TypeOfMedia.Equals(Constants.MOVIE) || curChannel.TypeOfMedia.Equals(Constants.TVSERIES))// local media..
             {
                 switchMediaControl(Constants.playerSwitch.Local);
                 playLocalChannel(curChannel);
+
+            }
+            else  // youtube media
+            {
+                switchMediaControl(Constants.playerSwitch.Youtube);
+                playYoutubeChannel(curChannel);
             }
         }
 
@@ -409,9 +452,7 @@ namespace TVSimulator
         }
         private void playNextYoutubeVideo()    
         {
-            Dispatcher.Invoke(new Action(() => youtubePlayer.AutoPlay = true));
-           CurrentChannel.YoutubeVideoIndex++;
-           Dispatcher.Invoke(new Action(() => YtbTxtVideoId.Text = CurrentChannel.YoutubeVideoList[CurrentChannel.YoutubeVideoIndex].Path));    // play the next video from the list
+
         }
 
         private void youtubePlayer_videoEnded(object sender, EventArgs e)

@@ -259,7 +259,13 @@ namespace HelperClasses
             return null;
         }
 
-        public List<YoutubePlaylistChannel> getPlaylistChannels()
+        public List<YoutubeVideo> getYoutubeVideosfromChannel(string chnlID)
+        {
+            var channel = youtube_channelCollection.Find(Query.EQ("Path", chnlID)).First();
+            return channel.VideoList;
+        }
+
+    public List<YoutubePlaylistChannel> getPlaylistChannels()
         {
             return youtube_Playlist_channelCollection.FindAll().ToList();
         }
