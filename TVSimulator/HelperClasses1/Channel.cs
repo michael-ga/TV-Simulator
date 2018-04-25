@@ -110,7 +110,7 @@ namespace HelperClasses
         public int buildYoutubeSchedule()
         {
             var ytbVideos = db.getYoutubeVideosfromChannel(YoutubeChannelID);
-            if (ytbVideos == null)
+            if (ytbVideos == null && ytbVideos.Count() == 0)
                 return -1;
             double sum = 0;
 
@@ -133,7 +133,7 @@ namespace HelperClasses
             var durTime = new TimeSpan();
 
             var tempmedia = db.getYoutubePlaylistVideosFromPlaylist(youtubeChannelID);
-            if (tempmedia == null)
+            if (tempmedia == null && tempmedia.Count()==0)
                 return -1;
             foreach (Media ytbPlsVid in tempmedia)
             {
@@ -310,7 +310,8 @@ namespace HelperClasses
             List<int> capOfLists;
 
             List<List<YoutubePlaylistVideo>> listOfSeries_YT = sortTvSeries_YoutubePlaylist();                          // list of all tv series sorted by seasons and episodes 
-
+            if (listOfSeries_YT == null)
+                return -1;
 
             capOfLists = createCapList_YT(listOfSeries_YT);  // list of capacities of tv seiries lists
             longestSeries = getMostLength_YT(listOfSeries_YT);            // number of episodes of the longest tv series
@@ -527,6 +528,8 @@ namespace HelperClasses
 
         private List<List<YoutubePlaylistVideo>> sortTvSeries_YoutubePlaylist()
         {
+            if (media.Count() == 0)
+                return null;
             List<Media> SortedList = media.OrderBy(o => o.Name).ToList();
             var name = SortedList[0].Name;
             List<List<YoutubePlaylistVideo>> all = new List<List<YoutubePlaylistVideo>>();

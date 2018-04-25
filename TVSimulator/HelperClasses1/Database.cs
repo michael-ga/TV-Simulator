@@ -237,7 +237,8 @@ namespace HelperClasses
             var playlist = playlistChannel.Playlist_list;
             foreach (var item in playlist)
             {
-                listToReturn.AddRange(item.Videos);
+                if (item.Videos != null)
+                    listToReturn.AddRange(item.Videos);
             }
             return listToReturn;
         }
