@@ -107,9 +107,11 @@ namespace HelperClasses
         }
 
 
-        public void buildYoutubeSchedule()
+        public int buildYoutubeSchedule()
         {
             var ytbVideos = db.getYoutubeVideosfromChannel(YoutubeChannelID);
+            if (ytbVideos == null)
+                return -1;
             double sum = 0;
 
             var durTime = new TimeSpan();
@@ -121,15 +123,18 @@ namespace HelperClasses
                 sum += durTime.TotalSeconds;
                 durationList.Add(sum);
             }
+            return 0;
         }
 
 
-        public void buildYoutubePlaylistSchedule()
+        public int buildYoutubePlaylistSchedule()
         {
             double sum = 0;
             var durTime = new TimeSpan();
 
             var tempmedia = db.getYoutubePlaylistVideosFromPlaylist(youtubeChannelID);
+            if (tempmedia == null)
+                return -1;
             foreach (Media ytbPlsVid in tempmedia)
             {
                 media.Add(ytbPlsVid);
@@ -137,6 +142,7 @@ namespace HelperClasses
                 sum += durTime.TotalSeconds;
                 durationList.Add(sum);
             }
+            return 0;
         }
 
 
@@ -164,6 +170,8 @@ namespace HelperClasses
             if(typeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
             {
                 var ytbVideos = db.getYoutubeVideosfromChannel(YoutubeChannelID);
+                if (ytbVideos == null)
+                    return;
                 foreach(YoutubeVideo vid in ytbVideos)
                     media.Add(vid);
                 
@@ -174,7 +182,7 @@ namespace HelperClasses
             }
         }
 
-        public void bs(DateTime startDate)          // michael hoo michael 
+        public int bs(DateTime startDate)          // michael hoo michael 
         {
             Dictionary<DateTime, Media> board = new Dictionary<DateTime, Media>();
             int numOfDays = 7;
@@ -188,17 +196,22 @@ namespace HelperClasses
             var j = 0;  // run all over the movies
             var k = 0;
             var mediaLength = media.Count;
-
+            if (mediaLength == 0)
+                return -1;
+            
             //create live broadcast media
 
             while (k < numOfDays || j < mediaLength)
             {
+
                 i = (int)date.DayOfWeek;
 
                 DateTime finalHourDate = new DateTime(date.Year, date.Month, date.Day);
                 finalHourDate = finalHourDate.AddHours(endTime[i]);     //end time in one day
 
                 mediaDuration = media[j % mediaLength].getDurationTimespan();
+                if (typeOfMedia.Equals(Constants.YOUTUBE_CHANNEL) && mediaDuration.TotalSeconds == 0)
+                    return -1;
                 temp = date.Add(mediaDuration);                     // current date + media duration
 
                 if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
@@ -219,6 +232,7 @@ namespace HelperClasses
 
             board = createRepeatMedia(startDate, board,startTime,endTime);
             BoardSchedule = board;
+            return 0;
         }
 
 
@@ -236,22 +250,11 @@ namespace HelperClasses
 
             List<List<TvSeries>> listOfSeries;                          // list of all tv series sorted by seasons and episodes 
             listOfSeries = sortTvSeries();
-            List<List<YoutubePlaylistVideo>> listOfSeries_YT = sortTvSeries_YoutubePlaylist();                          // list of all tv series sorted by seasons and episodes 
 
-
-            if (TypeOfMedia.Equals(Constants.TVSERIES))
-            {
-                capOfLists = createCapList(listOfSeries);  // list of capacities of tv seiries lists
-                longestSeries = getMostLength(listOfSeries);            // number of episodes of the longest tv series
-                mediaLength = listOfSeries.Count();
-            }
-            else// case of Youtube playlist channel
-            {
-                capOfLists = createCapList_YT(listOfSeries_YT);  // list of capacities of tv seiries lists
-                longestSeries = getMostLength_YT(listOfSeries_YT);            // number of episodes of the longest tv series
-                mediaLength = listOfSeries_YT.Count();
-            }
-
+            capOfLists = createCapList(listOfSeries);  // list of capacities of tv seiries lists
+            longestSeries = getMostLength(listOfSeries);            // number of episodes of the longest tv series
+            mediaLength = listOfSeries.Count();
+           
             var i = 0;  // run over days
             var j = 0;  // run all over the movies
             var k = 0;  //count 7 days at least
@@ -266,53 +269,26 @@ namespace HelperClasses
                 finalHourDate = finalHourDate.AddHours(endTime[i]);     //end time in one day
 
                 int curTvS = (g / 2) % mediaLength;
-                if (TypeOfMedia.Equals(Constants.TVSERIES))
+                if (capOfLists[curTvS] < 0)
+                    capOfLists[curTvS] = listOfSeries[curTvS].Count() - 1;
+
+                mediaDuration = listOfSeries[curTvS].ElementAt(capOfLists[curTvS]).getDurationTimespan();
+                temp = date.Add(mediaDuration);                     // current date + media duration
+
+                if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
                 {
-                    if (capOfLists[curTvS] < 0)
-                        capOfLists[curTvS] = listOfSeries[curTvS].Count() - 1;
-
-                    mediaDuration = listOfSeries[curTvS].ElementAt(capOfLists[curTvS]).getDurationTimespan();
-                    temp = date.Add(mediaDuration);                     // current date + media duration
-
-                    if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
-                    {
-                        board.Add(date, listOfSeries[curTvS].ElementAt(capOfLists[curTvS]));
-                        date = temp;
-                        date = date.AddSeconds(PROMO_TIME);
-                        capOfLists[curTvS] -= 1;
-                        g++;
-                    }
-                    else
-                    {
-                        temp = date.AddDays(1);
-                        i = (int)temp.DayOfWeek;
-                        date = new DateTime(temp.Year, temp.Month, temp.Day, startTime[i], 0, 0);
-                        k++;
-                    }
+                    board.Add(date, listOfSeries[curTvS].ElementAt(capOfLists[curTvS]));
+                    date = temp;
+                    date = date.AddSeconds(PROMO_TIME);
+                    capOfLists[curTvS] -= 1;
+                    g++;
                 }
-                else if (TypeOfMedia.Equals(Constants.YOUTUBE_PLAYLIST_CHANNEL))
+                else
                 {
-                    if (capOfLists[curTvS] < 0)
-                        capOfLists[curTvS] = listOfSeries_YT[curTvS].Count() - 1;
-
-                    mediaDuration = listOfSeries_YT[curTvS].ElementAt(capOfLists[curTvS]).getDurationTimespan();
-                    temp = date.Add(mediaDuration);                     // current date + media duration
-
-                    if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
-                    {
-                        board.Add(date, listOfSeries_YT[curTvS].ElementAt(capOfLists[curTvS]));
-                        date = temp;
-                        date = date.AddSeconds(PROMO_TIME);
-                        capOfLists[curTvS] -= 1;
-                        g++;
-                    }
-                    else
-                    {
-                        temp = date.AddDays(1);
-                        i = (int)temp.DayOfWeek;
-                        date = new DateTime(temp.Year, temp.Month, temp.Day, startTime[i], 0, 0);
-                        k++;
-                    }
+                    temp = date.AddDays(1);
+                    i = (int)temp.DayOfWeek;
+                    date = new DateTime(temp.Year, temp.Month, temp.Day, startTime[i], 0, 0);
+                    k++;
                 }
             }
             board = createRepeatMedia(startDate, board, startTime, endTime);
@@ -321,7 +297,7 @@ namespace HelperClasses
         }
 
 
-        public void bTVs_YT(DateTime startDate)
+        public int bTVs_YT(DateTime startDate)
         {
             Dictionary<DateTime, Media> board = new Dictionary<DateTime, Media>();
             int numOfDays = 7;
@@ -339,7 +315,8 @@ namespace HelperClasses
             capOfLists = createCapList_YT(listOfSeries_YT);  // list of capacities of tv seiries lists
             longestSeries = getMostLength_YT(listOfSeries_YT);            // number of episodes of the longest tv series
             mediaLength = listOfSeries_YT.Count();
-            
+            if (mediaLength == 0)
+                return -1;
 
             var i = 0;  // run over days
             var j = 0;  // run all over the movies
@@ -362,6 +339,8 @@ namespace HelperClasses
                         capOfLists[curTvS] = listOfSeries_YT[curTvS].Count() - 1;
 
                     mediaDuration = listOfSeries_YT[curTvS].ElementAt(capOfLists[curTvS]).getDurationTimespan();
+                    if (mediaDuration.TotalSeconds == 0)
+                        return -1;
                     temp = date.Add(mediaDuration);                     // current date + media duration
 
                     if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
@@ -384,6 +363,7 @@ namespace HelperClasses
             board = createRepeatMedia(startDate, board, startTime, endTime);
 
             BoardSchedule = board;
+            return 0;
         }
 
 

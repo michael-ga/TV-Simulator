@@ -49,10 +49,12 @@ namespace TVSimulator
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
+
+            cb.rebuildAllChannels();
             chanList = db.getChannelList().Distinct().ToList();
             removeEmtpyScheduleChannels();
-            if (chanList.Count() == 0 || chanList == null)
-                cb.buildLocalChannels();
+            //if (chanList.Count() == 0 || chanList == null)
+            //    cb.buildLocalChannels();
 
             indBoard = new List<int>();
             for (var i = 0; i < chanList.Count();i++)

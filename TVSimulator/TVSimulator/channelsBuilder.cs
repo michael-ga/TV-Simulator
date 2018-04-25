@@ -41,6 +41,20 @@ namespace TVSimulator
 
         #region functions channels builder
 
+
+
+        public void rebuildAllChannels()
+        {
+            db.removeChannelCollection();
+            buildLocalChannels();
+            buildYouTubeChannels();
+            buildYouTubePlaylistChannels();
+        }
+
+
+
+
+
         public void buildLocalChannels()
         {
             localChannels = new List<Channel>();
@@ -82,20 +96,21 @@ namespace TVSimulator
                 db.insertChannel(chan);
                 channelNumber++;
             }
-
-            //buildYouTubeChannels();
-            buildYouTubePlaylistChannels();
         }
 
         public void buildYouTubeChannels()
         {
             var channels = db.getYoutubeChannelList();
-            var channelNumber = localChannels.Count() + 1;
+            var channelNumber = db.getLastChannelIndex() + 1;
             for (var i = 0; i < channels.Count(); i++)
             {
                 var chan = new Channel(channelNumber, Constants.YOUTUBE_CHANNEL, "");
+                chan.YoutubeChannelID = channels[i].Path; 
+                if (chan.buildYoutubeSchedule() == -1)    // if no videos not adding this channel
+                    continue;
+                if (chan.bs(getDateCycle()) == -1)
+                    continue;
                 localChannels.Add(chan);
-                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = channels[i].Path;
                 db.insertChannel(chan);
                 channelNumber++;
             }
@@ -110,12 +125,12 @@ namespace TVSimulator
             for (var i = 0; i < ytbPlaylistChannels.Count(); i++)
             {
                 var chan = new Channel(channelNumber, Constants.YOUTUBE_PLAYLIST_CHANNEL, "");
+                chan.YoutubeChannelID = ytbPlaylistChannels[i].Path;
+                if (chan.buildYoutubePlaylistSchedule() == -1)    // if no videos not adding this channel
+                    continue;
+                if (chan.bTVs_YT(getDateCycle()) == -1)
+                    continue;
                 localChannels.Add(chan);
-                localChannels.ElementAt(channelNumber - 1).YoutubeChannelID = ytbPlaylistChannels[i].Path;
-                //localChannels.ElementAt(channelNumber - 1).addMedia();
-                localChannels.ElementAt(channelNumber - 1).buildSchedule(); // add media here
-                localChannels.ElementAt(channelNumber - 1).bTVs_YT(getDateCycle());  // build Dictionary schedule - Main algorithm
-
                 db.insertChannel(chan);
                 channelNumber++;
             }

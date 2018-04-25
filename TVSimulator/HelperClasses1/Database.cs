@@ -58,7 +58,7 @@ namespace HelperClasses
 
         public void removeChannelCollection()
         {
-            channelCollection.Delete(Query.Descending);
+            channelCollection.Delete(Query.All(Query.Descending));
         }
 
 

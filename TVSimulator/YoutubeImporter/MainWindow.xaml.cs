@@ -167,11 +167,8 @@ namespace YoutubeImporter
 
         private void syncBtn_Click(object sender, RoutedEventArgs e)
         {
-            var t = new Task(() =>
-            //searcher.syncYoutubeChannels());
-            //var t = new Task(() => searcher.syncYoutubePlaylistChannels());
+            var t = new Task(() =>  searcher.syncYoutubeChannels());
             //t.ContinueWith(a => 
-            searcher.syncYoutubePlaylistChannels());
             t.Start();
         }
         #endregion
