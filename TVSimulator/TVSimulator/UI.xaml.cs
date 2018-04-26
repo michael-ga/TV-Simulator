@@ -473,6 +473,7 @@ namespace TVSimulator
             {
                 promoIsPlay = true;
                 string dir = Directory.GetCurrentDirectory();
+                Thread.Sleep(2000);
                 dir = dir.Substring(0, dir.IndexOf("TVSimulator")) + "TVSimulator\\TVSimulator\\Resources\\promo.mp4";
                 mediaPlayer.Source = new Uri(dir);
                 mediaPlayer.Play();
