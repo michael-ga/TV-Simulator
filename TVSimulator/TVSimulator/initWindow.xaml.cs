@@ -43,7 +43,7 @@ namespace TVSimulator
             }
         }
 
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private async void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
             /*if (pathTextBox.Text.Equals(""))
             {
@@ -64,7 +64,13 @@ namespace TVSimulator
             
 
             loader.IsBusy = true;
-            fileImporter.getAllMediaFromDirectory(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value);
+            int res = await fileImporter.getAllMediaFromDirectory(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value);
+            if (res == -1)
+            {
+                System.Windows.MessageBox.Show("path not contains any media, please enter A path with media files");
+                loader.IsBusy = false;
+                gotoStatrtupIW();
+            }
             //var t = new Task(() =>
             //{//(new Action(() => youtubePlayer.AutoPlay = true));
             //    Dispatcher.Invoke(new Action(() => loader.IsBusy = true));
@@ -131,6 +137,29 @@ namespace TVSimulator
             isSetupAuto.Visibility = Visibility.Visible;
             timeFieldsGrid.Visibility = Visibility.Visible;
             addHours();
+        }
+
+        private void gotoStatrtupIW()
+        {
+            if (pathTextBox.Text == "" || pathTextBox.Text == null)
+            {
+                System.Windows.MessageBox.Show("Please select folder");
+                return;
+            }
+
+            //hide controllers of the first screen
+            getFolderBtn.Visibility = Visibility.Visible;
+            lblAddYouTube.Visibility = Visibility.Visible;
+            youtubeBtn.Visibility = Visibility.Visible;
+            SubfoldersCheckBox.Visibility = Visibility.Visible;
+            pathTextBox.Visibility = Visibility.Visible;
+            btnNext.Visibility = Visibility.Visible;
+
+            //show controllers of the second screen and change background
+            secondBackground.Visibility = Visibility.Hidden;
+            btnSubmit.Visibility = Visibility.Hidden;
+            isSetupAuto.Visibility = Visibility.Hidden;
+            timeFieldsGrid.Visibility = Visibility.Hidden;
         }
 
         private void isSetupAuto_Checked(object sender, RoutedEventArgs e)

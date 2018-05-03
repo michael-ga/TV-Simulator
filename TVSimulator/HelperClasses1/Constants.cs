@@ -14,7 +14,9 @@ namespace HelperClasses
         public const string YOUTUBE_PLAYLIST_CHANNEL = "YouTubePlaylistChannel";
 
 
-        public const string DB_FILE_PATH = @"C:\\TVSimulatorDB";
+        public const string DB_DIR_PATH = @"C:\\TVSimulatorDB";
+        public const string DB_FILE_PATH = DB_DIR_PATH + "\\MyData.db";
+
         // DB constants
         public const string MEDIA_COLLECTION = "media";
         public const string MOVIE_COLLECTION = "movie";

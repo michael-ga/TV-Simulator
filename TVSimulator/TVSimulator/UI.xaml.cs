@@ -46,20 +46,7 @@ namespace TVSimulator
         public MainWindow()
         {
             InitializeComponent();
-            timer = new DispatcherTimer();
             db = new Database();
-            fileImporter = new FileImporter();
-            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
-            //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
-
-            cb.rebuildAllChannels();
-            chanList = db.getChannelList().Distinct().ToList();
-            removeEmtpyScheduleChannels();
-            //if (chanList.Count() == 0 || chanList == null)
-            //    cb.buildLocalChannels();
-            indBoard = new List<int>();
-            for (var i = 0; i < chanList.Count();i++)
-                indBoard.Add(getIndexes(i , getToday()));
         }
 
         private void removeEmtpyScheduleChannels()
@@ -136,7 +123,7 @@ namespace TVSimulator
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
-            if(chanList == null)
+            if(chanList == null|| chanList.Count() == 0)
             {
                 System.Windows.MessageBox.Show("no channels");
                 return;
@@ -151,7 +138,7 @@ namespace TVSimulator
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
         {
-            if(chanList == null)
+            if(chanList == null || chanList.Count() == 0)
             {
                 System.Windows.MessageBox.Show("no channels");
                 return;
@@ -274,6 +261,7 @@ namespace TVSimulator
         // event handler raised when data of enterred pathes is loaded on fileImporter.
         private void onVideoRecievedHandler(Object o, List<Media> arg) { }
 
+
         //for get the mouse point
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -299,9 +287,15 @@ namespace TVSimulator
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            initMainWindow();
             if (chanList == null || chanList.Count() < 1)
                 chanList = db.getChannelList();
 
+            if (chanList == null || chanList.Count() < 1)
+            {
+                System.Windows.MessageBox.Show("error: loading channel list has been failed");
+                return;
+            }
             var index = parseChanneltoIndex(curChannelNum);
             var c0 = chanList[index];
             playFromChannel(c0);
@@ -537,7 +531,35 @@ namespace TVSimulator
             }
         }
 
-     
+        private void initMainWindow()
+        {
+
+            timer = new DispatcherTimer();
+            // reload channels 
+            fileImporter = new FileImporter();
+            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
+
+            cb.rebuildAllChannels();
+            chanList = db.getChannelList().Distinct().ToList();
+            removeEmtpyScheduleChannels();
+            //if (chanList.Count() == 0 || chanList == null)
+            //    cb.buildLocalChannels();
+            indBoard = new List<int>();
+            for (var i = 0; i < chanList.Count(); i++)
+                indBoard.Add(getIndexes(i, getToday()));
+        }
+
+
+        public bool isChannelsExist()
+        {
+            if ( File.Exists(Constants.DB_FILE_PATH))
+            {
+                return (db.getChannelList().Count() > 0);
+            }
+            return false;
+        }
+
         #endregion helper methods
     }
 }

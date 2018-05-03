@@ -20,19 +20,20 @@ namespace TVSimulator
             Application.Current.Shutdown();
         }
 
+        // startup implemention is in main window
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //TODO:: check if database doesn't contain any collection
-            if ( !File.Exists(@"C:\TVSimulatorDB\MyData.db"))
+
+            MainWindow mw = new MainWindow();
+            if(mw.isChannelsExist())
+                mw.Show();
+            else
             {
                 initWindow iw = new initWindow();
                 iw.Show();
+                mw.Close();
             }
-            else
-            {
-                MainWindow mw = new MainWindow();
-                mw.Show();
-            }
+            //}
         }
     }
 }

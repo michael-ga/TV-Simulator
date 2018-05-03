@@ -13,6 +13,9 @@ namespace HelperClasses
     // https://github.com/mbdavid/LiteDB/wiki/Collections
     public class Database
     {
+        public delegate void channelAdded(Object o);
+
+        public event channelAdded OnchannelAdded;
 
         #region Fields And Constructor
         LiteDatabase db;
@@ -32,8 +35,8 @@ namespace HelperClasses
 
         public Database()
         {
-            if (!Directory.Exists(Constants.DB_FILE_PATH))
-                Directory.CreateDirectory(Constants.DB_FILE_PATH);
+            if (!Directory.Exists(Constants.DB_DIR_PATH))
+                Directory.CreateDirectory(Constants.DB_DIR_PATH);
             db = new LiteDatabase(@"C:\TVSimulatorDB\MyData.db");// get connction string from app.config
             MediaCollection = db.GetCollection<Media>(Constants.MEDIA_COLLECTION);
             TVCollection = db.GetCollection<TvSeries>(Constants.TV_SERIES_COLLECTION);

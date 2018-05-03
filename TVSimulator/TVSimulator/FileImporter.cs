@@ -48,7 +48,7 @@ namespace TVSimulator
 
         #region Get pathes and sort
 
-        public async void getAllMediaFromDirectory(string path, bool isIncludeSubfolders)  // get files paths from folder List<string>(folder path) 
+        public async Task<int> getAllMediaFromDirectory(string path, bool isIncludeSubfolders)  // get files paths from folder List<string>(folder path) 
         {
             string[] mediaExtStarrd = { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mpeg", "*.mpg", "*.3gp", "*.mp3", "*.flac", "*.ogg", "*.wav", "*.wma" };
 
@@ -63,7 +63,10 @@ namespace TVSimulator
                 foreach (String file in fileListArr)
                     allPathes.Add(file);
             }
+            if (allPathes.Count() == 0)
+                return -1;
             await getAllMedia();
+            return 0;
         }
 
         private async Task<bool> SortMediaToTypes(string filePath)        // check file type(movie/music/tv series)  :: (String filePath) 

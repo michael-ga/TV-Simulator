@@ -7,7 +7,7 @@ namespace TVSimulator
     interface IFileImporter
     {
 
-        void getAllMediaFromDirectory(string path, bool isIncludeSubfolders);
+        Task<int> getAllMediaFromDirectory(string path, bool isIncludeSubfolders);
 
         Task<bool> videoHandler(string name, string type, string filePath);
 
