@@ -81,7 +81,6 @@ namespace TVSimulator
             int j = 0;
             if(chanList[indexOfChannel].BoardSchedule != null)
             {
-
                 var temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
                 while (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than thisDay
                 {

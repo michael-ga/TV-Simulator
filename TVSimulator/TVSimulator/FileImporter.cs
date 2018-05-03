@@ -52,7 +52,7 @@ namespace TVSimulator
         {
             string[] mediaExtStarrd = { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mpeg", "*.mpg", "*.3gp", "*.mp3", "*.flac", "*.ogg", "*.wav", "*.wma" };
 
-        String[] fileListArr;
+            String[] fileListArr;
             foreach (String extension in mediaExtStarrd)
             {
                 if (isIncludeSubfolders) // include subfolders

@@ -51,10 +51,6 @@ namespace TVSimulator
             buildYouTubePlaylistChannels();
         }
 
-
-
-
-
         public void buildLocalChannels()
         {
             localChannels = new List<Channel>();
@@ -66,7 +62,6 @@ namespace TVSimulator
             var channelNumber = 1;
 
             //create movie channels
-
             foreach (Movie m in movies)
                 gMovie.Add(m.getFirstGenre());
 

@@ -5,11 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-        Title="SettingWindow" Height="400" Width="400">
+        Title="SettingWindow" Height="610" Width="600">
     <Grid>
-        <Button x:Name="getFolderBtn"  Content="Choose Folder" HorizontalAlignment="Left" Margin="35,79,0,0" VerticalAlignment="Top" Width="100" Click="getFolderBtn_Click" />
-        <CheckBox x:Name="subfolderBtn" Content="Include Subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" Margin="38,110,0,0" VerticalAlignment="Top"/>
-        <Menu HorizontalAlignment="Left" Height="100" Margin="172,192,0,0" VerticalAlignment="Top" Width="100"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TabControl HorizontalAlignment="Left" Height="535" Margin="0,8,-0.4,0" VerticalAlignment="Top" Width="594">
+            <TabItem Header="General" Margin="102,0,-197.4,-2">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Time broadcast Setting" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,179,0,0"/>
+                    <Label Content="Main Path Setting" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
+                    <Label Content="Syncronized Media Setting" VerticalAlignment="Top" Margin="10,328,0,0" HorizontalAlignment="Left" Width="150"/>
+                    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,62,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
+                    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
+                    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="126" Margin="10,359,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
+                    <Label Content="Change the main path of your media folder at any time.&#xD;&#xA;WARNING: changing the main path will delete all existing channels and streams" HorizontalAlignment="Left" Margin="22,67,0,0" VerticalAlignment="Top" Width="539" Height="40"/>
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="22,116,0,0" VerticalAlignment="Top" Width="75"/>
+                    <TextBox HorizontalAlignment="Left" Height="19" Margin="102,116,0,0" TextWrapping="Wrap" Text="New Path" VerticalAlignment="Top" Width="459"/>
+                    <CheckBox Content="Include SubFolder" HorizontalAlignment="Left" Margin="22,146,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Change your watch times according to your schedule.&#xD;&#xA;Warning: Changing your viewing hours will create a new programming schedule across all channels." HorizontalAlignment="Left" Margin="22,220,0,0" VerticalAlignment="Top" Width="539" Height="40"/>
+                    <Button Content="Set manually" HorizontalAlignment="Left" Margin="22,289,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
+                    <CheckBox Content="24/7 streaming" HorizontalAlignment="Left" Margin="22,264,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Sync your personal media:&#xD;&#xA;Incase that was changes in your main media folder - add, remove, or change your media content -&#xD;&#xA;you can press at the sync button to synchronize your system.&#xD;&#xA;WARNING: This will restart the system and channels may be added / deleted&#xD;&#xA;and each channel's board schedule could be changed." HorizontalAlignment="Left" Margin="22,359,0,0" VerticalAlignment="Top" Width="539" Height="91"/>
+                    <Button Content="Set manually" HorizontalAlignment="Left" Margin="22,289,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
+                    <Button Content="Sync Now" HorizontalAlignment="Left" Margin="247,455,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="YouTube" Margin="197.8,0,-293.8,-1.8">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="ok_btn" Content="OK" HorizontalAlignment="Left" Height="21" Margin="448,545,0,0" VerticalAlignment="Top" Width="126"/>
+        <Button x:Name="cancel_btn" Content="Cancel" HorizontalAlignment="Left" Height="21" Margin="317,545,0,0" VerticalAlignment="Top" Width="126"/>
     </Grid>
 </Window>
