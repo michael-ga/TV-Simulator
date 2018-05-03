@@ -80,5 +80,11 @@ namespace TVSimulator
                     break;
             }
         }
+
+        private void launch_youtube_browser_click(object sender, RoutedEventArgs e)
+        {
+            YoutubeImporter.MainWindow m = new YoutubeImporter.MainWindow();
+            m.Show();
+        }
     }
 }

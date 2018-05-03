@@ -6,6 +6,7 @@ namespace MediaClasses
 {
     public class YoutubePlaylistChannel : Media
     {
+        private const int daysForSync = 7;
         private string photoURL;
         private List<YoutubePlaylist> playlist_list;
         private int id;
@@ -25,5 +26,9 @@ namespace MediaClasses
         public int Id { get => id; set => id = value; }
         public List<YoutubePlaylist> Playlist_list { get => playlist_list; set => playlist_list = value; }
         public DateTime LastUpdated { get => lastUpdated; set => lastUpdated = value; }
+        public bool isUpToDate()
+        {
+            return DateTime.Now.Subtract(lastUpdated).Days < daysForSync;
+        }
     }
 }

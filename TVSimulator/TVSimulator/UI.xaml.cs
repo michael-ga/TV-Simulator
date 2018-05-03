@@ -496,6 +496,12 @@ namespace TVSimulator
             }
         }
 
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingWindow s = new SettingWindow();
+            s.Show();
+        }
+
         public int switchChannel(int channelNumber, int incOrDec)
         {
             var c = chanList;
