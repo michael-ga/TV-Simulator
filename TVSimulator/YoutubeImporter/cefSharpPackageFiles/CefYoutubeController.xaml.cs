@@ -213,7 +213,7 @@ namespace YoutubeImporter.Cef
         {
             if (e == YoutubePlayerState.ended)
             {
-                OnVideoEnded(this, null);
+                //OnVideoEnded(this, null);
             }
             Dispatcher.Invoke(() => PlayerState = e);
         }

@@ -8,6 +8,13 @@ namespace HelperClasses
 {
     public class Channel
     {
+        public enum channelType
+        {
+            local,
+            youtube_playlist,
+            youtube_channel,
+        }
+
         private int channelNumber;
         private string typeOfMedia;       //movies,tv serias,music or youtube stream
         private string genre;             //the name should be channel main genre
@@ -20,6 +27,7 @@ namespace HelperClasses
         private List<YoutubeVideo> youtubeVideoList;
         private Dictionary<DateTime, Media> boardSchedule;
         private int id;
+        private channelType mChannelType;
 
         public const int PROMO_TIME = 7;
 
@@ -33,6 +41,7 @@ namespace HelperClasses
         public List<YoutubeVideo> YoutubeVideoList { get => youtubeVideoList; set => youtubeVideoList = value; }
         public int Id { get => id; set => id = value; }
         public Dictionary<DateTime, Media> BoardSchedule { get => boardSchedule; set => boardSchedule = value; }
+        public channelType MChannelType { get => mChannelType; set => mChannelType = value; }
 
 
 
@@ -54,6 +63,7 @@ namespace HelperClasses
             this.StartCycleTime = DateTime.Parse(Constants.START_CYCLE);
 
             this.YoutubeVideoList = new List<YoutubeVideo>();
+            SetType();
             //this.schedule = schedule;
             //TODO:playNow and playNext is done when the schedule will be ready
         }
@@ -110,7 +120,7 @@ namespace HelperClasses
         public int buildYoutubeSchedule()
         {
             var ytbVideos = db.getYoutubeVideosfromChannel(YoutubeChannelID);
-            if (ytbVideos == null && ytbVideos.Count() == 0)
+            if (ytbVideos == null || ytbVideos.Count() == 0)
                 return -1;
             double sum = 0;
 
@@ -588,6 +598,24 @@ namespace HelperClasses
             }
 
             return tv;
+        }
+
+
+        // helper function
+        private void SetType()
+        {
+            switch (TypeOfMedia)
+            {
+                case Constants.YOUTUBE_CHANNEL:
+                    mChannelType = channelType.youtube_channel;
+                    break;
+                case Constants.YOUTUBE_PLAYLIST_CHANNEL:
+                    mChannelType = channelType.youtube_playlist;
+                    break;
+                default:
+                    mChannelType = channelType.local;
+                    break;
+            }
         }
     }
 }

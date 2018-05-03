@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
-
+using System.Diagnostics;
 
 namespace TVSimulator
 {
@@ -24,6 +24,7 @@ namespace TVSimulator
         private bool infoPressed = true;
         private bool promoIsPlay = false;
         public event EventHandler Tick;
+        DispatcherTimer timer;
 
         public DateTime timeNow;
         public Database db;
@@ -45,6 +46,7 @@ namespace TVSimulator
         public MainWindow()
         {
             InitializeComponent();
+            timer = new DispatcherTimer();
             db = new Database();
             fileImporter = new FileImporter();
             fileImporter.OnVideoLoaded += onVideoRecievedHandler;
@@ -307,7 +309,7 @@ namespace TVSimulator
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
 
-            DispatcherTimer timer = new DispatcherTimer();
+            
             timer.Interval = TimeSpan.FromSeconds(15);
             timer.Tick += tickevent;
             timer.Start();
@@ -368,7 +370,7 @@ namespace TVSimulator
             }
 
             TimeSpan dateShowTS = new TimeSpan(dateShow.Hour, dateShow.Minute, 0);
-
+            
             changeLabels(curChannel, dateShowTS,sec);
 
         }
@@ -412,6 +414,11 @@ namespace TVSimulator
                 TvSeries t = playNow as TvSeries;
                 txtDescription.Text = t.Name +  " - Season " + t.Season + " Episode " + t.Episode + " - " + t.Description + "  - IMDB Rating: " + t.ImdbRating;
             }
+            if(c.MChannelType == Channel.channelType.youtube_channel)
+            {
+                YouTubeChannel ytc = new YouTubeChannel();
+                txtDescription.Text = ytc.Description;
+            }
         }
 
         private String timesToString(int hours, int minutes)
@@ -436,7 +443,14 @@ namespace TVSimulator
         {
             timeNow = DateTime.Now;
             lblClock.Content = timeNow.ToShortTimeString();
-            mediaProgressBar.Value +=900;            
+            mediaProgressBar.Value +=900;
+            if (mediaProgressBar.Value == mediaProgressBar.Maximum && currentChannel.MChannelType != Channel.channelType.local)
+            {
+                Debug.WriteLine("tick event invoke videoEnded");
+                mediaProgressBar.Value = 0;
+                youtubePlayer_videoEnded(youtubePlayer,new EventArgs());
+            }
+
         }
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -469,6 +483,7 @@ namespace TVSimulator
         {
             Dispatcher.Invoke(()=>
             {   // reload the channel to play next video
+                Debug.WriteLine("invoking next youtube video");
                 Channel_Up_Click(new Object(), new RoutedEventArgs());
                 Channel_Down_Click(new Object(), new RoutedEventArgs());
                 //playFromChannel(currentChannel);
