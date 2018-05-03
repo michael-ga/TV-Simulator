@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using YoutubeImporter;
 
 namespace TVSimulator
 {
@@ -22,11 +23,14 @@ namespace TVSimulator
     {
         private bool isSubfolders;
         private FileImporter fileImporter;
+        private Search ytbSearcher ;
+
 
         public SettingWindow()
         {
             InitializeComponent();
             fileImporter = new FileImporter();
+            ytbSearcher = new Search();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -48,6 +52,33 @@ namespace TVSimulator
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+    
+        // start async Task in order to sync Youtbe channel
+        private void sync_btn_Click(object sender, RoutedEventArgs e)
+        {
+            switch(((System.Windows.Controls.Button)sender).Name)
+            {
+                case "sync_all_btn":
+                    ytbSearcher.syncYoutubeChannels();
+                    ytbSearcher.syncYoutubePlaylistChannels();
+                    break;
+                case "sync_reg_btn":
+                    ytbSearcher.syncYoutubeChannels();
+                    break;
+                case "sync_plylst_btn":
+                    ytbSearcher.syncYoutubePlaylistChannels();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }

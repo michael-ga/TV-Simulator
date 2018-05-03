@@ -39,7 +39,7 @@ namespace TVSimulator
         public Media PlayNext { get => playNext; set => playNext = value; }
         public Channel CurrentChannel { get => currentChannel; }
 
-
+        
         #endregion fields
 
         public MainWindow()
@@ -55,7 +55,6 @@ namespace TVSimulator
             removeEmtpyScheduleChannels();
             //if (chanList.Count() == 0 || chanList == null)
             //    cb.buildLocalChannels();
-
             indBoard = new List<int>();
             for (var i = 0; i < chanList.Count();i++)
                 indBoard.Add(getIndexes(i , getToday()));
@@ -81,11 +80,21 @@ namespace TVSimulator
             int j = 0;
             if(chanList[indexOfChannel].BoardSchedule != null)
             {
+
                 var temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
                 while (DateTime.Compare(temp, thisDay) < 0)     //if temp is earlier than thisDay
                 {
                     j++;
-                    temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
+                    try
+                    {
+                        if (chanList[indexOfChannel].BoardSchedule != null && chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key != null)
+                            temp = chanList[indexOfChannel].BoardSchedule.ElementAt(j).Key;
+                    }
+                    catch (Exception)
+                    {
+                        break;
+                       // need to change to nullable dictionary..
+                    }
                 }
             }
             return j;

@@ -301,7 +301,24 @@ namespace YoutubeImporter
             return true;
         }
 
-        
+        public async Task<bool> syncAll()
+        {
+            List<YoutubePlaylistChannel> ytbPlsChannels = db.getPlaylistChannels();
+            List<YouTubeChannel> ytbChannels = db.getYoutubeChannelList();
+
+            foreach (YoutubePlaylistChannel channel in ytbPlsChannels)
+            {
+                await syncOnePlaylistChannel(channel);
+            }
+
+            foreach (YouTubeChannel channel in ytbChannels)
+            {
+                await syncOneChannel(channel);
+            }
+            return true;
+        }
+
+
         #endregion
 
         #region HELPER METHODS

@@ -37,11 +37,28 @@
             <TabItem Header="YouTube" Margin="197.8,0,-293.8,-1.8">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
+
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <Label Content="Channels Settings" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,36,0,0"/>
+                    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,62,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
+                    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
+
+                    <Button x:Name="sync_all_btn" Content="Sync All " HorizontalAlignment="Left" Margin="40,286,0,0" VerticalAlignment="Top" Width="113" Click="sync_btn_Click"/>
+                    <Button x:Name="sync_reg_btn" Content="Sync Regular Channels" HorizontalAlignment="Left" Margin="389,277,0,0" VerticalAlignment="Top" Width="131" Click="sync_btn_Click"/>
+                    <Button x:Name="sync_plylst_btn" Content="Sync Playlist Channels" HorizontalAlignment="Left" Margin="217,282,0,0" VerticalAlignment="Top" Width="122" Click="sync_btn_Click"/>
+                    <TextBlock HorizontalAlignment="Left" Height="35" Margin="24,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="520"><Run Text="Youtube Channel Brower " TextDecorations="Underline"/><LineBreak/><Run Text="add remove and search for your faivorate youtube channels "/></TextBlock>
+                    <Button Content="Launch" HorizontalAlignment="Left" Margin="242,138,0,0" VerticalAlignment="Top" Width="82"/>
+
+
+                    <Label Content="Sync Setting" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,179,0,0"/>
+                    <Label Content="Launch manually sync for youtube channels to get the newest conents for best experience&#xD;&#xA;NOTE: auto sync each channel is being launched every week" HorizontalAlignment="Left" Margin="22,220,0,0" VerticalAlignment="Top" Width="539" Height="40"/>
+
                 </Grid>
+
             </TabItem>
         </TabControl>
+
         <Button x:Name="ok_btn" Content="OK" HorizontalAlignment="Left" Height="21" Margin="448,545,0,0" VerticalAlignment="Top" Width="126"/>
         <Button x:Name="cancel_btn" Content="Cancel" HorizontalAlignment="Left" Height="21" Margin="317,545,0,0" VerticalAlignment="Top" Width="126"/>
     </Grid>

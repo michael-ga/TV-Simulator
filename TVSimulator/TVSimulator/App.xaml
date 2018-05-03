@@ -66,10 +66,24 @@
             </Setter>
         </Style>
 
+        <Style x:Key="gradientButton" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF3650DD" Offset="1"/>
+                        <GradientStop Color="#FFEDDEDE"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <SolidColorBrush x:Key="ProgressBarBorderBrush" Color="Transparent" />
         <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="White" />
         <SolidColorBrush x:Key="ProgressBarTrackBackgroundBrush" Color="#63D055" />
 
+        
     </Application.Resources>
 </Application>
 
