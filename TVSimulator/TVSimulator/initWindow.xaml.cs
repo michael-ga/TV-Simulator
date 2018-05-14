@@ -15,14 +15,15 @@ namespace TVSimulator
     /// </summary>
     public partial class initWindow : Window
     {
-        FileImporter fileImporter;
-        public Database db;
+        private FileImporter fileImporter;
+        private Database db;
  
         public initWindow()
         {
             InitializeComponent();
             fileImporter = new FileImporter();
-            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            db = new Database();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -64,23 +65,36 @@ namespace TVSimulator
             
 
             loader.IsBusy = true;
-            int res = await fileImporter.getAllMediaFromDirectory(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value);
-            if (res == -1)
+            if (!db.isYoutubeChannelListEmpty())
             {
-                System.Windows.MessageBox.Show("path not contains any media, please enter A path with media files");
-                loader.IsBusy = false;
-                gotoStatrtupIW();
+                YoutubeImporter.Search a = new YoutubeImporter.Search();
+                await a.syncAll();  // change to sync partially on start
             }
-            //var t = new Task(() =>
-            //{//(new Action(() => youtubePlayer.AutoPlay = true));
-            //    Dispatcher.Invoke(new Action(() => loader.IsBusy = true));
-            //    Dispatcher.Invoke(new Action(() => fileImporter.getAllMediaFromDirectory(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value)));
-            //});
-            ////t.ContinueWith(a =>
-            ////{
-            ////    loader.IsBusy = false;
-            ////}, TaskScheduler.FromCurrentSynchronizationContext());
-            //t.Start();
+            if(pathTextBox.Text != "")
+            {
+                int res = await fileImporter.getAllMediaFromDirectory(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value);
+                if (res == -1)
+                {
+                    System.Windows.MessageBox.Show("path not contains any media, please enter A path with media files");
+                    loader.IsBusy = false;
+                    gotoStatrtupIW();
+                }
+                //var t = new Task(() =>
+                //{//(new Action(() => youtubePlayer.AutoPlay = true));
+                //    Dispatcher.Invoke(new Action(() => loader.IsBusy = true));
+                //    Dispatcher.Invoke(new Action(() => fileImporter.getAllMediaFromDirectory(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value)));
+                //});
+                ////t.ContinueWith(a =>
+                ////{
+                ////    loader.IsBusy = false;
+                ////}, TaskScheduler.FromCurrentSynchronizationContext());
+                //t.Start();
+            }
+            loader.IsBusy = false;
+            MainWindow mw = new MainWindow();
+            this.Close();
+            mw.Show();
+
         }
 
         public static bool CheckForInternetConnection()
@@ -117,7 +131,6 @@ namespace TVSimulator
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            var db = new Database();
             var ytChanels = db.getYoutubeChannelList();
             if ((pathTextBox.Text == "") && ( ytChanels == null || ytChanels.Count < 1 ))
             {
@@ -267,7 +280,6 @@ namespace TVSimulator
             startCycle = DateTime.Now;
 
             BroadcastTime bt = new BroadcastTime(startCycle,startTime,endTime);
-            db = new Database();
             db.insertBroadcastTime(bt);
             return 0;
         }
