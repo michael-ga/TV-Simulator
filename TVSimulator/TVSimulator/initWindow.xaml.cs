@@ -117,13 +117,15 @@ namespace TVSimulator
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            if (pathTextBox.Text == "" || pathTextBox.Text == null)
+            var db = new Database();
+            var ytChanels = db.getYoutubeChannelList();
+            if ((pathTextBox.Text == "") && ( ytChanels == null || ytChanels.Count < 1 ))
             {
-                System.Windows.MessageBox.Show("Please select folder");
+                System.Windows.MessageBox.Show("Please select your media");
                 return;
             }
 
-            //hide controllers of the first screen
+            // hide controllers of the first screen
             getFolderBtn.Visibility = Visibility.Hidden;
             lblAddYouTube.Visibility = Visibility.Hidden;
             youtubeBtn.Visibility = Visibility.Hidden;
@@ -131,7 +133,7 @@ namespace TVSimulator
             pathTextBox.Visibility = Visibility.Hidden;
             btnNext.Visibility = Visibility.Hidden;
 
-            //show controllers of the second screen and change background
+            // show controllers of the second screen and change background
             secondBackground.Visibility = Visibility.Visible;
             btnSubmit.Visibility = Visibility.Visible;
             isSetupAuto.Visibility = Visibility.Visible;

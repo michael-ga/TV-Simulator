@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TVSimulator"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="initWindow"  WindowStartupLocation="CenterScreen"  Height="500" Width="500" ResizeMode="NoResize">
+        Title="TV-Simulator"  WindowStartupLocation="CenterScreen"  Height="500" Width="500" ResizeMode="NoResize">
     <Window.Background>
         <ImageBrush ImageSource="Resources/fileImporterScreen.jpg"/>
     </Window.Background>
