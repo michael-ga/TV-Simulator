@@ -220,23 +220,28 @@ namespace HelperClasses
                 finalHourDate = finalHourDate.AddHours(endTime[i]);     //end time in one day
 
                 mediaDuration = media[j % mediaLength].getDurationTimespan();
-                if (typeOfMedia.Equals(Constants.YOUTUBE_CHANNEL) && mediaDuration.TotalSeconds == 0)
-                    return -1;
-                temp = date.Add(mediaDuration);                     // current date + media duration
-
-                if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
+                if (typeOfMedia.Equals(Constants.YOUTUBE_CHANNEL) && mediaDuration.TotalSeconds > 0)
                 {
-                    board.Add(date, media[j % mediaLength]);
-                    date = temp;
-                    date = date.AddSeconds(PROMO_TIME);
-                    j++;
+                    temp = date.Add(mediaDuration);                     // current date + media duration
+
+                    if (DateTime.Compare(temp, finalHourDate) < 0)     //if temp is earlier than finalhourDate
+                    {
+                        board.Add(date, media[j % mediaLength]);
+                        date = temp;
+                        date = date.AddSeconds(PROMO_TIME);
+                        j++;
+                    }
+                    else
+                    {
+                        temp = date.AddDays(1);
+                        i = (int)temp.DayOfWeek;
+                        date = new DateTime(temp.Year, temp.Month, temp.Day, startTime[i], 0, 0);
+                        k++;
+                    }
                 }
                 else
                 {
-                    temp = date.AddDays(1);
-                    i = (int)temp.DayOfWeek;
-                    date = new DateTime(temp.Year, temp.Month, temp.Day, startTime[i], 0, 0);
-                    k++;
+                    j++;
                 }
             }
 

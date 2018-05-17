@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-        Title="SettingWindow" Height="610" Width="600">
+        Title="Settings" Height="610" Width="600">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

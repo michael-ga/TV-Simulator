@@ -124,6 +124,8 @@ namespace HelperClasses
             }
         }
 
+       
+
         public List<Movie> getMovieList()
         {
             var movie = db.GetCollection<Movie>(Constants.MOVIE_COLLECTION);
@@ -328,6 +330,11 @@ namespace HelperClasses
             }
             return false;
 
+        }
+
+        public bool isYoutubeChannelListEmpty()
+        {
+            return youtube_Playlist_channelCollection.Count() > 0;
         }
         #endregion
 
