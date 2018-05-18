@@ -246,8 +246,8 @@ namespace TVSimulator
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
 
             saveListsToDB();
-            if (allMedia.Count > 0)                   // send event to UI
-                OnVideoLoaded(this, allMedia);
+           // if (allMedia.Count > 0)                   // send event to UI
+               // OnVideoLoaded(this, allMedia);
 
             return true;
         }

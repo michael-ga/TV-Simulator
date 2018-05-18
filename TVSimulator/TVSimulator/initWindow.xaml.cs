@@ -65,7 +65,7 @@ namespace TVSimulator
             
 
             loader.IsBusy = true;
-            if (!db.isYoutubeChannelListEmpty())
+            if (db.isYoutubeChannelListEmpty())
             {
                 YoutubeImporter.Search a = new YoutubeImporter.Search();
                 await a.syncAll();  // change to sync partially on start

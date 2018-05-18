@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace HelperClasses
 {
@@ -220,7 +221,7 @@ namespace HelperClasses
                 finalHourDate = finalHourDate.AddHours(endTime[i]);     //end time in one day
 
                 mediaDuration = media[j % mediaLength].getDurationTimespan();
-                if (typeOfMedia.Equals(Constants.YOUTUBE_CHANNEL) && mediaDuration.TotalSeconds > 0)
+                if (mediaDuration.TotalSeconds > 0)
                 {
                     temp = date.Add(mediaDuration);                     // current date + media duration
 
@@ -408,6 +409,11 @@ namespace HelperClasses
                     var hour = board.Keys.ElementAt(i).Hour;
                     if (date.Year == year && date.Month == month && date.Day == day && date.Hour <= hour )
                         tempList.Add(board.Keys.ElementAt(i), board.Values.ElementAt(i));
+                }
+                if (tempList.Values.Last() == null )
+                {
+                    MessageBox.Show("errr creating dict");
+                    return null;
                 }
                 temp = tempList.Keys.Last().Add(tempList.Values.Last().getDurationTimespan());      // start time to add repeat media
 

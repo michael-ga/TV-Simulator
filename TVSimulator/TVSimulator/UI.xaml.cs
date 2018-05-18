@@ -536,8 +536,8 @@ namespace TVSimulator
 
             timer = new DispatcherTimer();
             // reload channels 
-            fileImporter = new FileImporter();
-            fileImporter.OnVideoLoaded += onVideoRecievedHandler;
+            //fileImporter = new FileImporter();
+            //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
 
             cb.rebuildAllChannels();
