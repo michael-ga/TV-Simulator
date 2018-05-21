@@ -16,7 +16,7 @@ namespace TVSimulator
         private bool isSubfolders;
         private FileImporter fileImporter;
         private Search ytbSearcher ;
-        private List<string> pathes;
+        private List<costumPath> pathes;
         private Database db;
         private Window UI_caller;
 
@@ -26,7 +26,7 @@ namespace TVSimulator
             UI_caller = mw;
             fileImporter = new FileImporter();
             ytbSearcher = new Search();
-            pathes = new List<string>();
+            pathes = new List<costumPath>();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -103,12 +103,14 @@ namespace TVSimulator
                 System.Windows.MessageBox.Show("Please choose enter a folder path");
                 return;
             }
-            if (pathes.Contains(path_textBox.Text))
+            var match = pathes.Find(x => x.Path.Equals(path_textBox.Text));
+            if (match != null)
             {
                 System.Windows.MessageBox.Show("Folder path is already added");
                 return;
             }
-            pathes.Add(path_textBox.Text);
+            costumPath tmp = new costumPath(path_textBox.Text, isIncludeSubfolders.IsChecked.Value);
+            pathes.Add(tmp);
         }
 
         private async void update_Click(object sender, RoutedEventArgs e)
@@ -129,7 +131,7 @@ namespace TVSimulator
             db.removeAllCollections();
 
             // reimport folder list and pathes and create 
-            var res = await fileImporter.addDirectoryList(pathes, true);
+            var res = await fileImporter.addDirectoryList(pathes);
             MainWindow mw = new MainWindow();
             mw.Show();
             this.Close();

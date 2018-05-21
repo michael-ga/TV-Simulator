@@ -13,7 +13,25 @@ using WMPLib;
 
 namespace TVSimulator
 {
-    class FileImporter : EventArgs,IFileImporter
+    class costumPath
+    {
+        string path;
+        bool isIncludeSubFolders;
+        public costumPath(string p,bool v)
+        {
+            Path = p;
+            IsIncludeSubFolders = v;
+        }
+        public bool isExist(string _path)
+        {
+            return path.Equals(path);
+        }
+        public string Path { get => path; set => path = value; }
+        public bool IsIncludeSubFolders { get => isIncludeSubFolders; set => isIncludeSubFolders = value; }
+    }
+
+
+    class FileImporter : EventArgs, IFileImporter
     {
         #region fields
         public delegate void videoLoaded(Object o, List<Media> arg);
@@ -27,12 +45,12 @@ namespace TVSimulator
         List<Music> allMusic;
         Database db;
 
-        private string [] videoExt =  { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
-        private string [] musicExt =  { ".mp3", ".flac", ".ogg", ".wav", ".wma" };
-        private string [] mediaExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp", ".mp3", ".flac", ".ogg", ".wav", ".wma" };
+        private string[] videoExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
+        private string[] musicExt = { ".mp3", ".flac", ".ogg", ".wav", ".wma" };
+        private string[] mediaExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp", ".mp3", ".flac", ".ogg", ".wav", ".wma" };
 
         public List<Media> AllMedia { get => allMedia; set => allMedia = value; }
-        
+
         #endregion
 
         #region Constructor
@@ -49,11 +67,11 @@ namespace TVSimulator
         #endregion
 
         #region Get pathes and sort
-        public async Task<bool> addDirectoryList(List<string> dirs, bool isIncludeSubfolders)
+        public async Task<bool> addDirectoryList(List<costumPath> dirs)
         {
-            foreach (string path in dirs)
+            foreach (costumPath val in dirs)
             {
-                await getAllMediaFromDirectory(path, isIncludeSubfolders);
+                await getAllMediaFromDirectory(val.Path, val.IsIncludeSubFolders);
             }
             saveListsToDB();
             return true;
@@ -106,7 +124,7 @@ namespace TVSimulator
                 {
                     //var dur = getfilePath);
                     var dur = getDuration(filePath).ToString();
-                    allMedia.Add(new Media(filePath, fileInfo.Name,dur));
+                    allMedia.Add(new Media(filePath, fileInfo.Name, dur));
                 }
                 return true;
             }
@@ -116,10 +134,10 @@ namespace TVSimulator
                 if (contains)
                     musicHandler(filePath, fileInfo.Name);
             }
-  
+
             return true;
         }
-        
+
         #endregion
 
         #region media handlers
@@ -140,7 +158,7 @@ namespace TVSimulator
                 }
             }
 
-            if(type.Equals(Constants.TVSERIES))
+            if (type.Equals(Constants.TVSERIES))
             {
                 foreach (string val in potentialTvVals)
                 {
@@ -149,26 +167,26 @@ namespace TVSimulator
                         break;
                 }
             }
-          
+
             try
             {
-                Media media = await extendVideoInfo(name,videoName,filePath,type);
+                Media media = await extendVideoInfo(name, videoName, filePath, type);
                 if (media == null)
                 {
                     media = new Media(filePath, videoName);
                     return false;
                 }
-                if(media is Movie)
+                if (media is Movie)
                     allMedia.Add((Movie)media);
                 if (media is TvSeries)
                     allMedia.Add((TvSeries)media);
-                
+
                 return true;
             }
             catch (Exception) { return false; }
         }
 
-        public void musicHandler(string path,string fileName)
+        public void musicHandler(string path, string fileName)
         {
             try
             {
@@ -195,13 +213,13 @@ namespace TVSimulator
             {
                 int x = fullName.IndexOf(compareArg);
                 string videoName = fullName.Substring(0, x);
-                videoName = videoName.Replace(".", " ").Replace("-"," ").Replace("_"," ");
+                videoName = videoName.Replace(".", " ").Replace("-", " ").Replace("_", " ");
                 return videoName;
             }
             return "";
         }
 
-        public async Task<Media> extendVideoInfo(string originalName,string videoName, string path, string type)
+        public async Task<Media> extendVideoInfo(string originalName, string videoName, string path, string type)
         {
             OMDbSharp.OMDbClient client = new OMDbSharp.OMDbClient(Constants.OMDB_APIKEY, false);
             var x = await client.GetItemByTitle(videoName);     // return object with properties
@@ -212,7 +230,7 @@ namespace TVSimulator
             {
                 Movie movie;
                 if (id == null)
-                    movie = new Movie(path,videoName,duration);
+                    movie = new Movie(path, videoName, duration);
                 else
                     movie = new Movie(path, x.Title, duration, x.Genre, x.Director, x.Plot, x.imdbRating, x.Year);
                 allMovies.Add(movie);
@@ -222,15 +240,15 @@ namespace TVSimulator
             {
                 string[] data = getSeasonAndEpisode(originalName);      //  data[0] = season , data[1] = episode
                 TvSeries TvSeries;
-                
+
                 try
                 {
                     if (id == null)
-                        TvSeries = new TvSeries(path, videoName, duration, "general",data[0],data[1]);
+                        TvSeries = new TvSeries(path, videoName, duration, "general", data[0], data[1]);
                     else
                     {
                         var y = await client.GetSeriesEpisode(id, int.Parse(data[0]), int.Parse(data[1]));
-                        if(!y.Plot.Equals("N/A"))
+                        if (!y.Plot.Equals("N/A"))
                             TvSeries = new TvSeries(path, x.Title, duration, x.Genre, data[0], data[1], y.Plot, x.imdbRating, x.Year);
                         else
                             TvSeries = new TvSeries(path, x.Title, duration, x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
@@ -239,7 +257,7 @@ namespace TVSimulator
                 catch (Exception)
                 {
                     TvSeries = new TvSeries(path, x.Title, duration, x.Genre, data[0], data[1], x.Plot, x.imdbRating, x.Year);
-                }                
+                }
                 allTVseries.Add(TvSeries);
                 return TvSeries;
             }
@@ -256,9 +274,9 @@ namespace TVSimulator
             foreach (var item in allPathes)
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
 
-            
-           // if (allMedia.Count > 0)                   // send event to UI
-               // OnVideoLoaded(this, allMedia);
+
+            // if (allMedia.Count > 0)                   // send event to UI
+            // OnVideoLoaded(this, allMedia);
 
             return true;
         }
@@ -269,13 +287,13 @@ namespace TVSimulator
             {
                 int x;
                 if (name.Contains("S0"))
-                    x = name.IndexOf("S0")+1;
+                    x = name.IndexOf("S0") + 1;
                 else
                     x = name.IndexOf("S1") + 1;
 
-                int y = name.IndexOf("E")+1;
+                int y = name.IndexOf("E") + 1;
                 string season = name.Substring(x, 2);
-                string episode = name.Substring(y,2);
+                string episode = name.Substring(y, 2);
                 string[] res = { season, episode };
                 return res;
             }
@@ -293,9 +311,9 @@ namespace TVSimulator
             db.removeCollections();
             db.insertByType(allMedia);
         }
-        
+
         private string adjustTVString(string origin)
-        {            
+        {
             string temp = origin.Replace("Season ", "S");
             temp = temp.Replace(" Episode ", "E");
             temp = temp.Replace("Episode ", "E");
@@ -309,7 +327,14 @@ namespace TVSimulator
         }
 
         #endregion Helper Methods
+
+
+
+
     }
 
-   
+    
 }
+
+
+
