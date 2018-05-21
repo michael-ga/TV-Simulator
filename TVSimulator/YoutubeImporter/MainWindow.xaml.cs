@@ -88,29 +88,31 @@ namespace YoutubeImporter
             if (!(db.insertYoutubechannel(currChannelSelection)))
                 Debug.WriteLine("channel not added");
             else
-                Debug.WriteLine("channel Added");
+                MessageBox.Show("channel added!");
 
         }
 
         private void removeChannelBtn_Click(object sender, RoutedEventArgs e)
         {
-           
-            if(type == (int)SelectionType.channel)
+           if (currChannelSelection != null && currChannelSelection.Path != null)
             {
-                bool res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currChannelSelection.Path);
-                if (res)
-                    Channels = db.getYoutubeChannelList();
-                else
-                    Debug.WriteLine("nothing happened");
-            }
-            // remove playlist channels related
-            if (type == (int)SelectionType.playlistChannel)
-            {
-                bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
-                if (res1)
-                    PlaylistChannels = db.getPlaylistChannels();
-                else
-                    Debug.WriteLine("nothing happened");
+                if(type == (int)SelectionType.channel)
+                {
+                    bool res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currChannelSelection.Path);
+                    if (res)
+                        Channels = db.getYoutubeChannelList();
+                    else
+                        Debug.WriteLine("nothing happened");
+                }
+                // remove playlist channels related
+                if (type == (int)SelectionType.playlistChannel)
+                {
+                    bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
+                    if (res1)
+                        PlaylistChannels = db.getPlaylistChannels();
+                    else
+                        Debug.WriteLine("nothing happened");
+                }
             }
         }
 
@@ -292,6 +294,9 @@ namespace YoutubeImporter
             }
         }
 
-        
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
