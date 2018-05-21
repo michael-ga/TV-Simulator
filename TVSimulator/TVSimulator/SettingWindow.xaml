@@ -22,16 +22,18 @@
                     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,62,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
                     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
                     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="126" Margin="10,359,0,0" Stroke="Black" VerticalAlignment="Top" Width="568"/>
-                    <Label Content="Change the main path of your media folder at any time.&#xD;&#xA;WARNING: changing the main path will delete all existing channels and streams" HorizontalAlignment="Left" Margin="22,67,0,0" VerticalAlignment="Top" Width="539" Height="40"/>
-                    <Button Content="Browse" HorizontalAlignment="Left" Margin="22,116,0,0" VerticalAlignment="Top" Width="75"/>
-                    <TextBox HorizontalAlignment="Left" Height="19" Margin="102,116,0,0" TextWrapping="Wrap" Text="New Path" VerticalAlignment="Top" Width="459"/>
-                    <CheckBox Content="Include SubFolder" HorizontalAlignment="Left" Margin="22,146,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Locate and add all of your media folders using Browse button and &quot;add folder&quot; button.&#xD;&#xA;to reload media and broadcast schedule press &quot;Update directories&quot; button.&#xA;WARNING: pressing &quot;Update directories&quot; will erase your old broadcast schedule and media pathes" HorizontalAlignment="Left" Margin="22,60,0,0" VerticalAlignment="Top" Width="539" Height="61"/>
+                    <Button Content="Browse" HorizontalAlignment="Left" Margin="22,116,0,0" VerticalAlignment="Top" Width="75" Click="change_path_click"/>
+                    <TextBox x:Name="path_textBox" HorizontalAlignment="Left" Height="19" Margin="102,116,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="459"/>
+                    <CheckBox  x:Name="isIncludeSubfolders" Content="Include sub folders" HorizontalAlignment="Left" Margin="22,146,0,0" VerticalAlignment="Top"/>
                     <Label Content="Change your watch times according to your schedule.&#xD;&#xA;Warning: Changing your viewing hours will create a new programming schedule across all channels." HorizontalAlignment="Left" Margin="22,220,0,0" VerticalAlignment="Top" Width="539" Height="40"/>
                     <Button Content="Set manually" HorizontalAlignment="Left" Margin="22,289,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
                     <CheckBox Content="24/7 streaming" HorizontalAlignment="Left" Margin="22,264,0,0" VerticalAlignment="Top"/>
                     <Label Content="Sync your personal media:&#xD;&#xA;Incase that was changes in your main media folder - add, remove, or change your media content -&#xD;&#xA;you can press at the sync button to synchronize your system.&#xD;&#xA;WARNING: This will restart the system and channels may be added / deleted&#xD;&#xA;and each channel's board schedule could be changed." HorizontalAlignment="Left" Margin="22,359,0,0" VerticalAlignment="Top" Width="539" Height="91"/>
                     <Button Content="Set manually" HorizontalAlignment="Left" Margin="22,289,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
                     <Button Content="Sync Now" HorizontalAlignment="Left" Margin="247,455,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
+                    <Button x:Name="addPathBtn" Content="add folder" HorizontalAlignment="Left" Margin="221,146,0,0" VerticalAlignment="Top" Width="75" Click="addPathBtn_Click"/>
+                    <Button x:Name="update" Content="Update directories" HorizontalAlignment="Left" Margin="365,143,0,0" VerticalAlignment="Top" Width="115" Height="21" Click="update_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="YouTube" Margin="197.8,0,-293.8,-1.8">

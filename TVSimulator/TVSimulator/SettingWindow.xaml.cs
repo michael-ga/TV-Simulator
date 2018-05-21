@@ -1,17 +1,9 @@
-﻿using System;
+﻿using HelperClasses;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using YoutubeImporter;
 
 namespace TVSimulator
@@ -24,13 +16,17 @@ namespace TVSimulator
         private bool isSubfolders;
         private FileImporter fileImporter;
         private Search ytbSearcher ;
+        private List<string> pathes;
+        private Database db;
+        private Window UI_caller;
 
-
-        public SettingWindow()
+        public SettingWindow(Window mw)
         {
             InitializeComponent();
+            UI_caller = mw;
             fileImporter = new FileImporter();
             ytbSearcher = new Search();
+            pathes = new List<string>();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -85,6 +81,58 @@ namespace TVSimulator
         {
             YoutubeImporter.MainWindow m = new YoutubeImporter.MainWindow();
             m.Show();
+        }
+
+        private void change_path_click(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog fd = new FolderBrowserDialog();
+            if (Properties.Settings.Default.Setting_fd_lastPath != "")
+                fd.SelectedPath = Properties.Settings.Default.Setting_fd_lastPath.ToString();
+            if (fd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Properties.Settings.Default.Setting_fd_lastPath = fd.SelectedPath;
+                path_textBox.Text = fd.SelectedPath;
+            }
+
+        }
+
+        private void addPathBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (path_textBox.Text == "")
+            {
+                System.Windows.MessageBox.Show("Please choose enter a folder path");
+                return;
+            }
+            if (pathes.Contains(path_textBox.Text))
+            {
+                System.Windows.MessageBox.Show("Folder path is already added");
+                return;
+            }
+            pathes.Add(path_textBox.Text);
+        }
+
+        private async void update_Click(object sender, RoutedEventArgs e)
+        {
+            if (pathes.Count() == 0)
+            {
+                System.Windows.MessageBox.Show("Please add at least one folder path");
+                return;
+            }
+            System.Windows.MessageBox.Show("are you shure?\n all channels schedule will be lost");
+            // change to yes no box..
+
+            // close main window
+            UI_caller.Close();
+
+            // remove old channel data
+            db = new Database();
+            db.removeAllCollections();
+
+            // reimport folder list and pathes and create 
+            var res = await fileImporter.addDirectoryList(pathes, true);
+            MainWindow mw = new MainWindow();
+            mw.Show();
+            this.Close();
         }
     }
 }

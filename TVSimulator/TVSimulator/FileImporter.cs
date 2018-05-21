@@ -19,6 +19,7 @@ namespace TVSimulator
         public delegate void videoLoaded(Object o, List<Media> arg);
         public event videoLoaded OnVideoLoaded;
 
+        List<String> allDirectories;
         List<String> allPathes;
         List<Media> allMedia;
         List<Movie> allMovies;
@@ -37,6 +38,7 @@ namespace TVSimulator
         #region Constructor
         public FileImporter()
         {
+            allDirectories = new List<string>();
             allPathes = new List<string>();
             allMedia = new List<Media>();
             allMovies = new List<Movie>();
@@ -47,7 +49,15 @@ namespace TVSimulator
         #endregion
 
         #region Get pathes and sort
-
+        public async Task<bool> addDirectoryList(List<string> dirs, bool isIncludeSubfolders)
+        {
+            foreach (string path in dirs)
+            {
+                await getAllMediaFromDirectory(path, isIncludeSubfolders);
+            }
+            saveListsToDB();
+            return true;
+        }
         public async Task<int> getAllMediaFromDirectory(string path, bool isIncludeSubfolders)  // get files paths from folder List<string>(folder path) 
         {
             string[] mediaExtStarrd = { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mpeg", "*.mpg", "*.3gp", "*.mp3", "*.flac", "*.ogg", "*.wav", "*.wma" };
@@ -66,6 +76,7 @@ namespace TVSimulator
             if (allPathes.Count() == 0)
                 return -1;
             await getAllMedia();
+            saveListsToDB();
             return 0;
         }
 
@@ -245,7 +256,7 @@ namespace TVSimulator
             foreach (var item in allPathes)
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
 
-            saveListsToDB();
+            
            // if (allMedia.Count > 0)                   // send event to UI
                // OnVideoLoaded(this, allMedia);
 

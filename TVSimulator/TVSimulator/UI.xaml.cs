@@ -507,7 +507,7 @@ namespace TVSimulator
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            SettingWindow s = new SettingWindow();
+            SettingWindow s = new SettingWindow(this);
             s.Show();
         }
 

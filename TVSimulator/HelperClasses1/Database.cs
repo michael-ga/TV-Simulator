@@ -59,10 +59,29 @@ namespace HelperClasses
             musicCollection.Delete(Query.All(Query.Descending));
         }
 
+        public void removeAllCollections()
+        {
+            channelCollection.Delete(Query.All(Query.Descending));
+            youtube_channelCollection.Delete(Query.All(Query.Descending));
+            youtube_Playlist_channelCollection.Delete(Query.All(Query.Descending));
+           
+            MediaCollection.Delete(Query.All(Query.Descending));
+            movieCollection.Delete(Query.All(Query.Descending));
+            TVCollection.Delete(Query.All(Query.Descending));
+            musicCollection.Delete(Query.All(Query.Descending));
+        }
+
         public void removeChannelCollection()
         {
             channelCollection.Delete(Query.All(Query.Descending));
         }
+
+        public void removeLocalMediaCollection()
+        {
+            movieCollection.Delete(Query.All(Query.Descending));
+            TVCollection.Delete(Query.All(Query.Descending)); 
+        }
+
 
 
             #region Collection queries

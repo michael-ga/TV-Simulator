@@ -36,9 +36,16 @@ namespace TVSimulator
         private void chooseFolderBtn_Click(object sender, RoutedEventArgs e)
         {
             using (var folderDialog = new FolderBrowserDialog())
+                
             {
+                if (Properties.Settings.Default.Init_fd_lastPath != "")// remember the last selected path
+                {
+                    folderDialog.SelectedPath = Properties.Settings.Default.Init_fd_lastPath;
+                }
+
                 if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
+                    folderDialog.SelectedPath = folderDialog.SelectedPath;  // save the last selected path for navigating next time
                     pathTextBox.Text = folderDialog.SelectedPath;
                 }
             }
@@ -89,7 +96,7 @@ namespace TVSimulator
                 ////    loader.IsBusy = false;
                 ////}, TaskScheduler.FromCurrentSynchronizationContext());
                 //t.Start();
-            }
+             }
             loader.IsBusy = false;
             MainWindow mw = new MainWindow();
             this.Close();

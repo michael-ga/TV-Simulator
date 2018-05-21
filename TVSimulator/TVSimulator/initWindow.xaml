@@ -31,7 +31,7 @@
                 </Button.Background>
             </Button>
 
-            <CheckBox x:Name="SubfoldersCheckBox" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,55.4,0,0" VerticalAlignment="Top" Foreground="White" Grid.Row="1"/>
+            <CheckBox x:Name="SubfoldersCheckBox" Content="Include Subfolders" HorizontalAlignment="Left" Margin="15,55.4,0,0" IsChecked="True" VerticalAlignment="Top" Foreground="White" Grid.Row="1"/>
             <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Margin="18,80.4,0,0" TextWrapping="Wrap" Width="305" Height="23" VerticalAlignment="Top" Foreground="#FF050442" Grid.Row="1" />
 
             <Button x:Name="btnSubmit" Content="Start" HorizontalAlignment="Left" Margin="391,224.4,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnSubmit_Click" BorderBrush="Black" Grid.Row="1">
