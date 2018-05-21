@@ -29,7 +29,6 @@ namespace TVSimulator
         private int channelNum;
         private DateTime specDay;
         private MainWindow m;
-
         private bool isEmpty = false;
 
         public boardWindow(MainWindow main)
@@ -158,6 +157,11 @@ namespace TVSimulator
             curChar = chanList[index];
             channelName.Content = channelNum + " - " + curChar.Genre;
             buildBoardByDay(m, curChar, specDay);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            m.Focus();
         }
     }
 }

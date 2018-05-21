@@ -102,17 +102,7 @@ namespace TVSimulator
 
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
-            if (infoPressed)
-            {
-                statsBox.Visibility = Visibility.Hidden;
-                txtDescription.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                statsBox.Visibility = Visibility.Visible;
-                txtDescription.Visibility = Visibility.Hidden;
-            }
-            infoPressed = !infoPressed;
+            triggerinfoPressed();
         }
 
         private void btnControl_Click(object sender, RoutedEventArgs e)
@@ -153,8 +143,7 @@ namespace TVSimulator
         {
             if (e.Key == Key.Escape)
             {
-                this.WindowState = WindowState.Normal;
-                this.WindowStyle = WindowStyle.ToolWindow;
+                triggerFullScreen();
             }
         }
 
@@ -550,6 +539,12 @@ namespace TVSimulator
                 indBoard.Add(getIndexes(i, getToday()));
         }
 
+        private void full_screen_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Maximized;
+            this.WindowStyle = WindowStyle.None;
+            IsFullscreen = true;
+        }
 
         public bool isChannelsExist()
         {
@@ -559,6 +554,41 @@ namespace TVSimulator
             }
             return false;
         }
+
+        private void triggerFullScreen()
+        {
+            if (IsFullscreen == true)
+            {
+                this.WindowState = WindowState.Normal;
+                this.WindowStyle = WindowStyle.ToolWindow;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+                this.WindowStyle = WindowStyle.None;
+            }
+            IsFullscreen = !IsFullscreen;
+        }
+
+
+
+
+        private void triggerinfoPressed()
+        {
+            if (infoPressed)
+            {
+                statsBox.Visibility = Visibility.Hidden;
+                txtDescription.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                statsBox.Visibility = Visibility.Visible;
+                txtDescription.Visibility = Visibility.Hidden;
+            }
+            infoPressed = !infoPressed;
+        }
+
+        
 
         #endregion helper methods
     }

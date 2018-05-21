@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-        Title="boardWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Height="500" Width="800">
+        Title="boardWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Closing="Window_Closing" Height="500" Width="800">
     <Window.Background>
         <ImageBrush TileMode="FlipY"/>
     </Window.Background>

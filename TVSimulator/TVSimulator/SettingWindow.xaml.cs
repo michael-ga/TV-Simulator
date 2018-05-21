@@ -134,5 +134,12 @@ namespace TVSimulator
             mw.Show();
             this.Close();
         }
+
+      
+        // set back the focus to ui window after closing settings
+        private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            UI_caller.Focus();
+        }
     }
 }
