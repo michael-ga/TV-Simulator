@@ -6,6 +6,7 @@ namespace HelperClasses
         // arrays and collections
         //public const string [] videoExt = new co{ ".mkv", ".avi", ".wmv", ".mp4" };
         // file importer constants
+        public const int YOUTUBE_PROGRESS_REPORT_RETRIES = 6;
         public const string OMDB_APIKEY = "77f17a4d";
         public const string MOVIE = "movie";
         public const string TVSERIES = "TVseries";

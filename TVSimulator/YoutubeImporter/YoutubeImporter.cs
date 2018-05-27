@@ -9,10 +9,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
+using static YoutubeImporter.MainWindow;
 
 namespace YoutubeImporter
 {
+    public class MyTaskProgressReport
+    {
+        //current progress
+        public int CurrentProgressAmount { get; set; }
+        //total progress
+        public int TotalProgressAmount { get; set; }
+        //some message to pass to the UI of current progress
+        public string CurrentProgressMessage { get; set; }
+    }
     /// <summary>
     ///  this class handles api calls and data extracting from Youtube Data Api
     /// </summary>
@@ -21,7 +32,11 @@ namespace YoutubeImporter
         #region Fields and Ctor
         private YouTubeService myService;
         private Database db;
+        private int channelsToSync;
+        private int chanelvideoCount,playlistVideoCount;
+        private int channelAmount,playlistAmount;
 
+       
         public Search()
         {
             myService = getService();
@@ -99,12 +114,14 @@ namespace YoutubeImporter
                 res.AddRange(searchListResponse.Items);     // Process  the video responses 
                 nextpagetoken = searchListResponse.NextPageToken;
             }
+            channelAmount = res.Count;
             foreach (var item in res)
             {
                 dur = await durationReq(item.Id.VideoId.ToString());
                 dur = extractDuration(dur);
                 YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, dur, "", ytChannelId, extractThumbnail(item.Snippet));
                 videoList.Add(temp);
+                chanelvideoCount++;
                 System.Diagnostics.Debug.WriteLine(videoList.Count);
             }
             return videoList;
@@ -163,6 +180,7 @@ namespace YoutubeImporter
                 res.AddRange(searchListResponse.Items);     // Process  the video responses 
                 nextpagetoken = searchListResponse.NextPageToken;
             }
+            playlistAmount = res.Count;
             foreach (var item in res)
             {
                 dur = await durationReq(item.Snippet.ResourceId.VideoId);
@@ -182,6 +200,7 @@ namespace YoutubeImporter
                         temp = new YoutubePlaylistVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId,"", episodeVal);
 
                     videoList.Add(temp);
+                    playlistVideoCount++;
                     System.Diagnostics.Debug.WriteLine(videoList.Count);
                 }
             }
@@ -252,7 +271,67 @@ namespace YoutubeImporter
         #endregion
 
         #region SYNC
-        
+
+
+        public async Task syncAllAsyncReportProgress(int sleepTime, IProgress<MyTaskProgressReport> progress)
+        {
+            int retries = Constants.YOUTUBE_PROGRESS_REPORT_RETRIES;
+            int startCondition = 10;
+            bool isStarted = false;
+            var t = new Task(() =>{var res =  syncAll(); });
+            t.Start();
+            progress.Report(new MyTaskProgressReport { CurrentProgressAmount = playlistVideoCount, TotalProgressAmount = playlistAmount, CurrentProgressMessage = string.Format("collecting channel data") });
+
+            while (channelsToSync > 0 || channelsToSync == 0 && startCondition-- > 0 && !isStarted)
+            {
+                if (channelsToSync > 0 && !isStarted )
+                    isStarted = true;
+                await Task.Delay(sleepTime);
+
+                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = playlistVideoCount, TotalProgressAmount = playlistAmount, CurrentProgressMessage = string.Format("Number of channels remain {0}", channelsToSync) });
+
+                while (chanelvideoCount < channelAmount || channelAmount == 0 && retries-- > 0)
+                {
+                    await Task.Delay(sleepTime);
+                    if (channelAmount == 0)
+                    {
+                        progress.Report(new MyTaskProgressReport { CurrentProgressAmount = chanelvideoCount, TotalProgressAmount = channelAmount, CurrentProgressMessage = string.Format("Collecting channel data...") });
+                    }
+                    else
+                        progress.Report(new MyTaskProgressReport { CurrentProgressAmount = chanelvideoCount, TotalProgressAmount = channelAmount, CurrentProgressMessage = string.Format("Number of channels remain {0}\nLoaded {1} out of {2} videos", channelsToSync, chanelvideoCount, channelAmount) });
+                }
+                //progress.Report(new MyTaskProgressReport { CurrentProgressAmount = chanelvideoCount, TotalProgressAmount = channelAmount, CurrentProgressMessage = string.Format("Collecting playlists data") });
+
+                retries = Constants.YOUTUBE_PROGRESS_REPORT_RETRIES;
+                while (playlistVideoCount < playlistAmount || playlistAmount == 0 && retries-- > 0)
+                {
+                    await Task.Delay(sleepTime);
+                    if (channelAmount != 0)
+                    {
+                        progress.Report(new MyTaskProgressReport { CurrentProgressAmount = playlistVideoCount, TotalProgressAmount = playlistAmount, CurrentProgressMessage = string.Format("Loaded {0} out of {1} playlists", chanelvideoCount, channelAmount) });
+                    }
+                }
+                //progress.Report(new MyTaskProgressReport { CurrentProgressAmount = playlistVideoCount, TotalProgressAmount = playlistAmount, CurrentProgressMessage = string.Format("Number of channels to sync: {0}", channelsToSync) });
+                if (channelsToSync == 0)
+                {
+                    await Task.Delay(1000);
+                }
+            }
+
+            playlistVideoCount = 0;
+            playlistAmount = 0;
+            channelAmount = 0;
+            chanelvideoCount = 0;
+            progress.Report(new MyTaskProgressReport { CurrentProgressAmount = playlistVideoCount, TotalProgressAmount = playlistAmount, CurrentProgressMessage = string.Format("") });
+
+        }
+
+
+
+
+
+
+
 
         // sync all regular channels - check if need to update and get videos if needed
         public async Task<bool> syncYoutubeChannels()
@@ -306,14 +385,25 @@ namespace YoutubeImporter
             List<YoutubePlaylistChannel> ytbPlsChannels = db.getPlaylistChannels();
             List<YouTubeChannel> ytbChannels = db.getYoutubeChannelList();
 
+            channelsToSync = ytbPlsChannels.Count + ytbChannels.Count;
             foreach (YoutubePlaylistChannel channel in ytbPlsChannels)
             {
                 await syncOnePlaylistChannel(channel);
+                playlistVideoCount = 0;
+                playlistAmount = 0;
+                channelAmount = 0;
+                chanelvideoCount = 0;
+                channelsToSync--;
             }
 
             foreach (YouTubeChannel channel in ytbChannels)
             {
                 await syncOneChannel(channel);
+                playlistVideoCount = 0;
+                playlistAmount = 0;
+                channelAmount = 0;
+                chanelvideoCount = 0;
+                channelsToSync--;
             }
             return true;
         }
@@ -346,6 +436,15 @@ namespace YoutubeImporter
             catch (Exception)
             {
                 return "0";
+            }
+        }
+
+        private void start_stop_sync( bool isStarting)
+        {
+            playlistVideoCount = playlistAmount= channelAmount= chanelvideoCount = 0;
+            if (isStarting)
+            {
+
             }
         }
 

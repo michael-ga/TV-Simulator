@@ -47,9 +47,7 @@
                     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,62,0,0" Stroke="Black" VerticalAlignment="Top" Width="568" Grid.ColumnSpan="2"/>
                     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="568" Grid.ColumnSpan="2"/>
 
-                    <Button x:Name="sync_all_btn" Content="Sync All " HorizontalAlignment="Left" Margin="40,286,0,0" VerticalAlignment="Top" Width="113" Click="sync_btn_Click"/>
-                    <Button x:Name="sync_reg_btn" Content="Sync Regular Channels" HorizontalAlignment="Left" Margin="389,279,0,0" VerticalAlignment="Top" Width="131" Click="sync_btn_Click" Grid.ColumnSpan="2"/>
-                    <Button x:Name="sync_plylst_btn" Content="Sync Playlist Channels" HorizontalAlignment="Left" Margin="217,282,0,0" VerticalAlignment="Top" Width="131" Click="sync_btn_Click"/>
+                    <Button x:Name="sync_all_btn" Content="Sync All " HorizontalAlignment="Left" Margin="231,286,0,0" VerticalAlignment="Top" Width="113" Click="sync_btn_Click"/>
                     <TextBlock HorizontalAlignment="Left" Height="35" Margin="24,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="520" Grid.ColumnSpan="2"><Run Text="Youtube Channel Brower " TextDecorations="Underline"/><LineBreak/><Run Text="add remove and search for your faivorate youtube channels "/></TextBlock>
                     <Button Content="Launch" HorizontalAlignment="Left" Margin="242,138,0,0" VerticalAlignment="Top" Width="82" Click="launch_youtube_browser_click"/>
 

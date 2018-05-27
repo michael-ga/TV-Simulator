@@ -1,4 +1,5 @@
 ﻿using HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -19,6 +20,7 @@ namespace TVSimulator
         private List<costumPath> pathes;
         private Database db;
         private Window UI_caller;
+        private bool isYoutubeChannelAdded;
 
         public SettingWindow(Window mw)
         {
@@ -27,6 +29,7 @@ namespace TVSimulator
             fileImporter = new FileImporter();
             ytbSearcher = new Search();
             pathes = new List<costumPath>();
+            isYoutubeChannelAdded = false;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -57,24 +60,34 @@ namespace TVSimulator
 
     
         // start async Task in order to sync Youtbe channel
-        private void sync_btn_Click(object sender, RoutedEventArgs e)
+        private async void sync_btn_Click(object sender, RoutedEventArgs e)
         {
-            switch(((System.Windows.Controls.Button)sender).Name)
-            {
-                case "sync_all_btn":
-                    ytbSearcher.syncYoutubeChannels();
-                    ytbSearcher.syncYoutubePlaylistChannels();
-                    break;
-                case "sync_reg_btn":
-                    ytbSearcher.syncYoutubeChannels();
-                    break;
-                case "sync_plylst_btn":
-                    ytbSearcher.syncYoutubePlaylistChannels();
-                    break;
+            //switch(((System.Windows.Controls.Button)sender).Name)
+            //{
+            //    case "sync_all_btn":
+            //        ytbSearcher.syncYoutubeChannels();
+            //        ytbSearcher.syncYoutubePlaylistChannels();
+            //        break;
+            //    case "sync_reg_btn":
+            //        ytbSearcher.syncYoutubeChannels();
+            //        break;
+            //    case "sync_plylst_btn":
+            //        ytbSearcher.syncYoutubePlaylistChannels();
+            //        break;
 
-                default:
-                    break;
-            }
+            //    default:
+            //        break;
+            //}
+            sync_all_btn.Click -= sync_btn_Click;
+            var progressIndicator = new Progress<MyTaskProgressReport>(ReportProgress);
+
+            await ytbSearcher.syncAllAsyncReportProgress(500, progressIndicator);
+
+            sync_all_btn.Click += sync_btn_Click;
+        }
+        private void ReportProgress(MyTaskProgressReport progress)
+        {
+           // progress_lbl.Content = progress.CurrentProgressMessage;
         }
 
         private void launch_youtube_browser_click(object sender, RoutedEventArgs e)

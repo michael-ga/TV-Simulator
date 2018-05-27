@@ -167,14 +167,24 @@ namespace YoutubeImporter
 
         }
 
-        private void syncBtn_Click(object sender, RoutedEventArgs e)
+        
+
+        private async void syncBtn_Click(object sender, RoutedEventArgs e)
         {
-            var t = new Task(() =>  searcher.syncYoutubeChannels());
-            //t.ContinueWith(a => 
-            t.Start();
+            sync_btn.Click -= syncBtn_Click;
+
+            var progressIndicator = new Progress<MyTaskProgressReport>(ReportProgress);
+            await searcher.syncAllAsyncReportProgress(500, progressIndicator);
+
+            sync_btn.Click += syncBtn_Click;
+
         }
         #endregion
 
+        private void ReportProgress(MyTaskProgressReport progress)
+        {
+            progress_lbl.Content = progress.CurrentProgressMessage; 
+        }
 
         #region Helpers and Listeners
         public void selectedHandler(Object sender, SelectionChangedEventArgs e)
@@ -200,6 +210,8 @@ namespace YoutubeImporter
         }
 
         #endregion
+        
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -297,6 +309,13 @@ namespace YoutubeImporter
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBox.Show("whould you like to sync youtube channels now?"); // make it yes no box
+            // if yes
+            //syncBtn_Click
         }
     }
 }
