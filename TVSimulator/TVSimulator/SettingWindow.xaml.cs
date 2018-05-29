@@ -21,6 +21,7 @@ namespace TVSimulator
         private List<costumPath> pathes;
         private Database db;
         public Window UI_caller;
+        YoutubeImporter.MainWindow youtubeBrowser;
         private bool isYoutubeChannelSynced;
 
         public SettingWindow(Window mw)
@@ -93,8 +94,13 @@ namespace TVSimulator
 
         private void launch_youtube_browser_click(object sender, RoutedEventArgs e)
         {
-            YoutubeImporter.MainWindow m = new YoutubeImporter.MainWindow();
-            m.Show();
+            if (youtubeBrowser == null)
+            {
+                youtubeBrowser = new YoutubeImporter.MainWindow();
+                youtubeBrowser.Show();
+            }
+            else
+                youtubeBrowser.WindowState = WindowState.Normal;
         }
 
         private void change_path_click(object sender, RoutedEventArgs e)
@@ -125,6 +131,7 @@ namespace TVSimulator
             }
             costumPath tmp = new costumPath(path_textBox.Text, isIncludeSubfolders.IsChecked.Value);
             pathes.Add(tmp);
+            System.Windows.MessageBox.Show("path added!");
         }
 
         private async void update_Click(object sender, RoutedEventArgs e)
