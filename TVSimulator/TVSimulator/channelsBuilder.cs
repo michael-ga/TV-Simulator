@@ -165,7 +165,7 @@ namespace TVSimulator
 
         #endregion
 
-        private DateTime getDateCycle()
+        public DateTime getDateCycle()
         {
             int numOfDays = 7;
             BroadcastTime bt = db.getTimes();

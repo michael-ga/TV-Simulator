@@ -323,6 +323,16 @@ namespace TVSimulator
             }
 
             DateTime timeNow = DateTime.Now;
+            DateTime lastDayInBoard = curChannel.BoardSchedule.Keys.Last();
+            if(DateTime.Compare(lastDayInBoard, timeNow) < 0)
+            {
+                if(curChannel.TypeOfMedia.Equals(Constants.MOVIE))
+                    curChannel.bs(timeNow);
+                if (curChannel.TypeOfMedia.Equals(Constants.TVSERIES))
+                    curChannel.bTVs(timeNow);
+     
+            }
+
             int i = indBoard[parseChanneltoIndex(curChannelNum)];
             var temp = curChannel.BoardSchedule.ElementAt(i).Key;
         
@@ -402,6 +412,8 @@ namespace TVSimulator
                 YouTubeChannel ytc = new YouTubeChannel();
                 txtDescription.Text = ytc.Description;
             }
+            editChannelNumber.Text = "" + c.ChannelNumber;
+            channelListSwitch.Text = c.ChannelNumber + " - " + c.Genre;
         }
 
         private String timesToString(int hours, int minutes)
@@ -438,7 +450,17 @@ namespace TVSimulator
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            
+            try
+            {
+                var num = Int32.Parse(editChannelNumber.Text);
+                int index = parseChanneltoIndex(num);
+                var c = chanList[index];
+                playFromChannel(c);
+            }
+            catch(Exception ex)
+            {
+                return;
+            }
         }
 
         public static Point GetMousePosition()
@@ -542,6 +564,9 @@ namespace TVSimulator
             indBoard = new List<int>();
             for (var i = 0; i < chanList.Count(); i++)
                 indBoard.Add(getIndexes(i, getToday()));
+
+            addItemsToList();
+
         }
 
         private void full_screen_btn_Click(object sender, RoutedEventArgs e)
@@ -575,8 +600,23 @@ namespace TVSimulator
             IsFullscreen = !IsFullscreen;
         }
 
+        private void addItemsToList()
+        {
+            for (var i = 0; i < chanList.Count(); i++)
+                channelListSwitch.Items.Add(chanList[i].ChannelNumber + " - " + chanList[i].Genre);
+        }
 
-
+        private void SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var value = (sender as System.Windows.Controls.ComboBox).SelectedItem as string;    // get value
+            if (value == null)
+                return;
+            int index = value.IndexOf('-');
+            int num = Int32.Parse(value.Substring(0, index));     // parse value to int
+            int index1 = parseChanneltoIndex(num);
+            var c = chanList[index1];
+            playFromChannel(c);
+        }
 
         private void triggerinfoPressed()
         {
