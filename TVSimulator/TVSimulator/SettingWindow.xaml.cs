@@ -20,7 +20,7 @@ namespace TVSimulator
         private List<costumPath> pathes;
         private Database db;
         private Window UI_caller;
-        private bool isYoutubeChannelAdded;
+        private bool isYoutubeChannelSynced;
 
         public SettingWindow(Window mw)
         {
@@ -29,7 +29,7 @@ namespace TVSimulator
             fileImporter = new FileImporter();
             ytbSearcher = new Search();
             pathes = new List<costumPath>();
-            isYoutubeChannelAdded = false;
+            isYoutubeChannelSynced = false;
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -82,12 +82,12 @@ namespace TVSimulator
             var progressIndicator = new Progress<MyTaskProgressReport>(ReportProgress);
 
             await ytbSearcher.syncAllAsyncReportProgress(500, progressIndicator);
-
+            isYoutubeChannelSynced = true;
             sync_all_btn.Click += sync_btn_Click;
         }
         private void ReportProgress(MyTaskProgressReport progress)
         {
-           // progress_lbl.Content = progress.CurrentProgressMessage;
+            progress_syncLBL.Content = progress.CurrentProgressMessage;
         }
 
         private void launch_youtube_browser_click(object sender, RoutedEventArgs e)
@@ -154,7 +154,14 @@ namespace TVSimulator
         // set back the focus to ui window after closing settings
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            UI_caller.Focus();
+            if (isYoutubeChannelSynced)
+            {
+                MainWindow s = new MainWindow();
+                s.Show();
+                UI_caller.Close();
+            }
+            else
+                UI_caller.Focus();
         }
     }
 }

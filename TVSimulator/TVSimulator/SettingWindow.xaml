@@ -47,13 +47,14 @@
                     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,62,0,0" Stroke="Black" VerticalAlignment="Top" Width="568" Grid.ColumnSpan="2"/>
                     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="112" Margin="10,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="568" Grid.ColumnSpan="2"/>
 
-                    <Button x:Name="sync_all_btn" Content="Sync All " HorizontalAlignment="Left" Margin="231,286,0,0" VerticalAlignment="Top" Width="113" Click="sync_btn_Click"/>
+                    <Button x:Name="sync_all_btn" Content="Sync Channels " HorizontalAlignment="Left" Margin="231,286,0,0" VerticalAlignment="Top" Width="113" Click="sync_btn_Click"/>
                     <TextBlock HorizontalAlignment="Left" Height="35" Margin="24,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="520" Grid.ColumnSpan="2"><Run Text="Youtube Channel Brower " TextDecorations="Underline"/><LineBreak/><Run Text="add remove and search for your faivorate youtube channels "/></TextBlock>
-                    <Button Content="Launch" HorizontalAlignment="Left" Margin="242,138,0,0" VerticalAlignment="Top" Width="82" Click="launch_youtube_browser_click"/>
+                    <Button Content="Launch" HorizontalAlignment="Left" Margin="242,138,0,0" VerticalAlignment="Top" Width="85" Click="launch_youtube_browser_click"/>
 
 
-                    <Label Content="Sync Setting" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,179,0,0"/>
-                    <Label Content="Launch manually sync for youtube channels to get the newest conents for best experience&#xD;&#xA;NOTE: auto sync each channel is being launched every week" HorizontalAlignment="Left" Margin="22,220,0,0" VerticalAlignment="Top" Width="539" Height="40" Grid.ColumnSpan="2"/>
+                    <Label Content="Sync Settings" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,179,0,0"/>
+                    <Label Content="Launch manually sync for youtube channels to get the newest conents for best experience&#xD;&#xA;NOTE: auto sync each channel is being launched every week" HorizontalAlignment="Left" Margin="22,220,0,0" VerticalAlignment="Top" Width="539" Height="45" Grid.ColumnSpan="2"/>
+                    <Label x:Name="progress_syncLBL" Content="" HorizontalAlignment="Left" Margin="46,344,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="55" Width="448"/>
 
                 </Grid>
 

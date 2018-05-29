@@ -53,12 +53,7 @@ namespace TVSimulator
 
         private async void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            /*if (pathTextBox.Text.Equals(""))
-            {
-                System.Windows.MessageBox.Show("Please select a folder");
-                return;
-            }*/
-
+     
             if (getAllTimes() == -1)
             {
                 System.Windows.MessageBox.Show("Please select hours for all the days or setup time automatically");
@@ -287,7 +282,7 @@ namespace TVSimulator
             startCycle = DateTime.Now;
 
             BroadcastTime bt = new BroadcastTime(startCycle,startTime,endTime);
-            db.insertBroadcastTime(bt);
+            db.insertBroadcastTime(bt);     // check if need to be single value!!!!!!!!!!!
             return 0;
         }
 

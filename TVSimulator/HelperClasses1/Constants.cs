@@ -41,5 +41,9 @@ namespace HelperClasses
             Local,Youtube
         }
 
+
+        // algorithm constants
+        public const int MAX_DICT_KEYS = 1000;
+
     }
 }

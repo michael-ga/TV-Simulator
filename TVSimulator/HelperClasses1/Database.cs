@@ -124,6 +124,7 @@ namespace HelperClasses
 
         public void insertBroadcastTime(BroadcastTime bt)
         {
+            timeCollection.Delete(Query.All());
             timeCollection.Insert(bt);
         }
 
@@ -178,7 +179,7 @@ namespace HelperClasses
         public BroadcastTime getTimes()
         {
             var bt = db.GetCollection<BroadcastTime>(Constants.TIME_COLLECTION);
-            return bt.FindById(1);
+            return bt.FindAll().ToList()[0];
         }
         #endregion
 

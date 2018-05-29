@@ -520,7 +520,7 @@ namespace TVSimulator
             }
         }
 
-        private void initMainWindow()
+        public void initMainWindow()
         {
 
             timer = new DispatcherTimer();

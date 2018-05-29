@@ -51,6 +51,7 @@ namespace TVSimulator
             buildYouTubePlaylistChannels();
         }
 
+
         public void buildLocalChannels()
         {
             localChannels = new List<Channel>();
@@ -103,8 +104,18 @@ namespace TVSimulator
                 chan.YoutubeChannelID = channels[i].Path; 
                 if (chan.buildYoutubeSchedule() == -1)    // if no videos not adding this channel
                     continue;
+
+                BroadcastTime bt = db.getTimes();
+                int[] startTime = bt.StartTime;
+                int[] endTime = bt.EndTime;
+                var tmp = new BroadcastTime(DateTime.Now, startTime, endTime);
+
+
                 if (chan.bs(getDateCycle()) == -1)
                     continue;
+
+                db.insertBroadcastTime(tmp);
+
                 localChannels.Add(chan);
                 db.insertChannel(chan);
                 channelNumber++;
@@ -123,8 +134,15 @@ namespace TVSimulator
                 chan.YoutubeChannelID = ytbPlaylistChannels[i].Path;
                 if (chan.buildYoutubePlaylistSchedule() == -1)    // if no videos not adding this channel
                     continue;
+
+                BroadcastTime bt = db.getTimes();
+                int[] startTime = bt.StartTime;
+                int[] endTime = bt.EndTime;
+                var tmp = new BroadcastTime(DateTime.Now, startTime, endTime);
+
                 if (chan.bTVs_YT(getDateCycle()) == -1)
                     continue;
+
                 localChannels.Add(chan);
                 db.insertChannel(chan);
                 channelNumber++;

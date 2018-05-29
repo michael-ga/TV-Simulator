@@ -9,6 +9,7 @@ namespace HelperClasses
 {
     public class Channel
     {
+        
         public enum channelType
         {
             local,
@@ -214,7 +215,8 @@ namespace HelperClasses
 
             while (k < numOfDays || j < mediaLength)
             {
-
+                if (board.Count > Constants.MAX_DICT_KEYS)
+                    break;
                 i = (int)date.DayOfWeek;
 
                 DateTime finalHourDate = new DateTime(date.Year, date.Month, date.Day);
