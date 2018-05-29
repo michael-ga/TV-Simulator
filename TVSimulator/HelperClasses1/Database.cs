@@ -71,6 +71,7 @@ namespace HelperClasses
             musicCollection.Delete(Query.All(Query.Descending));
         }
 
+
         public void removeChannelCollection()
         {
             channelCollection.Delete(Query.All(Query.Descending));
@@ -79,14 +80,15 @@ namespace HelperClasses
         public void removeLocalMediaCollection()
         {
             movieCollection.Delete(Query.All(Query.Descending));
-            TVCollection.Delete(Query.All(Query.Descending)); 
+            TVCollection.Delete(Query.All(Query.Descending));
+            channelCollection.Delete(Query.All()); // change to local only deletion
         }
 
 
 
-            #region Collection queries
-            // remove whole collection
-            public void removeMediaCollection()
+        #region Collection queries
+        // remove whole collection
+        public void removeMediaCollection()
         {
             MediaCollection.Delete(Query.All(Query.Descending));
         }

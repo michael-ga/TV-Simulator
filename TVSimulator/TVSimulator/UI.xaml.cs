@@ -40,7 +40,7 @@ namespace TVSimulator
         public Media PlayNext { get => playNext; set => playNext = value; }
         public Channel CurrentChannel { get => currentChannel; }
 
-        
+        private SettingWindow settings;
         #endregion fields
 
         public MainWindow()
@@ -496,8 +496,13 @@ namespace TVSimulator
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            SettingWindow s = new SettingWindow(this);
-            s.Show();
+            if (settings == null)
+            {
+                settings = new SettingWindow(this);
+                settings.Show();
+            }
+            else
+                settings.WindowState=WindowState.Normal;
         }
 
         public int switchChannel(int channelNumber, int incOrDec)

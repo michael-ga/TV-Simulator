@@ -14,12 +14,13 @@ namespace TVSimulator
     /// </summary>
     public partial class SettingWindow : Window
     {
+
         private bool isSubfolders;
         private FileImporter fileImporter;
-        private Search ytbSearcher ;
+        private Search ytbSearcher;
         private List<costumPath> pathes;
         private Database db;
-        private Window UI_caller;
+        public Window UI_caller;
         private bool isYoutubeChannelSynced;
 
         public SettingWindow(Window mw)
@@ -141,7 +142,7 @@ namespace TVSimulator
 
             // remove old channel data
             db = new Database();
-            db.removeAllCollections();
+            db.removeLocalMediaCollection();
 
             // reimport folder list and pathes and create 
             var res = await fileImporter.addDirectoryList(pathes);
