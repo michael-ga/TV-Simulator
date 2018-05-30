@@ -171,5 +171,10 @@ namespace TVSimulator
             else
                 UI_caller.Focus();
         }
+
+        private void close_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

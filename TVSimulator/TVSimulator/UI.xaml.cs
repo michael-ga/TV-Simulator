@@ -551,13 +551,16 @@ namespace TVSimulator
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (settings == null)
+            settings = new SettingWindow(this);
+            settings.Show();
+
+            /*if (settings == null)
             {
                 settings = new SettingWindow(this);
                 settings.Show();
             }
             else
-                settings.WindowState=WindowState.Normal;
+                settings.WindowState=WindowState.Normal;*/
         }
 
         public int switchChannel(int channelNumber, int incOrDec)

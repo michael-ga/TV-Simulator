@@ -61,7 +61,6 @@
             </TabItem>
         </TabControl>
 
-        <Button x:Name="ok_btn" Content="OK" HorizontalAlignment="Left" Height="21" Margin="448,545,0,0" VerticalAlignment="Top" Width="126"/>
-        <Button x:Name="cancel_btn" Content="Cancel" HorizontalAlignment="Left" Height="21" Margin="317,545,0,0" VerticalAlignment="Top" Width="126"/>
+        <Button x:Name="close_btn" Content="Close" HorizontalAlignment="Left" Height="21" Margin="448,545,0,0" VerticalAlignment="Top" Width="126" Click="close_btn_Click"/>
     </Grid>
 </Window>
