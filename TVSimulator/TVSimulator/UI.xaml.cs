@@ -18,7 +18,7 @@ namespace TVSimulator
     public partial class MainWindow : Window
     {
         #region fields
-        public bool isSubfolders = true, IsFullscreen=false;
+        public bool isSubfolders = true, IsFullscreen=true;
         private bool isLocal = true;
         private FileImporter fileImporter;
         private bool infoPressed = true;
@@ -111,6 +111,13 @@ namespace TVSimulator
             mw.Show();
         }
 
+        private void Mute_Click(object sender, RoutedEventArgs e)
+        {
+            volumeSlider.Value = 0;
+            mediaPlayer.Volume = 0;
+            youtubePlayer.Volume = 0;
+        }
+
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
             if(chanList == null|| chanList.Count() == 0)
@@ -143,8 +150,14 @@ namespace TVSimulator
         {
             if (e.Key == Key.Escape)
             {
-                triggerFullScreen();
+                triggerFullScreen(true);    //send true to recognize escape
             }
+            if (e.Key == Key.F11)
+            {
+                triggerFullScreen(false);   //send true to recognize F11
+            }
+            IsFullscreen = !IsFullscreen;
+
         }
 
         #endregion button listeners
@@ -153,9 +166,19 @@ namespace TVSimulator
 
         private void playVideoFromPosition(string path, TimeSpan t)
         {
+            imageMessage.Visibility = Visibility.Hidden;
+
             mediaPlayer.Source = new Uri(path);
-            mediaPlayer.Position = t;
-            mediaPlayer.Play();
+            if(!File.Exists(path))
+            {
+                imageMessage.Visibility = Visibility.Visible;
+                return;
+            }
+            else
+            {
+                mediaPlayer.Position = t;
+                mediaPlayer.Play();
+            }
         }
 
         private void mainWindow_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -231,6 +254,7 @@ namespace TVSimulator
         {
             if (mode == Constants.playerSwitch.Youtube)
             {
+                imageMessage.Visibility = Visibility.Hidden;
                 youtubePlayer.Visibility = Visibility.Visible;
                 mediaPlayer.Stop();
                 mediaPlayer.Visibility = Visibility.Hidden;
@@ -384,6 +408,8 @@ namespace TVSimulator
                 tvNext = playNext as TvSeries;
                 broadCastNext += " - Season " + tvNext.Season + " Episode " + tvNext.Episode;
             }
+            else if (!c.TypeOfMedia.Equals(Constants.MOVIE))
+                strMediaName = "michael hoo michael";
             lblMediaName.Content = strMediaName;
             lblBroadcastNow.Content = broadCastNow;
             lblBroadcastNext.Content = broadCastNext;
@@ -413,7 +439,6 @@ namespace TVSimulator
                 txtDescription.Text = ytc.Description;
             }
             editChannelNumber.Text = "" + c.ChannelNumber;
-            channelListSwitch.Text = c.ChannelNumber + " - " + c.Genre;
         }
 
         private String timesToString(int hours, int minutes)
@@ -504,7 +529,15 @@ namespace TVSimulator
                 Thread.Sleep(2000);
                 dir = dir.Substring(0, dir.IndexOf("TVSimulator")) + "TVSimulator\\TVSimulator\\Resources\\promo.mp4";
                 mediaPlayer.Source = new Uri(dir);
-                mediaPlayer.Play();
+
+                imageMessage.Visibility = Visibility.Hidden;
+                if (!File.Exists(dir))
+                {
+                    imageMessage.Visibility = Visibility.Visible;
+                    return;
+                }
+                else
+                    mediaPlayer.Play();
 
             }
             else
@@ -564,9 +597,6 @@ namespace TVSimulator
             indBoard = new List<int>();
             for (var i = 0; i < chanList.Count(); i++)
                 indBoard.Add(getIndexes(i, getToday()));
-
-            addItemsToList();
-
         }
 
         private void full_screen_btn_Click(object sender, RoutedEventArgs e)
@@ -585,25 +615,30 @@ namespace TVSimulator
             return false;
         }
 
-        private void triggerFullScreen()
+        private void triggerFullScreen(bool isEscape)
         {
-            if (IsFullscreen == true)
+            if (IsFullscreen && isEscape)
             {
+                fullScreenlbl.Visibility = Visibility.Visible;
                 this.WindowState = WindowState.Normal;
                 this.WindowStyle = WindowStyle.ToolWindow;
+                timer.Interval = TimeSpan.FromSeconds(5);
+                timer.Tick += hideMesFS;
+                timer.Start();
             }
-            else
+            if (!IsFullscreen && !isEscape)
             {
+                fullScreenlbl.Visibility = Visibility.Hidden;
                 this.WindowState = WindowState.Maximized;
                 this.WindowStyle = WindowStyle.None;
+
             }
-            IsFullscreen = !IsFullscreen;
         }
 
-        private void addItemsToList()
+        private void hideMesFS(object sender, EventArgs e)
         {
-            for (var i = 0; i < chanList.Count(); i++)
-                channelListSwitch.Items.Add(chanList[i].ChannelNumber + " - " + chanList[i].Genre);
+            fullScreenlbl.Visibility = Visibility.Hidden;
+            timer.Stop();
         }
 
         private void SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

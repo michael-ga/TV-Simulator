@@ -250,6 +250,8 @@
   <ItemGroup>
     <Resource Include="Resources\boardschedule.jpg" />
     <Resource Include="Resources\fileImporterScreen.jpg" />
+    <Resource Include="Resources\error.png" />
+    <Resource Include="Resources\muteIcon.png" />
     <Content Include="Resources\promo.mp4" />
     <Resource Include="Resources\setTimeView.jpg" />
     <Resource Include="Resources\volume.png" />
