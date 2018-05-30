@@ -18,6 +18,18 @@
             </Setter>
         </Style>
 
+        <Style x:Key="powerButton" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="45" />
+            <Setter Property="Width" Value="45" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Image Source="Resources/power.png"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="controlButton" TargetType="{x:Type Button}">
             <Setter Property="Height" Value="45" />
             <Setter Property="Width" Value="45" />

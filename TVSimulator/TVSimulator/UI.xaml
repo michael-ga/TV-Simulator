@@ -5,9 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         xmlns:Cef1="clr-namespace:YoutubeImporter.Cef;assembly=YoutubeImporter"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1200" WindowStyle="None" ResizeMode="NoResize" Loaded="Window_Loaded"  
-        WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown">
+        mc:Ignorable="d" Height="700" Width="1200" WindowStyle="None" ResizeMode="NoResize" Loaded="Window_Loaded"  
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown" ShowInTaskbar="False">
 
     <Grid x:Name="mainWindow" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel" Background="Black">
 
@@ -17,20 +16,16 @@
 
         <Grid x:Name="menuBar" Margin="0,0,1,-2" Height="161" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="120*"/>
-                <RowDefinition Height="41*"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="310*"/>
-                <ColumnDefinition Width="45*"/>
-                <ColumnDefinition Width="37*"/>
-                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Rectangle Fill="#FF0A1D3A" Margin="-3,0,-1.6,1.8" Opacity="0.8" Height="159" VerticalAlignment="Bottom" Grid.ColumnSpan="4" Grid.RowSpan="2"/>
-            <Rectangle Fill="Black" Height="44" VerticalAlignment="Bottom" Opacity="0.8" Margin="-5,-2,-1.6,78" Grid.ColumnSpan="4"/>
+            <Rectangle Fill="#FF0A1D3A" Margin="-3,0,-1.8,1.6" Opacity="0.8" Height="159" VerticalAlignment="Bottom"/>
+            <Rectangle Fill="Black" Height="44" VerticalAlignment="Bottom" Opacity="0.8" Margin="-5,-1,-1.8,118.6"/>
 
-            <Grid x:Name="statsBox" Margin="10,50,119.4,38.8" Grid.RowSpan="2">
+            <Grid x:Name="statsBox" Margin="10,50,383.2,38.6">
                 <Label x:Name="lblBroadcastNow" Content="Now: ???? - ????" HorizontalAlignment="Left" Margin="0,0,0,41" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="365"/>
                 <Label x:Name="lblBroadcastNext" Content="Next: ???? - ????" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="570" Margin="0,0,0,4"/>
                 <ProgressBar x:Name="mediaProgressBar" HorizontalAlignment="Left" Height="19" Margin="424,0,-147,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged" Foreground="#FF01062F"/>
@@ -38,44 +33,45 @@
                 <Label x:Name="lblEndTime" Content="14:50" Margin="728,0,-212,43" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
             </Grid>
 
-            <TextBlock x:Name="txtDescription" HorizontalAlignment="Left" Height="85" Margin="10,50,0,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="Johnny and a couple pals kidnap Jake's 15-year-old brother, Zach, then assigns his buddy Frankie to be Zach's minder. They develop a brotherly friendship. Zach parties with his captors as things begin to spin out of control." VerticalAlignment="Top" Width="595" Foreground="White" FontSize="16" FontFamily="Arial" Visibility="Hidden"/>
+            <TextBlock x:Name="txtDescription" HorizontalAlignment="Left" Height="85" Margin="10,50,0,0" TextWrapping="Wrap" Text="Johnny and a couple pals kidnap Jake's 15-year-old brother, Zach, then assigns his buddy Frankie to be Zach's minder. They develop a brotherly friendship. Zach parties with his captors as things begin to spin out of control." VerticalAlignment="Top" Width="595" Foreground="White" FontSize="16" FontFamily="Arial" Visibility="Hidden"/>
 
-            <Label x:Name="lblMediaName" Content="???? - ????" HorizontalAlignment="Left" Margin="10,0,0,81" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="20" Height="33" Width="745"/>
-            <Label x:Name="lblClock" Content="00:00" Margin="0,0,10.4,83" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Height="31" Grid.ColumnSpan="2" Grid.Column="2" RenderTransformOrigin="0.5,0.519"/>
-            <Button x:Name="volumeIcon" Style="{StaticResource volumeIcon}" Margin="0,0,68.6,84" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1" Click="Mute_Click"/>
+            <Label x:Name="lblMediaName" Content="???? - ????" HorizontalAlignment="Left" Margin="10,0,0,121.6" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="20" Height="33" Width="745"/>
+            <Label x:Name="lblClock" Content="00:00" Margin="0,0,10.2,123.6" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Height="31" RenderTransformOrigin="0.5,0.519"/>
+            <Button x:Name="volumeIcon" Style="{StaticResource volumeIcon}" Margin="0,0,198.2,124.6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="Mute_Click"/>
 
-            <Slider x:Name="volumeSlider" Minimum="0" Maximum="60" Value="30" Margin="0,11,57.8,89" Opacity="0.4" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Right" Width="124" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <Slider x:Name="volumeSlider" Minimum="0" Maximum="60" Value="30" Margin="0,11,76.2,129.6" Opacity="0.4" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Right" Width="124"/>
             <!--
             <Button x:Name="selectFolderBtn" Content="Select Folder" Margin="95,0,0,45.4" Click="chooseFolderBtn_Click" Height="28" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="115"/>
             <TextBox x:Name="folderPathTextbox" Margin="224,0,0,27.4" TextWrapping="Wrap" Text="D:\utorrent" Height="46" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="445" IsReadOnly="true" />
             <CheckBox x:Name="subfolder_Checkbox" Content="include subfolders" Checked="CheckBox_Checked" HorizontalAlignment="Left" Margin="93,0,0,26.4" Height="15" VerticalAlignment="Bottom"/>
             -->
-            <Button x:Name="btnInfo" Style="{StaticResource infoButton}" Margin="0,50,99.8,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Click="btnInfo_Click" Opacity="0.85" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
-            <Button x:Name="btnControl" Style="{StaticResource controlButton}" Margin="0,50,51.8,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="2" Click="btnControl_Click"/>
-            <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,9.667,25" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="Auto" Grid.Column="2" Click="btnSettings_Click"/>
-            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,7.8,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Grid.Column="2" Height="45" VerticalAlignment="Top" Click="Channel_Up_Click" Grid.RowSpan="2"/>
-            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,99.8,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2" Click="Channel_Down_Click" Grid.RowSpan="2"/>
-            <TextBox x:Name="editChannelNumber" MaxLength="3" HorizontalAlignment="Right" Margin="0,100,50.8,0" TextWrapping="Wrap" Width="48" TextChanged="TextBox_TextChanged" Grid.Column="2" Foreground="White" FontSize="16" FontFamily="Arial Black" Text="1" TextAlignment="Center" TextDecorations="{x:Null}" Padding="0,3,0,0" Background="{x:Null}" BorderBrush="Black" BorderThickness="2" Height="28" VerticalAlignment="Top" Grid.RowSpan="2" />
+            <Button x:Name="btnInfo" Style="{StaticResource infoButton}" Margin="0,50,184.2,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Click="btnInfo_Click" Opacity="0.85" Height="45" VerticalAlignment="Top"/>
+            <Button x:Name="btnPower" Style="{StaticResource powerButton}" Margin="0,55,14.2,30.6" RenderTransformOrigin="0.502,0.5" Width="68" Click="Power_Click" Height="Auto" HorizontalAlignment="Right"/>
+            <Button x:Name="btnControl" Style="{StaticResource controlButton}" Margin="0,50,136.2,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Click="btnControl_Click"/>
+            <Button x:Name="btnSettings" Style="{StaticResource settingsButton}" Margin="0,50,94.2,65.6" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="Auto" Click="btnSettings_Click"/>
+            <Button x:Name="btnChannelUp" Style="{StaticResource channelUpButton}" Margin="0,92,92.2,0" RenderTransformOrigin="0.502,0.5" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Click="Channel_Up_Click"/>
+            <Button x:Name="btnChannelDown" Style="{StaticResource channelDownButton}" Margin="0,92,184.2,0" RenderTransformOrigin="0.502,0.5" Width="45" HorizontalAlignment="Right" Height="45" VerticalAlignment="Top" Click="Channel_Down_Click"/>
+            <TextBox x:Name="editChannelNumber" MaxLength="3" HorizontalAlignment="Right" Margin="0,100,135.2,0" TextWrapping="Wrap" Width="48" TextChanged="TextBox_TextChanged" Foreground="White" FontSize="16" FontFamily="Arial Black" Text="1" TextAlignment="Center" TextDecorations="{x:Null}" Padding="0,3,0,0" Background="{x:Null}" BorderBrush="Black" BorderThickness="2" Height="28" VerticalAlignment="Top" />
 
         </Grid>
         <Label x:Name="lblChannelNumber" Content="" HorizontalAlignment="Left" Margin="18,20,0,0" Opacity="0.75" FontFamily="Arial Black" FontSize="36" Foreground="White" Width="48" Height="45" VerticalAlignment="Top"/>
         <Label x:Name="fullScreenlbl" Content="Press F11 for Full Screen" Margin="455,30,405,0" VerticalAlignment="Top" Height="40" FontSize="20" FontFamily="Arial Black" Background="#FF574F4F" Foreground="#FFDFDFDF" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="Black" Visibility="Hidden">
-        <Label.Style>
-            <Style TargetType="{x:Type Label}">
-                <Style.Triggers>
-                    <Trigger Property="Visibility" Value="Visible">
-                        <Trigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="00:00:00" BeginTime="00:00:00" From="0.0" To="1.0" />
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="00:00:03" BeginTime="00:00:02" From="1.0" To="0.0" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </Trigger.EnterActions>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Label.Style>
+            <Label.Style>
+                <Style TargetType="{x:Type Label}">
+                    <Style.Triggers>
+                        <Trigger Property="Visibility" Value="Visible">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="00:00:00" BeginTime="00:00:00" From="0.0" To="1.0" />
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="00:00:03" BeginTime="00:00:02" From="1.0" To="0.0" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
         </Label>
     </Grid>
 </Window>

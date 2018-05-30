@@ -252,11 +252,12 @@
     <Resource Include="Resources\fileImporterScreen.jpg" />
     <Resource Include="Resources\error.png" />
     <Resource Include="Resources\muteIcon.png" />
+    <Resource Include="Resources\power.png" />
+    <Resource Include="Resources\control.png" />
     <Content Include="Resources\promo.mp4" />
     <Resource Include="Resources\setTimeView.jpg" />
     <Resource Include="Resources\volume.png" />
     <Resource Include="Resources\settings.png" />
-    <Resource Include="Resources\control.png" />
     <Resource Include="Resources\info.png" />
     <Resource Include="Resources\channelDown.png" />
     <Resource Include="Resources\channelUp.png" />

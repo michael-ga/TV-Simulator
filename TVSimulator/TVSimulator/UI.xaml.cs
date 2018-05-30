@@ -105,6 +105,11 @@ namespace TVSimulator
             triggerinfoPressed();
         }
 
+        private void Power_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();  //close all windows
+        }
+
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
             boardWindow mw = new boardWindow(this);
@@ -624,7 +629,7 @@ namespace TVSimulator
             {
                 fullScreenlbl.Visibility = Visibility.Visible;
                 this.WindowState = WindowState.Normal;
-                this.WindowStyle = WindowStyle.ToolWindow;
+                //this.WindowStyle = WindowStyle.ToolWindow;
                 timer.Interval = TimeSpan.FromSeconds(5);
                 timer.Tick += hideMesFS;
                 timer.Start();

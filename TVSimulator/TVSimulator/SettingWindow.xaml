@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-        Title="Settings" Height="610" Width="600" Closing="Window_Closing_1">
+        Title="Settings" Height="590" WindowStyle="None" Width="600" Closing="Window_Closing_1">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -61,6 +61,6 @@
             </TabItem>
         </TabControl>
 
-        <Button x:Name="close_btn" Content="Close" HorizontalAlignment="Left" Height="21" Margin="448,545,0,0" VerticalAlignment="Top" Width="126" Click="close_btn_Click"/>
+        <Button x:Name="close_btn" Content="Close" Margin="456,0,11.6,8" Click="close_btn_Click" Height="21" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
