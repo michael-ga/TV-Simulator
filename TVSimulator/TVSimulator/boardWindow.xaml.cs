@@ -54,6 +54,10 @@ namespace TVSimulator
             specDay = specDay.AddSeconds(-specDay.Second);
             specDay = specDay.AddMilliseconds(-specDay.Millisecond);
 
+            var yesterday = specDay.AddDays(-1);
+            if (DateTime.Compare(yesterday, (curChar.BoardSchedule.ElementAt(0).Key)) < 0)
+                dayDown.Visibility = Visibility.Hidden;
+
             board.RowBackground = Brushes.LightGray;
             buildBoardByDay(m, curChar, specDay);
 
@@ -101,14 +105,9 @@ namespace TVSimulator
 
                 board.Items.Add(t);
             }
-            if (board.Items.Count == 0)
-            {
-                dayDown.Visibility = Visibility.Hidden;
-                return;
-            }
         }
 
-            private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
+        private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
         {
             if (Key.Return == e.Key &&
                 0 < (ModifierKeys.Shift & e.KeyboardDevice.Modifiers))
@@ -134,6 +133,11 @@ namespace TVSimulator
         {
             dayUp.Visibility = Visibility.Visible;
             specDay = specDay.AddDays(-1);
+            if (DateTime.Compare(specDay, (curChar.BoardSchedule.ElementAt(0).Key)) < 0)
+            {
+                dayDown.Visibility = Visibility.Hidden;
+                return;
+            }
             specific_day.Content = specDay.ToLongDateString();
             buildBoardByDay(m, curChar, specDay);
         }

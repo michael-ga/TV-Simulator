@@ -18,7 +18,7 @@
                 <SolidColorBrush Color="#092748" Opacity="0.61"/>
             </Label.Background>
         </Label>
-        <Label x:Name="specific_day" Content="" Margin="272,117,243.4,405" FontSize="20" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" Width="285">
+        <Label x:Name="specific_day" Content="" Margin="272,117,243.4,400" FontSize="20" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" Width="285">
             <Label.Background>
                 <SolidColorBrush Color="#092748" Opacity="0.61"/>
             </Label.Background>
@@ -27,9 +27,9 @@
         <Button x:Name="channelDown" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="604,40,0,0" VerticalAlignment="Top" Width="90" Height="68" Click="channelDown_Click">
             <Label Content="Label" Height="100" Width="100"/>
         </Button>
-        <Button x:Name="dayDown" Content="Button" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="558,116,0,0" VerticalAlignment="Top" Width="36" Height="30" Click="dayDown_Click"/>
+        <Button x:Name="dayDown" Content="Button" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="556,113,0,0" VerticalAlignment="Top" Width="54" Height="40" Click="dayDown_Click"/>
         <Button x:Name="channelUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,41,585.4,0" Width="90" Height="68" VerticalAlignment="Top" Click="channelUp_Click"/>
-        <Button x:Name="dayUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,117,527.4,0" Width="36" Height="30" VerticalAlignment="Top" RenderTransformOrigin="-0.776,0.662" Click="dayUp_Click"/>
+        <Button x:Name="dayUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,115,526.4,0" Width="54" Height="40" VerticalAlignment="Top" RenderTransformOrigin="-0.776,0.662" Click="dayUp_Click"/>
         <DataGrid x:Name="board" Height="330" Margin="13,170,13.4,50" VerticalAlignment="Center" HorizontalAlignment="Center" Width="774" HorizontalContentAlignment="Center" BorderBrush="#FF004689" FontSize="15" VerticalContentAlignment="Center">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No" Binding="{Binding no}" Width="35" CanUserSort="False" IsReadOnly="True"/>
