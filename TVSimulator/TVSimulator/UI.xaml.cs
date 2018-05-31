@@ -499,10 +499,16 @@ namespace TVSimulator
             if (settings == null)
             {
                 settings = new SettingWindow(this);
+                settings.Closing += Settings_Closing;
                 settings.Show();
             }
             else
                 settings.WindowState=WindowState.Normal;
+        }
+
+        private void Settings_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            settings = null;
         }
 
         public int switchChannel(int channelNumber, int incOrDec)

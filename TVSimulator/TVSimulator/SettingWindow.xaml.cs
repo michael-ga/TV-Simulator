@@ -52,7 +52,7 @@ namespace TVSimulator
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            // set times of watching
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
