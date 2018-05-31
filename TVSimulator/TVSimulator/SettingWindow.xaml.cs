@@ -27,11 +27,13 @@ namespace TVSimulator
         public SettingWindow(Window mw)
         {
             InitializeComponent();
+            db = new Database();
             UI_caller = mw;
             fileImporter = new FileImporter();
             ytbSearcher = new Search();
             pathes = new List<costumPath>();
             isYoutubeChannelSynced = false;
+            streamtime_checkbox.IsChecked = isStreaming247();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -175,6 +177,17 @@ namespace TVSimulator
         private void close_btn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private bool isStreaming247()
+        {
+            var times = db.getTimes();
+            foreach (int val in times.StartTime)
+            {
+                if (val != 0)
+                    return false;
+            }
+            return true;
         }
     }
 }

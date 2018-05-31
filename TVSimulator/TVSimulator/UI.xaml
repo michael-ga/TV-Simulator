@@ -11,7 +11,7 @@
     <Grid x:Name="mainWindow" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel" Background="Black">
 
         <MediaElement x:Name="mediaPlayer" MediaEnded="mediaPlayer_MediaEnded"  LoadedBehavior="Manual" Margin="0,0,0,0" StretchDirection="Both" Stretch="Fill"/>
-        <Cef1:CefYoutubeController x:Name="youtubePlayer"   Margin="5,5,5,-40"  Visibility="Hidden"/>
+        <Cef1:CefYoutubeController x:Name="youtubePlayer"   Margin="5,5,5,0" Visibility="Hidden" />
         <Image x:Name="imageMessage" Source="Resources/error.png" Visibility="Hidden"/>
 
         <Grid x:Name="menuBar" Margin="0,0,1,-2" Height="161" VerticalAlignment="Bottom" >

@@ -49,6 +49,7 @@ namespace YoutubeImporter
 
         private async void Search_Click(object sender, RoutedEventArgs e)
         {
+            removeChannelBtn.Visibility = Visibility.Hidden;
             if (SearchBox.Text.Equals(""))
                 return;
             try
@@ -142,7 +143,10 @@ namespace YoutubeImporter
 
         private void showMyChannelsBtn_Click(object sender, RoutedEventArgs e)
         {
+
             Channels = db.getYoutubeChannelList();
+            if (Channels.Count >= 1)
+                removeChannelBtn.Visibility = Visibility.Visible;
         }
 
 
@@ -163,22 +167,24 @@ namespace YoutubeImporter
             {
                 if(currentPlaylistChannelSelection !=null && currentPlaylistChannelSelection.Playlist_list != null)
                     Playlists = currentPlaylistChannelSelection.Playlist_list;
+                    if (Playlists.Count >= 1)
+                        removeChannelBtn.Visibility = Visibility.Visible;
             }
 
         }
 
         
 
-        private async void syncBtn_Click(object sender, RoutedEventArgs e)
-        {
-            sync_btn.Click -= syncBtn_Click;
+        //private async void syncBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    sync_btn.Click -= syncBtn_Click;
 
-            var progressIndicator = new Progress<MyTaskProgressReport>(ReportProgress);
-            await searcher.syncAllAsyncReportProgress(500, progressIndicator);
+        //    var progressIndicator = new Progress<MyTaskProgressReport>(ReportProgress);
+        //    await searcher.syncAllAsyncReportProgress(500, progressIndicator);
 
-            sync_btn.Click += syncBtn_Click;
+        //    sync_btn.Click += syncBtn_Click;
 
-        }
+        //}
         #endregion
 
         private void ReportProgress(MyTaskProgressReport progress)

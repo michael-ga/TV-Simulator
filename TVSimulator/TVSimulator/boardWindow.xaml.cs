@@ -81,6 +81,8 @@ namespace TVSimulator
                 t.startTime = c.BoardSchedule.ElementAt(j).Key.ToShortTimeString();
                 Movie mov;
                 TvSeries tvs;
+                YouTubeChannel ytCHn;
+                YoutubePlaylistChannel ytpls;
                 if (c.TypeOfMedia.Equals(Constants.MOVIE))
                 {
                     mov = c.BoardSchedule.ElementAt(j).Value as Movie;
@@ -92,6 +94,35 @@ namespace TVSimulator
                     tvs = c.BoardSchedule.ElementAt(j).Value as TvSeries;
                     t.name = tvs.Name + " Season " + tvs.Season + " Episode " + tvs.Episode;
                     t.description = tvs.Description;
+                }
+                if (c.TypeOfMedia.Equals(Constants.YOUTUBE_CHANNEL))
+                {
+                    var ytCHns = c.BoardSchedule.ElementAt(j).Value ;
+                    if (ytCHns != null)
+                    {
+                        t.name = "Youtbe Channel - " + ytCHns.Name;
+                        if (((YoutubeVideo)ytCHns).Description != null)
+                            t.description = ((YoutubeVideo)ytCHns).Description;
+                    }
+                    else
+                        t.name = "Youtbe Playlist - " + c.YoutubeChannelName;
+                }
+                if (c.TypeOfMedia.Equals(Constants.YOUTUBE_PLAYLIST_CHANNEL))
+                {
+                    var ytplst = c.BoardSchedule.ElementAt(j).Value;
+                    if (ytplst != null)
+                    {
+                        t.name = "Youtbe - " + ytplst.Name;
+                        try
+                        {
+                            t.description = ((YoutubeVideo)ytplst).Description;
+
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
                 }
                 i++;
                 j++;

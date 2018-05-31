@@ -25,6 +25,7 @@ namespace HelperClasses
         private Database db;
         private DateTime StartCycleTime;
         private string youtubeChannelID;
+        private string youtubeChannelName;
         private int youtubeVideoIndex = 0;
         private List<YoutubeVideo> youtubeVideoList;
         private Dictionary<DateTime, Media> boardSchedule;
@@ -44,6 +45,7 @@ namespace HelperClasses
         public int Id { get => id; set => id = value; }
         public Dictionary<DateTime, Media> BoardSchedule { get => boardSchedule; set => boardSchedule = value; }
         public channelType MChannelType { get => mChannelType; set => mChannelType = value; }
+        public string YoutubeChannelName { get => youtubeChannelName; set => youtubeChannelName = value; }
 
 
 

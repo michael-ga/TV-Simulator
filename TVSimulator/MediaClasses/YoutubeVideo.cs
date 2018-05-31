@@ -8,12 +8,14 @@ namespace MediaClasses
     {
         private string photoURL;
         private string channelId;
+        private string description;
         private int id;
         public YoutubeVideo() { }
-        public YoutubeVideo(string path, string name, string duration = "", string genre = "", string channelId ="",string photoURL = "") : base(path, name, duration, genre)
+        public YoutubeVideo(string path, string name, string duration = "", string genre = "", string channelId ="",string photoURL = "",string description ="") : base(path, name, duration, genre)
         {
             this.channelId = channelId;
             this.photoURL = photoURL;
+            this.description = description;
         }
         public TimeSpan getTimeSpan()
         {
@@ -23,5 +25,6 @@ namespace MediaClasses
         public string PhotoURL { get => photoURL; set => photoURL = value; }
         public string ChannelId { get => channelId; set => channelId = value; }
         public int Id { get => id; set => id = value; }
+        public string Description { get => description; set => description = value; }
     }
 }

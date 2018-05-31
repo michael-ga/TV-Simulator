@@ -80,6 +80,16 @@
 
 
             </Grid>
+            <Button x:Name="back_btn" Content="Back" HorizontalAlignment="Left" Margin="301,226.667,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="btnBack_Click" Visibility="Hidden">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3650DD" Offset="1"/>
+                    <GradientStop Color="#FFEDDEDE"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            </Button>
+
+
         </Grid>
 
     </xctk:BusyIndicator>

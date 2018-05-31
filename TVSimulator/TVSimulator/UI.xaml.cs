@@ -197,6 +197,7 @@ namespace TVSimulator
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             mediaPlayer.Volume = volumeSlider.Value/60;
+            
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -413,8 +414,8 @@ namespace TVSimulator
                 tvNext = playNext as TvSeries;
                 broadCastNext += " - Season " + tvNext.Season + " Episode " + tvNext.Episode;
             }
-            else if (!c.TypeOfMedia.Equals(Constants.MOVIE))
-                strMediaName = "michael hoo michael";
+            else if (!c.TypeOfMedia.Equals(Constants.MOVIE) && c.YoutubeChannelName != "")
+                strMediaName = c.YoutubeChannelName;
             lblMediaName.Content = strMediaName;
             lblBroadcastNow.Content = broadCastNow;
             lblBroadcastNext.Content = broadCastNext;
@@ -438,11 +439,11 @@ namespace TVSimulator
                 TvSeries t = playNow as TvSeries;
                 txtDescription.Text = t.Name +  " - Season " + t.Season + " Episode " + t.Episode + " - " + t.Description + "  - IMDB Rating: " + t.ImdbRating;
             }
-            if(c.MChannelType == Channel.channelType.youtube_channel)
-            {
-                YouTubeChannel ytc = new YouTubeChannel();
-                txtDescription.Text = ytc.Description;
-            }
+            //if(c.MChannelType == Channel.channelType.youtube_channel)
+            //{
+            //    YouTubeChannel ytc = new YouTubeChannel();
+            //    txtDescription.Text = ytc.Description;
+            //}
             editChannelNumber.Text = "" + c.ChannelNumber;
         }
 
@@ -556,17 +557,14 @@ namespace TVSimulator
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            settings = new SettingWindow(this);
-            settings.Show();
-
-            /*if (settings == null)
+            if (settings == null)
             {
                 settings = new SettingWindow(this);
                 settings.Closing += Settings_Closing;
                 settings.Show();
             }
             else
-                settings.WindowState=WindowState.Normal;*/
+                settings.WindowState=WindowState.Normal;
         }
 
         private void Settings_Closing(object sender, System.ComponentModel.CancelEventArgs e)

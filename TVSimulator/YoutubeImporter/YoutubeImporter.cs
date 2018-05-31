@@ -119,7 +119,7 @@ namespace YoutubeImporter
             {
                 dur = await durationReq(item.Id.VideoId.ToString());
                 dur = extractDuration(dur);
-                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, dur, "", ytChannelId, extractThumbnail(item.Snippet));
+                YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, dur, "", ytChannelId, extractThumbnail(item.Snippet),item.Snippet.Description);
                 videoList.Add(temp);
                 chanelvideoCount++;
                 System.Diagnostics.Debug.WriteLine(videoList.Count);
@@ -215,29 +215,37 @@ namespace YoutubeImporter
             string nextpagetoken = " ";
             List<SearchResult> res = new List<SearchResult>();
             List<YoutubePlaylist> playlists = new List<YoutubePlaylist>();
-            YoutubePlaylistChannel newChannel = new YoutubePlaylistChannel(ytChannel.Path, "Playlist - " + ytChannel.Name,"","", ytChannel.PhotoURL);
-
-            while (nextpagetoken != null)
+            try
             {
-                var searchListRequest = myService.Search.List("snippet");
-                searchListRequest.MaxResults = 30;
-                searchListRequest.ChannelId = ytChannel.Path;
-                searchListRequest.PageToken = nextpagetoken;
-                searchListRequest.Order = Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum.Date;// otions are date rating relevance  title videoCount viewCount 
-                searchListRequest.Type = "playlist";
+                YoutubePlaylistChannel newChannel = new YoutubePlaylistChannel(ytChannel.Path, "Playlist - " + ytChannel.Name, "", "", ytChannel.PhotoURL);
 
-                var searchListResponse = searchListRequest.Execute();   // Call the search.list method to retrieve results matching the specified query term.
-                res.AddRange(searchListResponse.Items);     // Process  the video responses 
-                nextpagetoken = searchListResponse.NextPageToken;
+                while (nextpagetoken != null)
+                {
+                    var searchListRequest = myService.Search.List("snippet");
+                    searchListRequest.MaxResults = 30;
+                    searchListRequest.ChannelId = ytChannel.Path;
+                    searchListRequest.PageToken = nextpagetoken;
+                    searchListRequest.Order = Google.Apis.YouTube.v3.SearchResource.ListRequest.OrderEnum.Date;// otions are date rating relevance  title videoCount viewCount 
+                    searchListRequest.Type = "playlist";
+
+                    var searchListResponse = searchListRequest.Execute();   // Call the search.list method to retrieve results matching the specified query term.
+                    res.AddRange(searchListResponse.Items);     // Process  the video responses 
+                    nextpagetoken = searchListResponse.NextPageToken;
+                }
+
+                for (int i = 0; i < res.Count; i++)
+                {
+                    var temp = new YoutubePlaylist(res[i].Id.PlaylistId, res[i].Snippet.Title, "", "", extractThumbnail(res[i].Snippet));
+                    playlists.Add(temp);
+                }
+                newChannel.Playlist_list = playlists;
+                return newChannel;
             }
-
-            for (int i = 0; i < res.Count; i++)
+            catch (Exception)
             {
-                var temp = new YoutubePlaylist(res[i].Id.PlaylistId, res[i].Snippet.Title, "", "", extractThumbnail(res[i].Snippet));
-                playlists.Add(temp);
+
+                return null;
             }
-            newChannel.Playlist_list = playlists;
-            return newChannel;
         }
 
         // TODO:: EDGE CASE check when there is no playlists in channel. 

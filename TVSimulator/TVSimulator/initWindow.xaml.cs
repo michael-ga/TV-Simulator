@@ -133,6 +133,7 @@ namespace TVSimulator
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
+            back_btn.Visibility = Visibility.Visible;
             var ytChanels = db.getYoutubeChannelList();
             if ((pathTextBox.Text == "") && ( ytChanels == null || ytChanels.Count < 1 ))
             {
@@ -155,16 +156,14 @@ namespace TVSimulator
             timeFieldsGrid.Visibility = Visibility.Visible;
             addHours();
         }
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            gotoStatrtupIW();
+        }
 
         private void gotoStatrtupIW()
         {
-            if (pathTextBox.Text == "" || pathTextBox.Text == null)
-            {
-                System.Windows.MessageBox.Show("Please select folder");
-                return;
-            }
-
-            //hide controllers of the first screen
+            //show controllers of the first screen
             getFolderBtn.Visibility = Visibility.Visible;
             lblAddYouTube.Visibility = Visibility.Visible;
             youtubeBtn.Visibility = Visibility.Visible;
@@ -172,11 +171,12 @@ namespace TVSimulator
             pathTextBox.Visibility = Visibility.Visible;
             btnNext.Visibility = Visibility.Visible;
 
-            //show controllers of the second screen and change background
+            //hide controllers of the second screen and change background
             secondBackground.Visibility = Visibility.Hidden;
             btnSubmit.Visibility = Visibility.Hidden;
             isSetupAuto.Visibility = Visibility.Hidden;
             timeFieldsGrid.Visibility = Visibility.Hidden;
+            back_btn.Visibility = Visibility.Hidden;
         }
 
         private void isSetupAuto_Checked(object sender, RoutedEventArgs e)

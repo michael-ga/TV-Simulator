@@ -215,7 +215,15 @@ namespace YoutubeImporter.Cef
             {
                 //OnVideoEnded(this, null);
             }
-            Dispatcher.Invoke(() => PlayerState = e);
+            try
+            {
+                Dispatcher.Invoke(() => PlayerState = e);
+
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public void Stop()

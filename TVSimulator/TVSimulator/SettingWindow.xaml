@@ -28,7 +28,7 @@
                     <CheckBox  x:Name="isIncludeSubfolders" Content="Include sub folders" HorizontalAlignment="Left" Margin="22,147,0,0" VerticalAlignment="Top"/>
                     <Label Content="Change your watch times according to your schedule.&#xD;&#xA;Warning: Changing your viewing hours will create a new programming schedule across all channels." HorizontalAlignment="Left" Margin="22,220,0,0" VerticalAlignment="Top" Width="539" Height="40"/>
                     <Button Content="Set manually" HorizontalAlignment="Left" Margin="22,289,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
-                    <CheckBox Content="24/7 streaming" HorizontalAlignment="Left" Margin="22,264,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="streamtime_checkbox" Content="24/7 streaming" HorizontalAlignment="Left" Margin="22,264,0,0" VerticalAlignment="Top"/>
                     <Label Content="Sync your personal media:&#xD;&#xA;Incase that was changes in your main media folder - add, remove, or change your media content -&#xD;&#xA;you can press at the sync button to synchronize your system.&#xD;&#xA;WARNING: This will restart the system and channels may be added / deleted&#xD;&#xA;and each channel's board schedule could be changed." HorizontalAlignment="Left" Margin="22,359,0,0" VerticalAlignment="Top" Width="539" Height="91"/>
                     <Button Content="Set manually" HorizontalAlignment="Left" Margin="22,289,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>
                     <Button Content="Sync Now" HorizontalAlignment="Left" Margin="247,455,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="Button_Click"/>

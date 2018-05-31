@@ -114,8 +114,9 @@ namespace TVSimulator
                 if (chan.bs(getDateCycle()) == -1)
                     continue;
 
-                db.insertBroadcastTime(tmp);
 
+                db.insertBroadcastTime(tmp);
+                chan.YoutubeChannelName = channels[i].Name;
                 localChannels.Add(chan);
                 db.insertChannel(chan);
                 channelNumber++;
@@ -143,6 +144,7 @@ namespace TVSimulator
                 if (chan.bTVs_YT(getDateCycle()) == -1)
                     continue;
 
+                chan.YoutubeChannelName = ytbPlaylistChannels[i].Name;
                 localChannels.Add(chan);
                 db.insertChannel(chan);
                 channelNumber++;
