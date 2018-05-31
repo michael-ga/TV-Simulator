@@ -30,13 +30,13 @@
             </Setter>
         </Style>
         
-        <Style x:Key="controlButton" TargetType="{x:Type Button}">
+        <Style x:Key="boardButton" TargetType="{x:Type Button}">
             <Setter Property="Height" Value="45" />
             <Setter Property="Width" Value="45" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Image Source="Resources/control.png"/>
+                        <Image Source="Resources/board.png"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

@@ -248,6 +248,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\board.png" />
+    <Resource Include="Resources\movieChannel.png" />
+    <Resource Include="Resources\movieIcon.PNG" />
+    <Resource Include="Resources\tvSeriesChannel.PNG" />
+    <Resource Include="Resources\tvSeriesIcon.png" />
+    <Resource Include="Resources\youtubeChannel.png" />
+    <Resource Include="Resources\youtubeChannelIcon.png" />
+    <Resource Include="Resources\ypChannel.png" />
+    <Resource Include="Resources\ypIcon.png" />
     <Resource Include="Resources\boardschedule.jpg" />
     <Resource Include="Resources\fileImporterScreen.jpg" />
     <Resource Include="Resources\error.png" />
