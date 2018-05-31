@@ -11,7 +11,7 @@
         <ImageBrush ImageSource="Resources/fileImporterScreen.jpg"/>
     </Window.Background>
     <xctk:BusyIndicator 
-        IsBusy="False" x:Name="loader" BusyContent="Please Wait while Loading Files" Background="White" Foreground="DarkBlue" >
+        IsBusy="False" x:Name="loader" BusyContent="Please Wait while creating channels" Background="White" Foreground="DarkBlue" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="203*"/>

@@ -41,13 +41,22 @@ namespace TVSimulator
             channelNum = m.curChannelNum;
 
             specific_day.Content = DateTime.Now.ToLongDateString();
-            channelName.Content = channelNum + " - " + curChar.Genre;
+            if (curChar.TypeOfMedia.Equals(Constants.MOVIE) || curChar.TypeOfMedia.Equals(Constants.TVSERIES))
+                channelName.Content = channelNum + " - " + curChar.Genre;
+            else if (curChar.TypeOfMedia.Equals("YouTubeChannel"))
+                channelName.Content = channelNum + " - " + "YouTube";
+            else
+                channelName.Content = channelNum + " - " + "YouTube Playlist";
 
             specDay = DateTime.Now;         //only here specDay = today
             specDay = specDay.AddHours(-specDay.Hour);
             specDay = specDay.AddMinutes(-specDay.Minute);
             specDay = specDay.AddSeconds(-specDay.Second);
             specDay = specDay.AddMilliseconds(-specDay.Millisecond);
+
+            var yesterday = specDay.AddDays(-1);
+            if (DateTime.Compare(yesterday, (curChar.BoardSchedule.ElementAt(0).Key)) < 0)
+                dayDown.Visibility = Visibility.Hidden;
 
             board.RowBackground = Brushes.LightGray;
             buildBoardByDay(m, curChar, specDay);
@@ -96,14 +105,9 @@ namespace TVSimulator
 
                 board.Items.Add(t);
             }
-            if (board.Items.Count == 0)
-            {
-                dayDown.Visibility = Visibility.Hidden;
-                return;
-            }
         }
 
-            private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
+        private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
         {
             if (Key.Return == e.Key &&
                 0 < (ModifierKeys.Shift & e.KeyboardDevice.Modifiers))
@@ -129,6 +133,11 @@ namespace TVSimulator
         {
             dayUp.Visibility = Visibility.Visible;
             specDay = specDay.AddDays(-1);
+            if (DateTime.Compare(specDay, (curChar.BoardSchedule.ElementAt(0).Key)) < 0)
+            {
+                dayDown.Visibility = Visibility.Hidden;
+                return;
+            }
             specific_day.Content = specDay.ToLongDateString();
             buildBoardByDay(m, curChar, specDay);
         }
@@ -146,7 +155,12 @@ namespace TVSimulator
             channelNum = m.switchChannel(channelNum, 1);         // second paramter 1 for increament
             int index = m.parseChanneltoIndex(channelNum);
             curChar = chanList[index];
-            channelName.Content = channelNum + " - " + curChar.Genre;
+            if (curChar.TypeOfMedia.Equals(Constants.MOVIE) || curChar.TypeOfMedia.Equals(Constants.TVSERIES))
+                channelName.Content = channelNum + " - " + curChar.Genre;
+            else if (curChar.TypeOfMedia.Equals("YouTubeChannel"))
+                    channelName.Content = channelNum + " - " + "YouTube";
+            else
+                channelName.Content = channelNum + " - " + "YouTube Playlist";
             buildBoardByDay(m, curChar, specDay);
         }
 
@@ -155,13 +169,23 @@ namespace TVSimulator
             channelNum = m.switchChannel(channelNum, -1);         // second paramter -1 for decreament
             int index = m.parseChanneltoIndex(channelNum);
             curChar = chanList[index];
-            channelName.Content = channelNum + " - " + curChar.Genre;
+            if (curChar.TypeOfMedia.Equals(Constants.MOVIE) || curChar.TypeOfMedia.Equals(Constants.TVSERIES))
+                channelName.Content = channelNum + " - " + curChar.Genre;
+            else if (curChar.TypeOfMedia.Equals("YouTubeChannel"))
+                channelName.Content = channelNum + " - " + "YouTube";
+            else
+                channelName.Content = channelNum + " - " + "YouTube Playlist";
             buildBoardByDay(m, curChar, specDay);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             m.Focus();
+        }
+
+        private void close_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace TVSimulator
     public partial class MainWindow : Window
     {
         #region fields
-        public bool isSubfolders = true, IsFullscreen=false;
+        public bool isSubfolders = true, IsFullscreen=true;
         private bool isLocal = true;
         private FileImporter fileImporter;
         private bool infoPressed = true;
@@ -105,10 +105,22 @@ namespace TVSimulator
             triggerinfoPressed();
         }
 
+        private void Power_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();  //close all windows
+        }
+
         private void btnControl_Click(object sender, RoutedEventArgs e)
         {
             boardWindow mw = new boardWindow(this);
             mw.Show();
+        }
+
+        private void Mute_Click(object sender, RoutedEventArgs e)
+        {
+            volumeSlider.Value = 0;
+            mediaPlayer.Volume = 0;
+            youtubePlayer.Volume = 0;
         }
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
@@ -143,8 +155,14 @@ namespace TVSimulator
         {
             if (e.Key == Key.Escape)
             {
-                triggerFullScreen();
+                triggerFullScreen(true);    //send true to recognize escape
             }
+            if (e.Key == Key.F11)
+            {
+                triggerFullScreen(false);   //send true to recognize F11
+            }
+            IsFullscreen = !IsFullscreen;
+
         }
 
         #endregion button listeners
@@ -153,9 +171,19 @@ namespace TVSimulator
 
         private void playVideoFromPosition(string path, TimeSpan t)
         {
+            imageMessage.Visibility = Visibility.Hidden;
+
             mediaPlayer.Source = new Uri(path);
-            mediaPlayer.Position = t;
-            mediaPlayer.Play();
+            if(!File.Exists(path))
+            {
+                imageMessage.Visibility = Visibility.Visible;
+                return;
+            }
+            else
+            {
+                mediaPlayer.Position = t;
+                mediaPlayer.Play();
+            }
         }
 
         private void mainWindow_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -231,6 +259,7 @@ namespace TVSimulator
         {
             if (mode == Constants.playerSwitch.Youtube)
             {
+                imageMessage.Visibility = Visibility.Hidden;
                 youtubePlayer.Visibility = Visibility.Visible;
                 mediaPlayer.Stop();
                 mediaPlayer.Visibility = Visibility.Hidden;
@@ -323,6 +352,16 @@ namespace TVSimulator
             }
 
             DateTime timeNow = DateTime.Now;
+            DateTime lastDayInBoard = curChannel.BoardSchedule.Keys.Last();
+            if(DateTime.Compare(lastDayInBoard, timeNow) < 0)
+            {
+                if(curChannel.TypeOfMedia.Equals(Constants.MOVIE))
+                    curChannel.bs(timeNow);
+                if (curChannel.TypeOfMedia.Equals(Constants.TVSERIES))
+                    curChannel.bTVs(timeNow);
+     
+            }
+
             int i = indBoard[parseChanneltoIndex(curChannelNum)];
             var temp = curChannel.BoardSchedule.ElementAt(i).Key;
         
@@ -374,6 +413,8 @@ namespace TVSimulator
                 tvNext = playNext as TvSeries;
                 broadCastNext += " - Season " + tvNext.Season + " Episode " + tvNext.Episode;
             }
+            else if (!c.TypeOfMedia.Equals(Constants.MOVIE))
+                strMediaName = "michael hoo michael";
             lblMediaName.Content = strMediaName;
             lblBroadcastNow.Content = broadCastNow;
             lblBroadcastNext.Content = broadCastNext;
@@ -402,6 +443,7 @@ namespace TVSimulator
                 YouTubeChannel ytc = new YouTubeChannel();
                 txtDescription.Text = ytc.Description;
             }
+            editChannelNumber.Text = "" + c.ChannelNumber;
         }
 
         private String timesToString(int hours, int minutes)
@@ -438,7 +480,17 @@ namespace TVSimulator
 
         private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            
+            try
+            {
+                var num = Int32.Parse(editChannelNumber.Text);
+                int index = parseChanneltoIndex(num);
+                var c = chanList[index];
+                playFromChannel(c);
+            }
+            catch(Exception ex)
+            {
+                return;
+            }
         }
 
         public static Point GetMousePosition()
@@ -482,7 +534,15 @@ namespace TVSimulator
                 Thread.Sleep(2000);
                 dir = dir.Substring(0, dir.IndexOf("TVSimulator")) + "TVSimulator\\TVSimulator\\Resources\\promo.mp4";
                 mediaPlayer.Source = new Uri(dir);
-                mediaPlayer.Play();
+
+                imageMessage.Visibility = Visibility.Hidden;
+                if (!File.Exists(dir))
+                {
+                    imageMessage.Visibility = Visibility.Visible;
+                    return;
+                }
+                else
+                    mediaPlayer.Play();
 
             }
             else
@@ -496,14 +556,17 @@ namespace TVSimulator
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (settings == null)
+            settings = new SettingWindow(this);
+            settings.Show();
+
+            /*if (settings == null)
             {
                 settings = new SettingWindow(this);
                 settings.Closing += Settings_Closing;
                 settings.Show();
             }
             else
-                settings.WindowState=WindowState.Normal;
+                settings.WindowState=WindowState.Normal;*/
         }
 
         private void Settings_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -566,23 +629,43 @@ namespace TVSimulator
             return false;
         }
 
-        private void triggerFullScreen()
+        private void triggerFullScreen(bool isEscape)
         {
-            if (IsFullscreen == true)
+            if (IsFullscreen && isEscape)
             {
+                fullScreenlbl.Visibility = Visibility.Visible;
                 this.WindowState = WindowState.Normal;
-                this.WindowStyle = WindowStyle.ToolWindow;
+                //this.WindowStyle = WindowStyle.ToolWindow;
+                timer.Interval = TimeSpan.FromSeconds(5);
+                timer.Tick += hideMesFS;
+                timer.Start();
             }
-            else
+            if (!IsFullscreen && !isEscape)
             {
+                fullScreenlbl.Visibility = Visibility.Hidden;
                 this.WindowState = WindowState.Maximized;
                 this.WindowStyle = WindowStyle.None;
+
             }
-            IsFullscreen = !IsFullscreen;
         }
 
+        private void hideMesFS(object sender, EventArgs e)
+        {
+            fullScreenlbl.Visibility = Visibility.Hidden;
+            timer.Stop();
+        }
 
-
+        private void SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var value = (sender as System.Windows.Controls.ComboBox).SelectedItem as string;    // get value
+            if (value == null)
+                return;
+            int index = value.IndexOf('-');
+            int num = Int32.Parse(value.Substring(0, index));     // parse value to int
+            int index1 = parseChanneltoIndex(num);
+            var c = chanList[index1];
+            playFromChannel(c);
+        }
 
         private void triggerinfoPressed()
         {

@@ -5,21 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         mc:Ignorable="d"
-        Title="boardWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="True" Closing="Window_Closing" Height="500" Width="800">
+        Title="boardWindow" ResizeMode="NoResize" WindowStyle="None" WindowStartupLocation="CenterScreen" Topmost="True" Closing="Window_Closing" Height="550" Width="800">
     <Window.Background>
         <ImageBrush TileMode="FlipY"/>
     </Window.Background>
     <Grid Margin="-1,0,0.6,0.4">
         <Grid.Background>
-            <ImageBrush ImageSource="Resources/boardschedule.jpg"/>
+            <ImageBrush ImageSource="Resources/boardschedule.jpg" Opacity="10"/>
         </Grid.Background>
-        <Label x:Name="channelName" Content="" Margin="294,51,294,379" FontSize="20" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" BorderBrush="Black" Width="206"/>
-        <Label x:Name="specific_day" Content="" Margin="253,107,256,323" FontSize="20" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" Width="285"/>
-        <Button x:Name="channelDown" Content="Button" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="461,52,0,0" VerticalAlignment="Top" Width="36" Height="30" Click="channelDown_Click"/>
-        <Button x:Name="dayDown" Content="Button" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="523,108,0,0" VerticalAlignment="Top" Width="36" Height="30" Click="dayDown_Click"/>
-        <Button x:Name="channelUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,52,464,0" Width="36" Height="30" VerticalAlignment="Top" Click="channelUp_Click"/>
-        <Button x:Name="dayUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,108,529,0" Width="36" Height="30" VerticalAlignment="Top" RenderTransformOrigin="-0.776,0.662" Click="dayUp_Click"/>
-        <DataGrid x:Name="board" Height="297" Margin="10,163,10,10" VerticalAlignment="Center" HorizontalAlignment="Center" Width="774" HorizontalContentAlignment="Center" BorderBrush="#FF004689" FontSize="15" VerticalContentAlignment="Center">
+        <Label x:Name="channelName" Content="" Margin="208,49,192.4,450"  FontSize="30" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" Width="400">
+            <Label.Background>
+                <SolidColorBrush Color="#092748" Opacity="0.61"/>
+            </Label.Background>
+        </Label>
+        <Label x:Name="specific_day" Content="" Margin="272,117,243.4,400" FontSize="20" FontFamily="Arial Black" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center"  HorizontalContentAlignment="Center" Foreground="White" Width="285">
+            <Label.Background>
+                <SolidColorBrush Color="#092748" Opacity="0.61"/>
+            </Label.Background>
+        </Label>
+
+        <Button x:Name="channelDown" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="604,40,0,0" VerticalAlignment="Top" Width="90" Height="68" Click="channelDown_Click">
+            <Label Content="Label" Height="100" Width="100"/>
+        </Button>
+        <Button x:Name="dayDown" Content="Button" Style="{StaticResource channelUpButton}" HorizontalAlignment="Left" Margin="556,113,0,0" VerticalAlignment="Top" Width="54" Height="40" Click="dayDown_Click"/>
+        <Button x:Name="channelUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,41,585.4,0" Width="90" Height="68" VerticalAlignment="Top" Click="channelUp_Click"/>
+        <Button x:Name="dayUp" Content="Button" Style="{StaticResource channelDownButton}" HorizontalAlignment="Right" Margin="0,115,526.4,0" Width="54" Height="40" VerticalAlignment="Top" RenderTransformOrigin="-0.776,0.662" Click="dayUp_Click"/>
+        <DataGrid x:Name="board" Height="330" Margin="13,170,13.4,50" VerticalAlignment="Center" HorizontalAlignment="Center" Width="774" HorizontalContentAlignment="Center" BorderBrush="#FF004689" FontSize="15" VerticalContentAlignment="Center">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No" Binding="{Binding no}" Width="35" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="START TIME" Binding="{Binding startTime}" Width="100" CanUserSort="False" IsReadOnly="True"/>
@@ -53,6 +64,7 @@
 
             </DataGrid.Columns>
         </DataGrid>
+        <Button x:Name="close_btn" Content="Close" Margin="356,0,318.4,14" Click="close_btn_Click" Height="21" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>
