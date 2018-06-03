@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.Windows.Media.Imaging;
 
 namespace TVSimulator
 {
@@ -110,7 +111,7 @@ namespace TVSimulator
             System.Windows.Application.Current.Shutdown();  //close all windows
         }
 
-        private void btnControl_Click(object sender, RoutedEventArgs e)
+        private void btnBoard_Click(object sender, RoutedEventArgs e)
         {
             boardWindow mw = new boardWindow(this);
             mw.Show();
@@ -404,7 +405,7 @@ namespace TVSimulator
             string broadCastNow = "Now: " + playNow.Name;
             string broadCastNext = "Next: " + playNext.Name;
 
-            if(c.TypeOfMedia.Equals(Constants.TVSERIES))
+            if (c.TypeOfMedia.Equals(Constants.TVSERIES))
             {
                 TvSeries tvNow = playNow as TvSeries;
                 TvSeries tvNext;
@@ -413,9 +414,18 @@ namespace TVSimulator
 
                 tvNext = playNext as TvSeries;
                 broadCastNext += " - Season " + tvNext.Season + " Episode " + tvNext.Episode;
-            }
+            }   
             else if (!c.TypeOfMedia.Equals(Constants.MOVIE) && c.YoutubeChannelName != "")
+            {
                 strMediaName = c.YoutubeChannelName;
+                var uri = new Uri("pack://application:,,,/Resources/youtubeChannelIcon.png");
+                var bitmap = new BitmapImage(uri);
+                chanIcon.Source = bitmap;
+
+                var uri1 = new Uri("pack://application:,,,/Resources/youtubeChannel.png");
+                var bitmap1 = new BitmapImage(uri1);
+                channelImage.Source = bitmap1;
+            }
             lblMediaName.Content = strMediaName;
             lblBroadcastNow.Content = broadCastNow;
             lblBroadcastNext.Content = broadCastNext;
@@ -433,17 +443,44 @@ namespace TVSimulator
             {
                 Movie m = playNow as Movie;
                 txtDescription.Text = m.Description + "  - IMDB Rating: " + m.ImdbRating;
+
+                var uri = new Uri("pack://application:,,,/Resources/movieIcon.PNG");
+                var bitmap = new BitmapImage(uri);
+                chanIcon.Source = bitmap;
+
+                var uri1 = new Uri("pack://application:,,,/Resources/movieChannel.png");
+                var bitmap1 = new BitmapImage(uri1);
+                channelImage.Source = bitmap1;
             }
             if (c.TypeOfMedia.Equals(Constants.TVSERIES))
             {
                 TvSeries t = playNow as TvSeries;
                 txtDescription.Text = t.Name +  " - Season " + t.Season + " Episode " + t.Episode + " - " + t.Description + "  - IMDB Rating: " + t.ImdbRating;
+
+                var uri = new Uri("pack://application:,,,/Resources/tvSeriesIcon.png");
+                var bitmap = new BitmapImage(uri);
+                chanIcon.Source = bitmap;
+
+                var uri1 = new Uri("pack://application:,,,/Resources/tvSeriesChannel.PNG");
+                var bitmap1 = new BitmapImage(uri1);
+                channelImage.Source = bitmap1;
+            }
+            if(c.TypeOfMedia.Equals("YouTubePlaylistChannel"))
+            {
+                var uri = new Uri("pack://application:,,,/Resources/ypIcon.png");
+                var bitmap = new BitmapImage(uri);
+                chanIcon.Source = bitmap;
+
+                var uri1 = new Uri("pack://application:,,,/Resources/ypChannel.png");
+                var bitmap1 = new BitmapImage(uri1);
+                channelImage.Source = bitmap1;
             }
             //if(c.MChannelType == Channel.channelType.youtube_channel)
             //{
             //    YouTubeChannel ytc = new YouTubeChannel();
             //    txtDescription.Text = ytc.Description;
             //}
+
             editChannelNumber.Text = "" + c.ChannelNumber;
         }
 
