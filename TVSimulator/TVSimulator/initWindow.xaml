@@ -12,7 +12,7 @@
     </Window.Background>
     <xctk:BusyIndicator 
         IsBusy="False" x:Name="loader" BusyContent="Please Wait while creating channels" Background="White" Foreground="DarkBlue" >
-        <Grid>
+        <Grid x:Name="firstWin">
             <Grid.RowDefinitions>
                 <RowDefinition Height="203*"/>
                 <RowDefinition Height="268*"/>

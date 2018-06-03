@@ -140,15 +140,17 @@ namespace TVSimulator
                 System.Windows.MessageBox.Show("Please select your media");
                 return;
             }
-
+            foreach(UIElement c in firstWin.Children)
+            {
+                c.Visibility = Visibility.Hidden;
+            }
             // hide controllers of the first screen
-            getFolderBtn.Visibility = Visibility.Hidden;
-            lblAddYouTube.Visibility = Visibility.Hidden;
-            youtubeBtn.Visibility = Visibility.Hidden;
-            SubfoldersCheckBox.Visibility = Visibility.Hidden;
-            pathTextBox.Visibility = Visibility.Hidden;
-            btnNext.Visibility = Visibility.Hidden;
-
+            //getFolderBtn.Visibility = Visibility.Hidden;
+            //lblAddYouTube.Visibility = Visibility.Hidden;
+            //youtubeBtn.Visibility = Visibility.Hidden;
+            //SubfoldersCheckBox.Visibility = Visibility.Hidden;
+            //pathTextBox.Visibility = Visibility.Hidden;
+            //btnNext.Visibility = Visibility.Hidden;
             // show controllers of the second screen and change background
             secondBackground.Visibility = Visibility.Visible;
             btnSubmit.Visibility = Visibility.Visible;
@@ -164,12 +166,16 @@ namespace TVSimulator
         private void gotoStatrtupIW()
         {
             //show controllers of the first screen
-            getFolderBtn.Visibility = Visibility.Visible;
-            lblAddYouTube.Visibility = Visibility.Visible;
-            youtubeBtn.Visibility = Visibility.Visible;
-            SubfoldersCheckBox.Visibility = Visibility.Visible;
-            pathTextBox.Visibility = Visibility.Visible;
-            btnNext.Visibility = Visibility.Visible;
+            //getFolderBtn.Visibility = Visibility.Visible;
+            //lblAddYouTube.Visibility = Visibility.Visible;
+            //youtubeBtn.Visibility = Visibility.Visible;
+            //SubfoldersCheckBox.Visibility = Visibility.Visible;
+            //pathTextBox.Visibility = Visibility.Visible;
+            //btnNext.Visibility = Visibility.Visible;
+            foreach (System.Windows.Controls.Control c in firstWin.Children)
+            {
+                c.Visibility = Visibility.Visible;
+            }
 
             //hide controllers of the second screen and change background
             secondBackground.Visibility = Visibility.Hidden;
