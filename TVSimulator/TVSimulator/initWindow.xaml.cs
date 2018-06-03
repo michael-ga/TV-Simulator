@@ -17,7 +17,7 @@ namespace TVSimulator
     {
         private FileImporter fileImporter;
         private Database db;
- 
+
         public initWindow()
         {
             InitializeComponent();

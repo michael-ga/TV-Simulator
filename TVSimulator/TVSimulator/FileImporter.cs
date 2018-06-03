@@ -13,24 +13,6 @@ using WMPLib;
 
 namespace TVSimulator
 {
-    class costumPath
-    {
-        string path;
-        bool isIncludeSubFolders;
-        public costumPath(string p,bool v)
-        {
-            Path = p;
-            IsIncludeSubFolders = v;
-        }
-        public bool isExist(string _path)
-        {
-            return path.Equals(path);
-        }
-        public string Path { get => path; set => path = value; }
-        public bool IsIncludeSubFolders { get => isIncludeSubFolders; set => isIncludeSubFolders = value; }
-    }
-
-
     class FileImporter : EventArgs, IFileImporter
     {
         #region fields
@@ -44,6 +26,7 @@ namespace TVSimulator
         List<TvSeries> allTVseries;
         List<Music> allMusic;
         Database db;
+        MyTaskProgressReport reporter;
 
         private string[] videoExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
         private string[] musicExt = { ".mp3", ".flac", ".ogg", ".wav", ".wma" };
@@ -62,6 +45,7 @@ namespace TVSimulator
             allMovies = new List<Movie>();
             allTVseries = new List<TvSeries>();
             allMusic = new List<Music>();
+            reporter = new MyTaskProgressReport();
             db = new Database();
         }
         #endregion
@@ -73,6 +57,7 @@ namespace TVSimulator
             {
                 await getAllMediaFromDirectory(val.Path, val.IsIncludeSubFolders);
             }
+
             saveListsToDB();
             return true;
         }
@@ -93,6 +78,11 @@ namespace TVSimulator
             }
             if (allPathes.Count() == 0)
                 return -1;
+
+            // all pathes added - update total progress ammount here
+            reporter.TotalProgressAmount = allPathes.Count();
+
+            // get all media files from pathes
             await getAllMedia();
             saveListsToDB();
             return 0;
@@ -272,7 +262,11 @@ namespace TVSimulator
         private async Task<bool> getAllMedia()
         {
             foreach (var item in allPathes)
+            {
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
+                reporter.CurrentProgressAmount++;
+                reporter.CurrentProgressMessage = "loaded " + reporter.CurrentProgressAmount.ToString()+ " out of "+reporter.TotalProgressAmount.ToString() +" media files";
+            }
 
 
             // if (allMedia.Count > 0)                   // send event to UI
@@ -328,7 +322,19 @@ namespace TVSimulator
 
         #endregion Helper Methods
 
+        public async Task syncAllAsyncReportProgress(int sleepTime, IProgress<MyTaskProgressReport> progress, List<costumPath> dirs)
+        {
+            var t = new Task(() => { var res = addDirectoryList(dirs); });
+            t.Start();
+            
+            while(reporter.CurrentProgressAmount <= reporter.TotalProgressAmount)
+            {
+                await Task.Delay(sleepTime);
 
+                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = reporter.CurrentProgressAmount, TotalProgressAmount = reporter.CurrentProgressAmount, CurrentProgressMessage = reporter.CurrentProgressMessage });
+
+            }
+        }
 
 
     }

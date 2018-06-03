@@ -25,7 +25,7 @@ namespace TVSimulator
         private TimesWindow tw = null;
 
         YoutubeImporter.MainWindow youtubeBrowser;
-        private bool isYoutubeChannelSynced;
+        private bool isYoutubeChannelSynced , isLocalChannelsSynced;
 
         public SettingWindow(Window mw)
         {
@@ -139,7 +139,13 @@ namespace TVSimulator
 
 
         }
-        
+
+
+        // local media progress
+        private void ReportLocalMediaProgress(MyTaskProgressReport progress)
+        {
+            local_prog_lbl.Content = progress.CurrentProgressMessage;
+        }
 
         #endregion
 
@@ -207,7 +213,7 @@ namespace TVSimulator
         // set back the focus to ui window after closing settings
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (isYoutubeChannelSynced)
+            if (isYoutubeChannelSynced || isLocalChannelsSynced)
             {
                 MainWindow s = new MainWindow();
                 s.Show();
@@ -235,9 +241,17 @@ namespace TVSimulator
             return true;
         }
 
-        private void sync_local_btn_click(object sender, RoutedEventArgs e)
+        private async void sync_local_btn_click(object sender, RoutedEventArgs e)
         {
-
+            if (pathes.Count() == 0)
+            {
+                System.Windows.MessageBox.Show("please add pathes to sync");
+                return;
+            }
+            var progressIndicator_local = new Progress<MyTaskProgressReport>(ReportLocalMediaProgress);
+            if (fileImporter == null)
+                fileImporter = new FileImporter();
+            await fileImporter.syncAllAsyncReportProgress(1000, progressIndicator_local, pathes);
         }
     }
 }

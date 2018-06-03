@@ -34,6 +34,7 @@
                     <Button Content="Sync Now" HorizontalAlignment="Left" Margin="247,455,0,0" VerticalAlignment="Top" Width="101" Height="19" Click="sync_local_btn_click"/>
                     <Button x:Name="addPathBtn" Content="add folder" HorizontalAlignment="Left" Margin="221,145,0,0" VerticalAlignment="Top" Width="75" Click="addPathBtn_Click"/>
                     <Button x:Name="update" Content="Update directories" HorizontalAlignment="Left" Margin="382,144,0,0" VerticalAlignment="Top" Width="115" Height="21" Click="update_Click"/>
+                    <Label x:Name="local_prog_lbl" Content="" HorizontalAlignment="Left" Margin="53,478,0,0" VerticalAlignment="Top" Width="477"/>
                 </Grid>
             </TabItem>
             <TabItem Header="YouTube" Margin="197.8,0,-293.8,-1.8">

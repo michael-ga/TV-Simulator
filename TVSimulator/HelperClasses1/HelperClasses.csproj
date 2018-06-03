@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="BroadcastTime.cs" />
     <Compile Include="Channel.cs" />
+    <Compile Include="Common_Object.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="MainWindow.xaml.cs">
