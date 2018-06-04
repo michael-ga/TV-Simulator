@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -103,21 +104,24 @@ namespace TVSimulator
                 System.Windows.MessageBox.Show("Please add at least one folder path");
                 return;
             }
-            System.Windows.MessageBox.Show("are you shure?\n all channels schedule will be lost");
-            // change to yes no box..
+            System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.MessageBox.Show("Are you shure?"+"\n"+"this action will remove all local channels data", "Warning", System.Windows.Forms.MessageBoxButtons.YesNo);
+            if (dialogResult == System.Windows.Forms.DialogResult.No)
+            {
+                return;
+            }
+            else { isLocalChannelsSynced = true; }
 
             // close main window
             UI_caller.Close();
 
             // remove old channel data
-            db = new Database();
+            //db = new Database();
             db.removeLocalMediaCollection();
 
             // reimport folder list and pathes and create 
-            var res = await fileImporter.addDirectoryList(pathes);
-            MainWindow mw = new MainWindow();
-            mw.Show();
-            this.Close();
+            var progressIndicator_local = new Progress<MyTaskProgressReport>(ReportLocalMediaProgress);
+            var t = await fileImporter.syncAllAsyncReportProgress(1000, progressIndicator_local, pathes);
+            
         }
         #endregion
 
@@ -144,7 +148,18 @@ namespace TVSimulator
         // local media progress
         private void ReportLocalMediaProgress(MyTaskProgressReport progress)
         {
+            if(progress.CurrentProgressAmount == progress.TotalProgressAmount)
+            {
+                prog_bar.Visibility = Visibility.Hidden;
+                System.Windows.MessageBox.Show("updating local media pathes done, please close to restart TV Simulator");
+            }
+            prog_bar.Visibility = Visibility.Visible;
+            prog_bar.Minimum = 0;
+            
+            prog_bar.Maximum = progress.TotalProgressAmount;
+            prog_bar.Value = progress.CurrentProgressAmount;
             local_prog_lbl.Content = progress.CurrentProgressMessage;
+            
         }
 
         #endregion
@@ -213,14 +228,14 @@ namespace TVSimulator
         // set back the focus to ui window after closing settings
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (isYoutubeChannelSynced || isLocalChannelsSynced)
-            {
-                MainWindow s = new MainWindow();
-                s.Show();
-                UI_caller.Close();
-            }
-            else
-                UI_caller.Focus();
+            //if (isYoutubeChannelSynced || isLocalChannelsSynced)
+            //{
+            //    MainWindow s = new MainWindow();
+            //    s.Show();
+            //    UI_caller.Close();
+            //}
+            //else
+            //    UI_caller.Focus();
         }
 
         // exit from setting window by clicking close button
@@ -239,6 +254,18 @@ namespace TVSimulator
                     return false;
             }
             return true;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (isYoutubeChannelSynced || isLocalChannelsSynced)
+            {
+                MainWindow s = new MainWindow();
+                s.Show();
+                UI_caller.Close();
+            }
+            else
+                UI_caller.Focus();
         }
 
         private async void sync_local_btn_click(object sender, RoutedEventArgs e)
