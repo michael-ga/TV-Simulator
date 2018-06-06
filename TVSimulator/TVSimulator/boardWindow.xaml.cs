@@ -74,8 +74,8 @@ namespace TVSimulator
                 time += ":" + m.currentChannel.BoardSchedule.ElementAt(i).Key.Minute.ToString();
                 if (time.Equals(m.lblStartTime.Content) && today == specDay.Date)
                 {
-                    var row = board.ItemContainerGenerator.ContainerFromIndex(i) as DataGridRow;
-                    row.Background = Brushes.DarkSlateBlue;
+                    object item = board.Items[i]; // = Product X
+                    board.SelectedItem = item;
                     return;
                 }
             }

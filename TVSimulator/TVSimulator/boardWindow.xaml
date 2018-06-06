@@ -63,7 +63,17 @@
                 </DataGridTextColumn>
 
             </DataGrid.Columns>
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="Firebrick" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
         </DataGrid>
+  
         <Button x:Name="close_btn" Content="Close" Margin="356,0,318.4,14" Click="close_btn_Click" Height="21" VerticalAlignment="Bottom"/>
 
     </Grid>
