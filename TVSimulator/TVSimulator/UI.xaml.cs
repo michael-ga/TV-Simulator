@@ -13,6 +13,9 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
 
 namespace TVSimulator
 {
@@ -36,6 +39,9 @@ namespace TVSimulator
         private List<int> indBoard; // indexes in all boards to get results faster - roy
         private Media playNow;
         private Media playNext;
+        private double lastVolume;
+        private double lastSliderValue;
+        private bool isMuted = false;
 
         public Media PlayNow { get => playNow; set => playNow = value; }
         public Media PlayNext { get => playNext; set => playNext = value; }
@@ -98,12 +104,7 @@ namespace TVSimulator
 
         private DateTime getToday()
         {
-            DateTime today = DateTime.Now;
-            today = today.AddHours(-today.Hour);
-            today = today.AddMinutes(-today.Minute);
-            today = today.AddSeconds(-today.Second);
-            today = today.AddMilliseconds(-today.Millisecond);
-            return today;
+            return DateTime.Now.Date;
         }
         #region button listeners
 
@@ -125,9 +126,22 @@ namespace TVSimulator
 
         private void Mute_Click(object sender, RoutedEventArgs e)
         {
-            volumeSlider.Value = 0;
-            mediaPlayer.Volume = 0;
-            youtubePlayer.Volume = 0;
+            if (!isMuted)
+            {
+                redX.Visibility = Visibility.Visible;
+                lastVolume = mediaPlayer.Volume;
+                lastSliderValue = volumeSlider.Value;
+                volumeSlider.Value = 0;
+                mediaPlayer.Volume = 0;
+                youtubePlayer.Volume = 0;
+            }
+            else
+            {
+                redX.Visibility = Visibility.Hidden;
+                volumeSlider.Value = lastSliderValue;
+                mediaPlayer.Volume = lastVolume;
+            }
+            isMuted = !isMuted;
         }
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
@@ -204,7 +218,6 @@ namespace TVSimulator
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             mediaPlayer.Volume = volumeSlider.Value/60;
-            
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
