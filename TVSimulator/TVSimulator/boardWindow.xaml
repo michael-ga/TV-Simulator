@@ -48,7 +48,7 @@
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="DESCRIPTION" Binding="{Binding description}" Width="350" CanUserSort="False" IsReadOnly="True">
+                <DataGridTextColumn Header="DESCRIPTION" Binding="{Binding description}" Width="354" CanUserSort="False" IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap" />

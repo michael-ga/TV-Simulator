@@ -474,6 +474,8 @@ namespace TVSimulator
                 var uri1 = new Uri("pack://application:,,,/Resources/ypChannel.png");
                 var bitmap1 = new BitmapImage(uri1);
                 channelImage.Source = bitmap1;
+
+                txtDescription.Text = "youtube channel";
             }
             //if(c.MChannelType == Channel.channelType.youtube_channel)
             //{
@@ -638,7 +640,8 @@ namespace TVSimulator
             //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
 
-            cb.rebuildAllChannels();
+            //cb.rebuildAllChannels();
+
             chanList = db.getChannelList().Distinct().ToList();
             removeEmtpyScheduleChannels();
             //if (chanList.Count() == 0 || chanList == null)
