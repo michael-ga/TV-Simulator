@@ -50,6 +50,12 @@ namespace TVSimulator
             db = new Database();
         }
 
+        public MainWindow(Database _db)
+        {
+            InitializeComponent();
+            db = _db;
+        }
+
         private void removeEmtpyScheduleChannels()
         {
             for (int i =0; i< chanList.Count(); i++)

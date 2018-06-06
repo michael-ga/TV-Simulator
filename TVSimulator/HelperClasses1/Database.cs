@@ -49,6 +49,11 @@ namespace HelperClasses
             timeCollection = db.GetCollection<BroadcastTime>(Constants.TIME_COLLECTION);
 
         }
+
+        public void Close()
+        {
+            db.Dispose();
+        }
         #endregion
         //TODO: CHECK QUERIES 
         public void removeCollections()

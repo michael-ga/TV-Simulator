@@ -27,6 +27,7 @@ namespace TVSimulator
         List<Music> allMusic;
         Database db;
         MyTaskProgressReport reporter;
+        private bool listsSaved = false;
 
         private string[] videoExt = { ".mkv", ".avi", ".wmv", ".mp4", ".mpeg", ".mpg", ".3gp" };  //  need to change from list to array
         private string[] musicExt = { ".mp3", ".flac", ".ogg", ".wav", ".wma" };
@@ -304,6 +305,7 @@ namespace TVSimulator
         {
             db.removeCollections();
             db.insertByType(allMedia);
+            listsSaved = true;
         }
 
         private string adjustTVString(string origin)
@@ -322,18 +324,19 @@ namespace TVSimulator
 
         #endregion Helper Methods
 
-        public async Task syncAllAsyncReportProgress(int sleepTime, IProgress<MyTaskProgressReport> progress, List<costumPath> dirs)
+        public async Task<bool> syncAllAsyncReportProgress(int sleepTime, IProgress<MyTaskProgressReport> progress, List<costumPath> dirs)
         {
             var t = new Task(() => { var res = addDirectoryList(dirs); });
             t.Start();
             
-            while(reporter.CurrentProgressAmount <= reporter.TotalProgressAmount)
+            while(!listsSaved)
             {
                 await Task.Delay(sleepTime);
 
-                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = reporter.CurrentProgressAmount, TotalProgressAmount = reporter.CurrentProgressAmount, CurrentProgressMessage = reporter.CurrentProgressMessage });
+                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = reporter.CurrentProgressAmount, TotalProgressAmount = reporter.TotalProgressAmount, CurrentProgressMessage = reporter.CurrentProgressMessage });
 
             }
+            return listsSaved;
         }
 
 
