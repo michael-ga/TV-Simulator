@@ -103,6 +103,18 @@
             </Setter>
         </Style>
 
+        <Style x:Key="redX" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Image Source="Resources/redX.png"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <SolidColorBrush x:Key="ProgressBarBorderBrush" Color="Transparent" />
         <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="White" />
         <SolidColorBrush x:Key="ProgressBarTrackBackgroundBrush" Color="#63D055" />

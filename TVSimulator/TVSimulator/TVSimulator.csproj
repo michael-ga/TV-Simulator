@@ -255,6 +255,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\redX.png" />
     <Resource Include="Resources\board.png" />
     <Resource Include="Resources\movieChannel.png" />
     <Resource Include="Resources\movieIcon.PNG" />
@@ -267,7 +268,6 @@
     <Resource Include="Resources\boardschedule.jpg" />
     <Resource Include="Resources\fileImporterScreen.jpg" />
     <Resource Include="Resources\error.png" />
-    <Resource Include="Resources\muteIcon.png" />
     <Resource Include="Resources\power.png" />
     <Resource Include="Resources\control.png" />
     <Content Include="Resources\promo.mp4" />

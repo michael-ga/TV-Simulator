@@ -38,6 +38,7 @@
             <Label x:Name="lblMediaName" Content="???? - ????" HorizontalAlignment="Left" Margin="52,0,0,121.6" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="20" Height="33" Width="745"/>
             <Label x:Name="lblClock" Content="00:00" Margin="0,0,10.2,123.6" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="18" HorizontalAlignment="Right" Width="64" Height="31" RenderTransformOrigin="0.5,0.519"/>
             <Button x:Name="volumeIcon" Style="{StaticResource volumeIcon}" Margin="0,0,198.2,124.6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="Mute_Click"/>
+            <Button x:Name="redX" Style="{StaticResource redX}" Margin="0,0,198.2,124.6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="Mute_Click" Visibility="Hidden"/>
 
             <Slider x:Name="volumeSlider" Minimum="0" Maximum="60" Value="30" Margin="0,11,76.2,129.6" Opacity="0.4" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Right" Width="124"/>
             <!--

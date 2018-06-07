@@ -60,7 +60,38 @@ namespace TVSimulator
 
             board.RowBackground = Brushes.LightGray;
             buildBoardByDay(m, curChar, specDay);
+        }
 
+        private void ProcessRows()
+        {
+            DateTime today = DateTime.Now.Date;
+            var i = m.getIndexes(m.parseChanneltoIndex(channelNum), today);
+            var j = 0;
+            var zero = "0";
+            var min = "";
+            string time = "";
+            for(;i<board.Items.Count;i++)
+            {
+                time = m.currentChannel.BoardSchedule.ElementAt(i).Key.Hour.ToString();
+                if (time.Length == 1)
+                    time = zero + time;
+
+                min = m.currentChannel.BoardSchedule.ElementAt(i).Key.Minute.ToString();
+                if (min.Length == 1)
+                    min = min + zero;
+                time += ":" + min;
+                if (time.Equals(m.lblStartTime.Content) && today == specDay.Date)
+                {
+                    object item;
+                    if (j==0)
+                        item = board.Items[0]; 
+                    else
+                        item = board.Items[j-1]; // = Product X
+                    board.SelectedItem = item;
+                    return;
+                }
+                j++;
+            }
         }
 
         private void buildBoardByDay(MainWindow m, Channel c, DateTime day)
@@ -116,7 +147,6 @@ namespace TVSimulator
                         try
                         {
                             t.description = ((YoutubeVideo)ytplst).Description;
-
                         }
                         catch (Exception)
                         {
@@ -136,6 +166,8 @@ namespace TVSimulator
 
                 board.Items.Add(t);
             }
+
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.ApplicationIdle, new Action(ProcessRows));
         }
 
         private void OnTextBoxKeyDown(object sender, KeyEventArgs e)
@@ -165,10 +197,7 @@ namespace TVSimulator
             dayUp.Visibility = Visibility.Visible;
             specDay = specDay.AddDays(-1);
             if (DateTime.Compare(specDay, (curChar.BoardSchedule.ElementAt(0).Key)) < 0)
-            {
                 dayDown.Visibility = Visibility.Hidden;
-                return;
-            }
             specific_day.Content = specDay.ToLongDateString();
             buildBoardByDay(m, curChar, specDay);
         }

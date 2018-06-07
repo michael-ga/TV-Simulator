@@ -13,6 +13,9 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
 
 namespace TVSimulator
 {
@@ -29,13 +32,16 @@ namespace TVSimulator
 
         public DateTime timeNow;
         public Database db;
-        public ChannelsBuilder cb;
+        public ChannelsBuilder cb = new ChannelsBuilder();
         private List<Channel> chanList;
         public Channel currentChannel;
         public int curChannelNum = 1;
         private List<int> indBoard; // indexes in all boards to get results faster - roy
         private Media playNow;
         private Media playNext;
+        private double lastVolume;
+        private double lastSliderValue;
+        private bool isMuted = false;
 
         public Media PlayNow { get => playNow; set => playNow = value; }
         public Media PlayNext { get => playNext; set => playNext = value; }
@@ -48,48 +54,13 @@ namespace TVSimulator
         {
             InitializeComponent();
             db = new Database();
-            cb = new ChannelsBuilder();
         }
 
         public MainWindow(Database _db)
         {
             InitializeComponent();
-            cb = new ChannelsBuilder();
             db = _db;
         }
-
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            initMainWindow();
-            if (chanList == null || chanList.Count() < 1)
-                chanList = db.getChannelList();
-
-            if (chanList == null || chanList.Count() < 1)
-            {
-                System.Windows.MessageBox.Show("error: loading channel list has been failed");
-                return;
-            }
-            var index = parseChanneltoIndex(curChannelNum);
-            var c0 = chanList[index];
-            playFromChannel(c0);
-
-            timeNow = DateTime.Now;
-            lblClock.Content = timeNow.ToShortTimeString();
-
-
-            timer.Interval = TimeSpan.FromSeconds(15);
-            timer.Tick += tickevent;
-            timer.Start();
-        }
-
-
-
-        public void forceRebuildChannels()
-        {
-            cb.rebuildAllChannels();
-        }
-
 
         private void removeEmtpyScheduleChannels()
         {
@@ -133,12 +104,7 @@ namespace TVSimulator
 
         private DateTime getToday()
         {
-            DateTime today = DateTime.Now;
-            today = today.AddHours(-today.Hour);
-            today = today.AddMinutes(-today.Minute);
-            today = today.AddSeconds(-today.Second);
-            today = today.AddMilliseconds(-today.Millisecond);
-            return today;
+            return DateTime.Now.Date;
         }
         #region button listeners
 
@@ -160,9 +126,22 @@ namespace TVSimulator
 
         private void Mute_Click(object sender, RoutedEventArgs e)
         {
-            volumeSlider.Value = 0;
-            mediaPlayer.Volume = 0;
-            youtubePlayer.Volume = 0;
+            if (!isMuted)
+            {
+                redX.Visibility = Visibility.Visible;
+                lastVolume = mediaPlayer.Volume;
+                lastSliderValue = volumeSlider.Value;
+                volumeSlider.Value = 0;
+                mediaPlayer.Volume = 0;
+                youtubePlayer.Volume = 0;
+            }
+            else
+            {
+                redX.Visibility = Visibility.Hidden;
+                volumeSlider.Value = lastSliderValue;
+                mediaPlayer.Volume = lastVolume;
+            }
+            isMuted = !isMuted;
         }
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
@@ -239,7 +218,6 @@ namespace TVSimulator
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             mediaPlayer.Volume = volumeSlider.Value/60;
-            
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -346,7 +324,29 @@ namespace TVSimulator
                 menuBar.Visibility = Visibility.Hidden;
         }
 
-       
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            initMainWindow();
+            if (chanList == null || chanList.Count() < 1)
+                chanList = db.getChannelList();
+
+            if (chanList == null || chanList.Count() < 1)
+            {
+                System.Windows.MessageBox.Show("error: loading channel list has been failed");
+                return;
+            }
+            var index = parseChanneltoIndex(curChannelNum);
+            var c0 = chanList[index];
+            playFromChannel(c0);
+            
+            timeNow = DateTime.Now;
+            lblClock.Content = timeNow.ToShortTimeString();
+
+            
+            timer.Interval = TimeSpan.FromSeconds(15);
+            timer.Tick += tickevent;
+            timer.Start();
+        }
 
         private void playFromChannel(Channel curChannel)
         {
@@ -493,6 +493,8 @@ namespace TVSimulator
                 var uri1 = new Uri("pack://application:,,,/Resources/ypChannel.png");
                 var bitmap1 = new BitmapImage(uri1);
                 channelImage.Source = bitmap1;
+
+                txtDescription.Text = "youtube channel";
             }
             //if(c.MChannelType == Channel.channelType.youtube_channel)
             //{
@@ -658,6 +660,7 @@ namespace TVSimulator
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
 
             //cb.rebuildAllChannels();
+
             chanList = db.getChannelList().Distinct().ToList();
             removeEmtpyScheduleChannels();
             //if (chanList.Count() == 0 || chanList == null)
