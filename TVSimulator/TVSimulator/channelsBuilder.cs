@@ -42,13 +42,13 @@ namespace TVSimulator
         #region functions channels builder
 
 
-        /*public void rebuildAllChannels()
+        public void rebuildAllChannels()
         {
             db.removeChannelCollection();
             buildLocalChannels();
             buildYouTubeChannels();
             buildYouTubePlaylistChannels();
-        }*/
+        }
         
         public void buildLocalChannels()
         {

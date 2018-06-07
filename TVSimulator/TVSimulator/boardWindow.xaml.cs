@@ -72,6 +72,8 @@ namespace TVSimulator
             string time = "";
             for(;i<board.Items.Count;i++)
             {
+                if (i == board.Items.Count) // prevent exceeding from range
+                    break;
                 time = m.currentChannel.BoardSchedule.ElementAt(i).Key.Hour.ToString();
                 if (time.Length == 1)
                     time = zero + time;

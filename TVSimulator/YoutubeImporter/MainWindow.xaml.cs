@@ -29,7 +29,7 @@ namespace YoutubeImporter
         private List<YoutubePlaylist> _playlists;
         private List<YoutubePlaylistChannel> _playlistChannels;
 
-        private int type;
+        private int type = -1;
 
         #endregion
 
@@ -50,8 +50,12 @@ namespace YoutubeImporter
         private async void Search_Click(object sender, RoutedEventArgs e)
         {
             removeChannelBtn.Visibility = Visibility.Hidden;
+            addChannelBtn.Visibility = Visibility.Visible;
             if (SearchBox.Text.Equals(""))
+            {
+                mListView.ItemsSource = null;
                 return;
+            }
             try
             {
                 if(isPlaylistMod.IsChecked == true)
@@ -85,6 +89,10 @@ namespace YoutubeImporter
                 else
                     Debug.WriteLine("Playlist Channel Added");
 
+            }
+            else
+            {
+                return;
             }
             if (!(db.insertYoutubechannel(currChannelSelection)))
                 Debug.WriteLine("channel not added");
@@ -143,7 +151,7 @@ namespace YoutubeImporter
 
         private void showMyChannelsBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            addChannelBtn.Visibility = Visibility.Hidden;
             Channels = db.getYoutubeChannelList();
             if (Channels.Count >= 1)
                 removeChannelBtn.Visibility = Visibility.Visible;
@@ -222,6 +230,8 @@ namespace YoutubeImporter
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             PlaylistChannels = db.getPlaylistChannels();
+            removeChannelBtn.Visibility = Visibility.Visible;
+            addChannelBtn.Visibility = Visibility.Hidden;
         }
 
 
@@ -315,13 +325,6 @@ namespace YoutubeImporter
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            MessageBox.Show("whould you like to sync youtube channels now?"); // make it yes no box
-            // if yes
-            //syncBtn_Click
         }
     }
 }
