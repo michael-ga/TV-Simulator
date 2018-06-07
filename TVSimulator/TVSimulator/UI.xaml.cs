@@ -29,7 +29,7 @@ namespace TVSimulator
 
         public DateTime timeNow;
         public Database db;
-        public ChannelsBuilder cb = new ChannelsBuilder();
+        public ChannelsBuilder cb;
         private List<Channel> chanList;
         public Channel currentChannel;
         public int curChannelNum = 1;
@@ -48,13 +48,48 @@ namespace TVSimulator
         {
             InitializeComponent();
             db = new Database();
+            cb = new ChannelsBuilder();
         }
 
         public MainWindow(Database _db)
         {
             InitializeComponent();
+            cb = new ChannelsBuilder();
             db = _db;
         }
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            initMainWindow();
+            if (chanList == null || chanList.Count() < 1)
+                chanList = db.getChannelList();
+
+            if (chanList == null || chanList.Count() < 1)
+            {
+                System.Windows.MessageBox.Show("error: loading channel list has been failed");
+                return;
+            }
+            var index = parseChanneltoIndex(curChannelNum);
+            var c0 = chanList[index];
+            playFromChannel(c0);
+
+            timeNow = DateTime.Now;
+            lblClock.Content = timeNow.ToShortTimeString();
+
+
+            timer.Interval = TimeSpan.FromSeconds(15);
+            timer.Tick += tickevent;
+            timer.Start();
+        }
+
+
+
+        public void forceRebuildChannels()
+        {
+            cb.rebuildAllChannels();
+        }
+
 
         private void removeEmtpyScheduleChannels()
         {
@@ -311,29 +346,7 @@ namespace TVSimulator
                 menuBar.Visibility = Visibility.Hidden;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            initMainWindow();
-            if (chanList == null || chanList.Count() < 1)
-                chanList = db.getChannelList();
-
-            if (chanList == null || chanList.Count() < 1)
-            {
-                System.Windows.MessageBox.Show("error: loading channel list has been failed");
-                return;
-            }
-            var index = parseChanneltoIndex(curChannelNum);
-            var c0 = chanList[index];
-            playFromChannel(c0);
-            
-            timeNow = DateTime.Now;
-            lblClock.Content = timeNow.ToShortTimeString();
-
-            
-            timer.Interval = TimeSpan.FromSeconds(15);
-            timer.Tick += tickevent;
-            timer.Start();
-        }
+       
 
         private void playFromChannel(Channel curChannel)
         {
@@ -644,7 +657,7 @@ namespace TVSimulator
             //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             //chooseFolderBtn_Click(new object(), new RoutedEventArgs());
 
-            cb.rebuildAllChannels();
+            //cb.rebuildAllChannels();
             chanList = db.getChannelList().Distinct().ToList();
             removeEmtpyScheduleChannels();
             //if (chanList.Count() == 0 || chanList == null)

@@ -414,7 +414,7 @@ namespace HelperClasses
                     if (date.Year == year && date.Month == month && date.Day == day && date.Hour <= hour )
                         tempList.Add(board.Keys.ElementAt(i), board.Values.ElementAt(i));
                 }
-                if (tempList.Values.Last() == null )
+                if (tempList.Count() == 0 || tempList.Values.Last() == null )
                 {
                     MessageBox.Show("errr creating dict");
                     return null;

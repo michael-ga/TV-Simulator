@@ -11,10 +11,12 @@ namespace TVSimulator
     public partial class TimesWindow : Window
     {
         private Database db;
-        public TimesWindow()
+        private SettingWindow settings;
+        public TimesWindow(SettingWindow _settings)
         {
             InitializeComponent();
             addHours();
+            settings = _settings;
         }
 
         private void addHours()
@@ -96,6 +98,7 @@ namespace TVSimulator
             BroadcastTime bt = new BroadcastTime(startCycle, startTime, endTime);
             db.insertBroadcastTime(bt);     // check if need to be single value!!!!!!!!!!!
             MessageBox.Show("Times has been set successfully");
+            settings.IsLocalChannelsSynced = true;
             this.Close();
         }
 

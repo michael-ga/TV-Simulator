@@ -59,7 +59,7 @@
             </Grid>
             <!-- ************************************************* -->
 
-            <Grid x:Name="secondWin" Visibility="Visible">
+            <Grid x:Name="secondWin" Visibility="Hidden">
                 <Image x:Name="secondBackground" Margin="0,0,-0.4,0.4" Source="Resources/setTimeView.jpg" Grid.RowSpan="2" />
 
                 <CheckBox x:Name="isSetupAuto" Content="" HorizontalAlignment="Left" Margin="31,93,0,0" VerticalAlignment="Top" Checked="isSetupAuto_Checked" Unchecked="isSetupAuto_Checked" />

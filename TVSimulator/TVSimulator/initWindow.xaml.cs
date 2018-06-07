@@ -133,29 +133,26 @@ namespace TVSimulator
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            back_btn.Visibility = Visibility.Visible;
             var ytChanels = db.getYoutubeChannelList();
             if ((pathTextBox.Text == "") && ( ytChanels == null || ytChanels.Count < 1 ))
             {
                 System.Windows.MessageBox.Show("Please select your media");
                 return;
             }
-            foreach(UIElement c in firstWin.Children)
-            {
-                c.Visibility = Visibility.Hidden;
-            }
-            // hide controllers of the first screen
-            //getFolderBtn.Visibility = Visibility.Hidden;
-            //lblAddYouTube.Visibility = Visibility.Hidden;
-            //youtubeBtn.Visibility = Visibility.Hidden;
-            //SubfoldersCheckBox.Visibility = Visibility.Hidden;
-            //pathTextBox.Visibility = Visibility.Hidden;
-            //btnNext.Visibility = Visibility.Hidden;
-            // show controllers of the second screen and change background
-            secondBackground.Visibility = Visibility.Visible;
-            btnSubmit.Visibility = Visibility.Visible;
-            isSetupAuto.Visibility = Visibility.Visible;
-            timeFieldsGrid.Visibility = Visibility.Visible;
+            firstWin.Visibility = Visibility.Hidden;
+            secondWin.Visibility = Visibility.Visible;
+            //// hide controllers of the first screen
+            ////getFolderBtn.Visibility = Visibility.Hidden;
+            ////lblAddYouTube.Visibility = Visibility.Hidden;
+            ////youtubeBtn.Visibility = Visibility.Hidden;
+            ////SubfoldersCheckBox.Visibility = Visibility.Hidden;
+            ////pathTextBox.Visibility = Visibility.Hidden;
+            ////btnNext.Visibility = Visibility.Hidden;
+            //// show controllers of the second screen and change background
+            //secondBackground.Visibility = Visibility.Visible;
+            //btnSubmit.Visibility = Visibility.Visible;
+            //isSetupAuto.Visibility = Visibility.Visible;
+            //timeFieldsGrid.Visibility = Visibility.Visible;
             addHours();
         }
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -165,24 +162,8 @@ namespace TVSimulator
 
         private void gotoStatrtupIW()
         {
-            //show controllers of the first screen
-            //getFolderBtn.Visibility = Visibility.Visible;
-            //lblAddYouTube.Visibility = Visibility.Visible;
-            //youtubeBtn.Visibility = Visibility.Visible;
-            //SubfoldersCheckBox.Visibility = Visibility.Visible;
-            //pathTextBox.Visibility = Visibility.Visible;
-            //btnNext.Visibility = Visibility.Visible;
-            foreach (System.Windows.Controls.Control c in firstWin.Children)
-            {
-                c.Visibility = Visibility.Visible;
-            }
-
-            //hide controllers of the second screen and change background
-            secondBackground.Visibility = Visibility.Hidden;
-            btnSubmit.Visibility = Visibility.Hidden;
-            isSetupAuto.Visibility = Visibility.Hidden;
-            timeFieldsGrid.Visibility = Visibility.Hidden;
-            back_btn.Visibility = Visibility.Hidden;
+            firstWin.Visibility = Visibility.Visible;
+            secondWin.Visibility = Visibility.Hidden;
         }
 
         private void isSetupAuto_Checked(object sender, RoutedEventArgs e)

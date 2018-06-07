@@ -28,6 +28,8 @@ namespace TVSimulator
         YoutubeImporter.MainWindow youtubeBrowser;
         private bool isYoutubeChannelSynced , isLocalChannelsSynced;
 
+        public bool IsLocalChannelsSynced { get => isLocalChannelsSynced; set => isLocalChannelsSynced = value; }
+
         public SettingWindow(Window mw)
         {
             InitializeComponent();
@@ -132,7 +134,7 @@ namespace TVSimulator
             // set times of watching'
             if (tw == null)
             {
-                tw = new TimesWindow();
+                tw = new TimesWindow(this);
                 tw.Show();
             }
             else
@@ -159,7 +161,6 @@ namespace TVSimulator
             prog_bar.Maximum = progress.TotalProgressAmount;
             prog_bar.Value = progress.CurrentProgressAmount;
             local_prog_lbl.Content = progress.CurrentProgressMessage;
-            
         }
 
         #endregion
@@ -212,18 +213,6 @@ namespace TVSimulator
         #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         #region Window Closing
         // set back the focus to ui window after closing settings
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
@@ -261,6 +250,7 @@ namespace TVSimulator
             if (isYoutubeChannelSynced || isLocalChannelsSynced)
             {
                 MainWindow s = new MainWindow();
+                s.forceRebuildChannels();
                 s.Show();
                 UI_caller.Close();
             }
