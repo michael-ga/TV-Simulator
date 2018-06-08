@@ -31,6 +31,7 @@ namespace YoutubeImporter
         private List<YoutubePlaylistChannel> _playlistChannels;
 
         private int type = -1;
+        private bool isChannel = false;
 
         #endregion
 
@@ -43,6 +44,9 @@ namespace YoutubeImporter
 
             mListView.ItemsSource = Channels;
             mListView.SelectionChanged += selectedHandler;
+
+            mListView_Copy.ItemsSource = myChannels;
+            mListView_Copy.SelectionChanged += selectedHandler;
         } 
         #endregion
 
@@ -50,8 +54,6 @@ namespace YoutubeImporter
 
         private async void Search_Click(object sender, RoutedEventArgs e)
         {
-            removeChannelBtn.Visibility = Visibility.Hidden;
-            addChannelBtn.Visibility = Visibility.Visible;
             if (SearchBox.Text.Equals(""))
             {
                 mListView.ItemsSource = null;
@@ -91,14 +93,16 @@ namespace YoutubeImporter
                     Debug.WriteLine("Playlist Channel Added");
 
             }
-           
+
             if (!(db.insertYoutubechannel(currChannelSelection)))
                 Debug.WriteLine("channel not added");
             else
             {
-                MessageBox.Show("channel added!");
+                isChannel = true;
+                showMyChannelsBtn.IsEnabled = false;
+                showPlaylist.IsEnabled = true;
+                myChannels = db.getYoutubeChannelList();
             }
-
         }
 
         private void removeChannelBtn_Click(object sender, RoutedEventArgs e)
@@ -109,9 +113,9 @@ namespace YoutubeImporter
                 {
                     bool res = db.removeElementByIDFromCollection(Constants.YOUTUBE_CHANNEL_COLLECTION, currChannelSelection.Path);
                     if (res)
-                        Channels = db.getYoutubeChannelList();
+                        myChannels = db.getYoutubeChannelList();
                     else
-                        Debug.WriteLine("nothing happened");
+                        return;
                 }
             }
            if ( (type == (int)SelectionType.playlistChannel) && currentPlaylistChannelSelection != null)
@@ -150,8 +154,10 @@ namespace YoutubeImporter
 
         private void showMyChannelsBtn_Click(object sender, RoutedEventArgs e)
         {
-            addChannelBtn.Visibility = Visibility.Hidden;
-            Channels = db.getYoutubeChannelList();
+            isChannel = true;
+            showMyChannelsBtn.IsEnabled = false;
+            showPlaylist.IsEnabled = true;
+            myChannels = db.getYoutubeChannelList();
             if (Channels.Count >= 1)
                 removeChannelBtn.Visibility = Visibility.Visible;
         }
@@ -228,9 +234,11 @@ namespace YoutubeImporter
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            isChannel = false;
+            showPlaylist.IsEnabled = false;
+            showMyChannelsBtn.IsEnabled = true;
             PlaylistChannels = db.getPlaylistChannels();
             removeChannelBtn.Visibility = Visibility.Visible;
-            addChannelBtn.Visibility = Visibility.Hidden;
         }
 
 
@@ -258,6 +266,18 @@ namespace YoutubeImporter
 
         }
 
+        public List<YouTubeChannel> myChannels
+        {
+            get { return _channels; }
+            set
+            {
+                type = (int)SelectionType.channel;
+                _channels = value;
+                mListView_Copy.ItemsSource = myChannels;
+            }
+
+        }
+
         public List<YoutubePlaylist> Playlists
         {
             get { return _playlists; }
@@ -267,7 +287,6 @@ namespace YoutubeImporter
                 _playlists = value;
                 mListView.ItemsSource = Playlists;
             }
-
         }
 
         private List<YoutubeVideo> videos;
@@ -303,7 +322,7 @@ namespace YoutubeImporter
             {
                 type = (int)SelectionType.playlistChannel;
                 _playlistChannels = value;
-                mListView.ItemsSource = _playlistChannels;
+                mListView_Copy.ItemsSource = _playlistChannels;
             }
         }
         #endregion
@@ -324,6 +343,11 @@ namespace YoutubeImporter
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void mListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
