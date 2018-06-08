@@ -97,6 +97,7 @@ namespace TVSimulator
             costumPath tmp = new costumPath(path_textBox.Text, isIncludeSubfolders.IsChecked.Value);
             pathes.Add(tmp);
             System.Windows.MessageBox.Show("path added!");
+            pathes_txtBlock.Text += "\n"+ pathes.ElementAt(pathes.Count() - 1).Path;
         }
 
         private async void update_Click(object sender, RoutedEventArgs e)
@@ -193,11 +194,17 @@ namespace TVSimulator
 
             await ytbSearcher.syncAllAsyncReportProgress(500, progressIndicator);
             isYoutubeChannelSynced = true;
+            System.Windows.MessageBox.Show("sync done");
+            progress_syncLBL.Content = "";
             sync_all_btn.Click += sync_btn_Click;
         }
         private void ReportProgress(MyTaskProgressReport progress)
         {
             progress_syncLBL.Content = progress.CurrentProgressMessage;
+            prog_bar.Visibility = Visibility.Visible;
+            prog_bar.Minimum = 0;
+            prog_bar.Maximum = progress.TotalProgressAmount;
+            prog_bar.Value = progress.CurrentProgressAmount;
         }
 
         private void launch_youtube_browser_click(object sender, RoutedEventArgs e)

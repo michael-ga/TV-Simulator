@@ -23,7 +23,6 @@ namespace TVSimulator
         // startup implemention is in main window
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-
             MainWindow mw = new MainWindow();
             if(mw.isChannelsExist())
                 mw.Show();

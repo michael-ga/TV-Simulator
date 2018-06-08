@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace YoutubeImporter
 {
@@ -90,14 +91,13 @@ namespace YoutubeImporter
                     Debug.WriteLine("Playlist Channel Added");
 
             }
-            else
-            {
-                return;
-            }
+           
             if (!(db.insertYoutubechannel(currChannelSelection)))
                 Debug.WriteLine("channel not added");
             else
+            {
                 MessageBox.Show("channel added!");
+            }
 
         }
 
@@ -113,15 +113,14 @@ namespace YoutubeImporter
                     else
                         Debug.WriteLine("nothing happened");
                 }
-                // remove playlist channels related
-                if (type == (int)SelectionType.playlistChannel)
-                {
-                    bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
-                    if (res1)
-                        PlaylistChannels = db.getPlaylistChannels();
-                    else
-                        Debug.WriteLine("nothing happened");
-                }
+            }
+           if ( (type == (int)SelectionType.playlistChannel) && currentPlaylistChannelSelection != null)
+            {
+                bool res1 = db.removeElementByIDFromCollection(Constants.YOUTUBE_PLAYLIST_CHANNEL_COLLECTION, currentPlaylistChannelSelection.Path);
+                if (res1)
+                    PlaylistChannels = db.getPlaylistChannels();
+                else
+                    Debug.WriteLine("nothing happened");
             }
         }
 

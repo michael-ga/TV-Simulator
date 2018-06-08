@@ -361,7 +361,7 @@ namespace HelperClasses
 
         public bool isYoutubeChannelListEmpty()
         {
-            return youtube_channelCollection.Count() > 0;
+            return youtube_channelCollection.Count() == 0;
         }
         #endregion
 

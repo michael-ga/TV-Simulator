@@ -104,6 +104,17 @@
                 <!-- time fileds grid-->
             </Grid>
             <!-- second win grid-->
+
+            <Grid x:Name="thirdWin" Visibility="Hidden">
+                <Label Content="Local Media Progress" HorizontalAlignment="Left" Margin="34,257,0,0" VerticalAlignment="Top"/>
+                <Label Content="Youtube progress" HorizontalAlignment="Left" Margin="36,339,0,0" VerticalAlignment="Top" Width="116"/>
+                <ProgressBar x:Name="pbar_local" HorizontalAlignment="Left" Height="19" Margin="40,315,0,0" VerticalAlignment="Top" Width="314"/>
+                <ProgressBar x:Name="pbar_youtube" HorizontalAlignment="Left" Height="19" Margin="44,399,0,0" VerticalAlignment="Top" Width="314"/>
+                <TextBlock x:Name="local_message_block" HorizontalAlignment="Left" Margin="44,286,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="19" Width="156"/>
+                <TextBlock x:Name="youtube_message_block" HorizontalAlignment="Left" Margin="44,366,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="19" Width="156"/>
+
+
+            </Grid>
         </Grid>
 
     </xctk:BusyIndicator>

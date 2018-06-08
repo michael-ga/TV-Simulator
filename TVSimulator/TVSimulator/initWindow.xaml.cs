@@ -2,7 +2,9 @@
 using MediaClasses;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -17,6 +19,9 @@ namespace TVSimulator
     {
         private FileImporter fileImporter;
         private Database db;
+        private bool localStarted, LocalDone;
+        private bool ytStarted, ytDone;
+
 
         public initWindow()
         {
@@ -65,22 +70,32 @@ namespace TVSimulator
                 return;
             }   
             
-
-            loader.IsBusy = true;
-            if (db.isYoutubeChannelListEmpty())
+            if (pathTextBox.Text == "" && db.isYoutubeChannelListEmpty())
             {
+                System.Windows.MessageBox.Show("path not contains any media, please enter A path with media files");
+                loader.IsBusy = false;
+                gotoStatrtupIW();
+                return;
+            }
+            secondWin.Visibility = Visibility.Hidden;
+            thirdWin.Visibility = Visibility.Visible;
+
+            if (!db.isYoutubeChannelListEmpty())
+            {
+                ytStarted = true;
                 YoutubeImporter.Search a = new YoutubeImporter.Search();
-                await a.syncAll();  // change to sync partially on start
+                var progressIndicator = new Progress<MyTaskProgressReport>(ReportYoutubeProgress);
+                a.syncAllAsyncReportProgress(1000, progressIndicator);
             }
             if(pathTextBox.Text != "")
             {
-                int res = await fileImporter.getAllMediaFromDirectory(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value);
-                if (res == -1)
-                {
-                    System.Windows.MessageBox.Show("path not contains any media, please enter A path with media files");
-                    loader.IsBusy = false;
-                    gotoStatrtupIW();
-                }
+                localStarted = true;
+                costumPath tmp = new costumPath(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value);
+                var list = new List<costumPath>();list.Add(tmp);
+                var progressIndicator_local = new Progress<MyTaskProgressReport>(ReportLocalProgress);
+
+               fileImporter.syncAllAsyncReportProgress(1000, progressIndicator_local, list);
+               
                 //var t = new Task(() =>
                 //{//(new Action(() => youtubePlayer.AutoPlay = true));
                 //    Dispatcher.Invoke(new Action(() => loader.IsBusy = true));
@@ -92,11 +107,63 @@ namespace TVSimulator
                 ////}, TaskScheduler.FromCurrentSynchronizationContext());
                 //t.Start();
              }
-            loader.IsBusy = false;
-            MainWindow mw = new MainWindow();
-            this.Close();
-            mw.Show();
+             
 
+        }
+
+        private async Task<bool> asd()
+        {
+            MainWindow mw = new MainWindow();
+            mw.forceRebuildChannels();
+            mw.Show();
+            
+            return true;
+        }
+
+
+        private void ReportYoutubeProgress(MyTaskProgressReport progress)
+        {
+            if (progress.CurrentProgressAmount == progress.TotalProgressAmount)
+            {
+                Debug.WriteLine("yt loaded");
+                ytDone = true;
+                checkIfDone(); this.Close();
+            }
+
+            pbar_youtube.Minimum = 0;
+            pbar_youtube.Maximum = progress.TotalProgressAmount;
+            pbar_youtube.Value = progress.CurrentProgressAmount;
+            youtube_message_block.Text = progress.CurrentProgressMessage;
+        }
+
+        private void ReportLocalProgress(MyTaskProgressReport progress)
+        {
+            if (progress.CurrentProgressAmount == progress.TotalProgressAmount)
+            {
+                Debug.WriteLine("local loaded");
+                LocalDone = true;
+                if (checkIfDone()) this.Close();
+                return;
+            }
+            pbar_local.Minimum = 0;
+
+            pbar_local.Maximum = progress.TotalProgressAmount;
+            pbar_local.Value = progress.CurrentProgressAmount;
+            local_message_block.Text= progress.CurrentProgressMessage;
+        }
+
+        private bool checkIfDone()
+        {
+            if( (localStarted && ytStarted && LocalDone && ytDone)
+            || (!localStarted && ytStarted && ytDone)
+            || (localStarted && !ytStarted && LocalDone) )
+            {
+                MainWindow mw = new MainWindow();
+                mw.forceRebuildChannels();
+                mw.Show();
+                return true;
+            }
+            return false;
         }
 
         public static bool CheckForInternetConnection()
@@ -141,18 +208,6 @@ namespace TVSimulator
             }
             firstWin.Visibility = Visibility.Hidden;
             secondWin.Visibility = Visibility.Visible;
-            //// hide controllers of the first screen
-            ////getFolderBtn.Visibility = Visibility.Hidden;
-            ////lblAddYouTube.Visibility = Visibility.Hidden;
-            ////youtubeBtn.Visibility = Visibility.Hidden;
-            ////SubfoldersCheckBox.Visibility = Visibility.Hidden;
-            ////pathTextBox.Visibility = Visibility.Hidden;
-            ////btnNext.Visibility = Visibility.Hidden;
-            //// show controllers of the second screen and change background
-            //secondBackground.Visibility = Visibility.Visible;
-            //btnSubmit.Visibility = Visibility.Visible;
-            //isSetupAuto.Visibility = Visibility.Visible;
-            //timeFieldsGrid.Visibility = Visibility.Visible;
             addHours();
         }
         private void btnBack_Click(object sender, RoutedEventArgs e)
