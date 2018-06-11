@@ -361,16 +361,24 @@ namespace TVSimulator
         private void playFromChannel(Channel curChannel)
         {
             currentChannel = curChannel;
-            if (curChannel.TypeOfMedia.Equals(Constants.MOVIE) || curChannel.TypeOfMedia.Equals(Constants.TVSERIES))// local media..
+            try
             {
-                switchMediaControl(Constants.playerSwitch.Local);
-                playLocalChannel(curChannel);
+                if (curChannel.TypeOfMedia.Equals(Constants.MOVIE) || curChannel.TypeOfMedia.Equals(Constants.TVSERIES))// local media..
+                {
+                    switchMediaControl(Constants.playerSwitch.Local);
+                    playLocalChannel(curChannel);
 
+                }
+                else  // youtube media
+                {
+                    switchMediaControl(Constants.playerSwitch.Youtube);
+                    playYoutubeChannel(curChannel);
+                }
             }
-            else  // youtube media
+            catch (Exception)
             {
-                switchMediaControl(Constants.playerSwitch.Youtube);
-                playYoutubeChannel(curChannel);
+                // handle here load error screen
+                System.Windows.MessageBox.Show("handle here load error screen");
             }
         }
 

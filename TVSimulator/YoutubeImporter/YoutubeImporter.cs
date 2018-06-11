@@ -310,7 +310,7 @@ namespace YoutubeImporter
          
                 await Task.Delay(sleepTime);
 
-                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = reporter.TotalProgressAmount - reporter.CurrentProgressAmount, TotalProgressAmount = reporter.TotalProgressAmount, CurrentProgressMessage = "Number of channels remain" + reporter.CurrentProgressAmount.ToString() });
+                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = reporter.TotalProgressAmount - reporter.CurrentProgressAmount, TotalProgressAmount = reporter.TotalProgressAmount, CurrentProgressMessage = "Number of channels left: " + reporter.CurrentProgressAmount.ToString() });
 
 
             }

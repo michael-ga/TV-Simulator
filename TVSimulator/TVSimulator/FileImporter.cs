@@ -266,7 +266,7 @@ namespace TVSimulator
             {
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
                 reporter.CurrentProgressAmount++;
-                reporter.CurrentProgressMessage = "loaded " + reporter.CurrentProgressAmount.ToString()+ " out of "+reporter.TotalProgressAmount.ToString() +" media files";
+                reporter.CurrentProgressMessage = "loading " + reporter.CurrentProgressAmount.ToString()+ " out of "+reporter.TotalProgressAmount.ToString() +" media files";
             }
 
 
