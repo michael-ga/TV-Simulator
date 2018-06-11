@@ -245,11 +245,17 @@ namespace TVSimulator
                 volumeSlider.Value += 1;
             else
                 volumeSlider.Value -= 1;
+            
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             mediaPlayer.Volume = volumeSlider.Value/60;
+            // set youtube volume
+            if (youtubePlayer != null)
+            {
+                youtubePlayer.Volume = (int)volumeSlider.Value;
+            }
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -328,6 +334,10 @@ namespace TVSimulator
                 }
             }     
         }
+
+        
+
+
 
         // event handler raised when data of enterred pathes is loaded on fileImporter.
         private void onVideoRecievedHandler(Object o, List<Media> arg) { }
