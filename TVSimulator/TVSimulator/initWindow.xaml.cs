@@ -143,13 +143,25 @@ namespace TVSimulator
                 Debug.WriteLine("local loaded");
                 LocalDone = true;
                 if (checkIfDone()) this.Close();
-                return;
             }
             pbar_local.Minimum = 0;
 
             pbar_local.Maximum = progress.TotalProgressAmount;
             pbar_local.Value = progress.CurrentProgressAmount;
             local_message_block.Text= progress.CurrentProgressMessage;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if ((localStarted && ytStarted && LocalDone && ytDone)
+           || (!localStarted && ytStarted && ytDone)
+           || (localStarted && !ytStarted && LocalDone))
+            {
+
+                MainWindow s = new MainWindow();
+                s.forceRebuildChannels();
+                s.Show();
+            }
         }
 
         private bool checkIfDone()
