@@ -29,6 +29,7 @@ namespace TVSimulator
             fileImporter = new FileImporter();
             //fileImporter.OnVideoLoaded += onVideoRecievedHandler;
             db = new Database();
+            db.removeBroadcastTime();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -111,14 +112,6 @@ namespace TVSimulator
 
         }
 
-        private async Task<bool> asd()
-        {
-            MainWindow mw = new MainWindow();
-            mw.forceRebuildChannels();
-            mw.Show();
-            
-            return true;
-        }
 
 
         private void ReportYoutubeProgress(MyTaskProgressReport progress)

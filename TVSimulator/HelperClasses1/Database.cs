@@ -135,6 +135,11 @@ namespace HelperClasses
             timeCollection.Insert(bt);
         }
 
+        public void removeBroadcastTime()
+        {
+            timeCollection.Delete(Query.All());
+        }
+
         // insert to 3 collections by type
         public void insertByType(List<Media> mediaList)
         {
