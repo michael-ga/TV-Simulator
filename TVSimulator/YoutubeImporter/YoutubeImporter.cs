@@ -22,6 +22,7 @@ namespace YoutubeImporter
     /// </summary>
     public class Search
     {
+        private int STOP_LOADING_VIDEOS = 150;
         #region Fields and Ctor
         private YouTubeService myService;
         private Database db;
@@ -105,6 +106,8 @@ namespace YoutubeImporter
                 var searchListResponse = searchListRequest.Execute();   // Call the search.list method to retrieve results matching the specified query term.
                 res.AddRange(searchListResponse.Items);     // Process  the video responses 
                 nextpagetoken = searchListResponse.NextPageToken;
+                if (res.Count > STOP_LOADING_VIDEOS)
+                    break;
             }
             foreach (var item in res)
             {
@@ -169,6 +172,8 @@ namespace YoutubeImporter
                 var searchListResponse = playlistItemsListRequest.Execute();   // Call the search.list method to retrieve results matching the specified query term.
                 res.AddRange(searchListResponse.Items);     // Process  the video responses 
                 nextpagetoken = searchListResponse.NextPageToken;
+                if (res.Count > STOP_LOADING_VIDEOS)
+                    break;
             }
             foreach (var item in res)
             {
