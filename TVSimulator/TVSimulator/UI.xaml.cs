@@ -493,8 +493,14 @@ namespace TVSimulator
             //change Description
             if (c.TypeOfMedia.Equals(Constants.MOVIE))
             {
-                Movie m = playNow as Movie;
-                txtDescription.Text = m.Description + "  - IMDB Rating: " + m.ImdbRating;
+                Media m;
+                if (c.Genre != "General")
+                {
+                    m = (Movie)playNow;
+                    txtDescription.Text = ((Movie)m).Description + "  - IMDB Rating: " + ((Movie)m).ImdbRating;
+                }
+                else
+                    txtDescription.Text = "No description for this movie";
 
                 var uri = new Uri("pack://application:,,,/Resources/movieIcon.PNG");
                 var bitmap = new BitmapImage(uri);

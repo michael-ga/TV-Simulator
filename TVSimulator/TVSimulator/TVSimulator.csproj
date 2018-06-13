@@ -270,6 +270,7 @@
     <Resource Include="Resources\error.png" />
     <Resource Include="Resources\power.png" />
     <Resource Include="Resources\control.png" />
+    <Resource Include="Resources\loading file.jpg" />
     <Content Include="Resources\promo.mp4" />
     <Resource Include="Resources\setTimeView.jpg" />
     <Resource Include="Resources\volume.png" />

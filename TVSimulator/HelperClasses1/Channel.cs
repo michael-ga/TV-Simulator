@@ -164,6 +164,14 @@ namespace HelperClasses
         {
             if (typeOfMedia.Equals(Constants.MOVIE))
             {
+                List<Media> mediaVideos = db.getAllMediaList();
+
+                if (genre == "General")
+                {
+                    foreach (Media med in mediaVideos)
+                        media.Add(med);
+                    return;
+                }
                 List<Movie> movies = db.getMovieList();
 
                 foreach (Movie m in movies)

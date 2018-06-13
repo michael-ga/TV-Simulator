@@ -21,7 +21,7 @@ namespace TVSimulator
         private Database db;
         private bool localStarted, LocalDone;
         private bool ytStarted, ytDone;
-
+        private Task youtubeTask;
 
         public initWindow()
         {
@@ -80,13 +80,14 @@ namespace TVSimulator
             }
             secondWin.Visibility = Visibility.Hidden;
             thirdWin.Visibility = Visibility.Visible;
-
-            if (!db.isYoutubeChannelListEmpty())
+            
+            if (!db.isYoutubeChannelListEmpty())// youtube channels needed to be added
             {
                 ytStarted = true;
                 YoutubeImporter.Search a = new YoutubeImporter.Search();
                 var progressIndicator = new Progress<MyTaskProgressReport>(ReportYoutubeProgress);
-                a.syncAllAsyncReportProgress(1000, progressIndicator);
+                youtubeTask = new Task(() => { a.syncAllAsyncReportProgress(1000, progressIndicator); });
+                youtubeTask.Start();
             }
             if(pathTextBox.Text != "")
             {
@@ -116,17 +117,18 @@ namespace TVSimulator
 
         private void ReportYoutubeProgress(MyTaskProgressReport progress)
         {
-            if (progress.CurrentProgressAmount == progress.TotalProgressAmount)
+            if (progress.CurrentProgressAmount >= progress.TotalProgressAmount || progress.TaskYouTubeFinish)
             {
                 Debug.WriteLine("yt loaded");
                 ytDone = true;
-                checkIfDone(); this.Close();
+                if( checkIfDone())
+                    this.Close();
             }
 
             pbar_youtube.Minimum = 0;
-            pbar_youtube.Maximum = progress.TotalProgressAmount;
-            pbar_youtube.Value = progress.CurrentProgressAmount;
-            youtube_message_block.Text = progress.CurrentProgressMessage;
+            Dispatcher.Invoke(new Action(() => pbar_youtube.Maximum = progress.TotalProgressAmount ));
+            Dispatcher.Invoke(new Action(() => pbar_youtube.Value = progress.CurrentProgressAmount));
+            Dispatcher.Invoke(new Action(() => youtube_message_block.Text = progress.CurrentProgressMessage));
         }
 
         private void ReportLocalProgress(MyTaskProgressReport progress)
@@ -135,7 +137,8 @@ namespace TVSimulator
             {
                 Debug.WriteLine("local loaded");
                 LocalDone = true;
-                if (checkIfDone()) this.Close();
+                if (checkIfDone())
+                    this.Close();
             }
             pbar_local.Minimum = 0;
 
@@ -147,10 +150,9 @@ namespace TVSimulator
         private void Window_Closed(object sender, EventArgs e)
         {
             if ((localStarted && ytStarted && LocalDone && ytDone)
-           || (!localStarted && ytStarted && ytDone)
-           || (localStarted && !ytStarted && LocalDone))
+            || (!localStarted && ytStarted && ytDone)
+            || (localStarted && !ytStarted && LocalDone))
             {
-
                 MainWindow s = new MainWindow();
                 s.forceRebuildChannels();
                 s.Show();
@@ -163,9 +165,6 @@ namespace TVSimulator
             || (!localStarted && ytStarted && ytDone)
             || (localStarted && !ytStarted && LocalDone) )
             {
-                MainWindow mw = new MainWindow();
-                mw.forceRebuildChannels();
-                mw.Show();
                 return true;
             }
             return false;

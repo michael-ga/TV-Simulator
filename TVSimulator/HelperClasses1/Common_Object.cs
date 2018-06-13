@@ -12,8 +12,16 @@ namespace HelperClasses
         public int CurrentProgressAmount { get; set; }
         //total progress
         public int TotalProgressAmount { get; set; }
+
+        public int TotalVideos  { get; set; }
+
+        public int currentVideo { get; set; }
+
+        private bool taskYouTubeFinish = false;
+
         //some message to pass to the UI of current progress
         public string CurrentProgressMessage { get; set; }
+        public bool TaskYouTubeFinish { get => taskYouTubeFinish; set => taskYouTubeFinish = value; }
     }
     // represent A tuple of path and bool indicates inclusion of subfolders
     public class costumPath

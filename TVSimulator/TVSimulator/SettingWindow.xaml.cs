@@ -189,12 +189,14 @@ namespace TVSimulator
             //    default:
             //        break;
             //}
+            close_btn.IsEnabled = false;
             sync_all_btn.Click -= sync_btn_Click;
             var progressIndicator = new Progress<MyTaskProgressReport>(ReportProgress);
 
             await ytbSearcher.syncAllAsyncReportProgress(500, progressIndicator);
             isYoutubeChannelSynced = true;
-            System.Windows.MessageBox.Show("sync done");
+            close_btn.IsEnabled = true;
+            close_btn.Content = "Apply Now";
             progress_syncLBL.Content = "";
             sync_all_btn.Click += sync_btn_Click;
         }

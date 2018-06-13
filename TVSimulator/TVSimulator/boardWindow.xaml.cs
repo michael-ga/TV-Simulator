@@ -112,15 +112,25 @@ namespace TVSimulator
 
                 t.no = "" + i;
                 t.startTime = c.BoardSchedule.ElementAt(j).Key.ToShortTimeString();
+                Media med;
                 Movie mov;
                 TvSeries tvs;
                 YouTubeChannel ytCHn;
                 YoutubePlaylistChannel ytpls;
                 if (c.TypeOfMedia.Equals(Constants.MOVIE))
                 {
-                    mov = c.BoardSchedule.ElementAt(j).Value as Movie;
-                    t.name = mov.Name;
-                    t.description = mov.Description;
+                    if (c.Genre != "General")
+                    {
+                        mov = c.BoardSchedule.ElementAt(j).Value as Movie;
+                        t.name = mov.Name;
+                        t.description = mov.Description;
+                    }
+                    else
+                    {
+                        med = c.BoardSchedule.ElementAt(j).Value;
+                        t.name = med.Name;
+                        t.description = "There is No description for this movie";
+                    }
                 }
                 if (c.TypeOfMedia.Equals(Constants.TVSERIES))
                 {

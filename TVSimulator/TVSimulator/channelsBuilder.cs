@@ -19,7 +19,7 @@ namespace TVSimulator
 
         private List<Movie> movies;
         private List<TvSeries> tvSeries;
-        private List<Music> musics;
+        private List<Media> mediaVideos;
         private List<YouTubeChannel> youtube;
 
         public ChannelsBuilder()
@@ -27,14 +27,14 @@ namespace TVSimulator
             this.db = new Database();
             this.movies = db.getMovieList();
             this.tvSeries = db.getTVList();
-            this.musics = db.getMusicList();
+            this.mediaVideos = db.getAllMediaList();
             this.Youtube = db.getYoutubeChannelList();
         }
 
         public List<Channel> LocalChannels { get => localChannels; set => localChannels = value; }
         public List<Movie> Movies { get => movies; set => movies = value; }
         public List<TvSeries> TvSeries { get => tvSeries; set => tvSeries = value; }
-        public List<Music> Music { get => musics; set => musics = value; }
+        public List<Media> Media { get => mediaVideos; set => mediaVideos = value; }
         public List<YouTubeChannel> Youtube { get => youtube; set => youtube = value; }
 
         #endregion
@@ -56,6 +56,7 @@ namespace TVSimulator
 
             List<string> gMovie = new List<string>();
             List<string> gTV = new List<string>();
+            
             //List<string> gMusic = new List<string>();
 
             var channelNumber = 1;
@@ -90,6 +91,16 @@ namespace TVSimulator
                 db.insertChannel(chan);
                 channelNumber++;
             }
+
+            // add general channels
+            if (mediaVideos == null)
+                return;
+            var gChan = new Channel(channelNumber, Constants.MOVIE, "General");
+            localChannels.Add(gChan);
+            localChannels.ElementAt(channelNumber - 1).addMedia();
+            localChannels.ElementAt(channelNumber - 1).bs(getDateCycle());
+            db.insertChannel(gChan);
+            channelNumber++;
         }
 
         public void buildYouTubeChannels()

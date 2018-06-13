@@ -22,13 +22,14 @@ namespace YoutubeImporter
     /// </summary>
     public class Search
     {
-        private int STOP_LOADING_VIDEOS = 150;
+        private int STOP_LOADING_VIDEOS = 60;
         #region Fields and Ctor
         private YouTubeService myService;
         private Database db;
         MyTaskProgressReport reporter;
 
-       
+
+
         public Search()
         {
             myService = getService();
@@ -107,14 +108,20 @@ namespace YoutubeImporter
                 res.AddRange(searchListResponse.Items);     // Process  the video responses 
                 nextpagetoken = searchListResponse.NextPageToken;
                 if (res.Count > STOP_LOADING_VIDEOS)
+                {
                     break;
+                }
             }
+            int i = 0;
             foreach (var item in res)
             {
+                if (i++ > STOP_LOADING_VIDEOS)
+                    break;
                 dur = await durationReq(item.Id.VideoId.ToString());
                 dur = extractDuration(dur);
                 YoutubeVideo temp = new YoutubeVideo(item.Id.VideoId.ToString(), item.Snippet.Title, dur, "", ytChannelId, extractThumbnail(item.Snippet),item.Snippet.Description);
                 videoList.Add(temp);
+                reporter.currentVideo++;
                 System.Diagnostics.Debug.WriteLine(videoList.Count);
             }
             return videoList;
@@ -173,10 +180,15 @@ namespace YoutubeImporter
                 res.AddRange(searchListResponse.Items);     // Process  the video responses 
                 nextpagetoken = searchListResponse.NextPageToken;
                 if (res.Count > STOP_LOADING_VIDEOS)
+                {
                     break;
+                }
             }
+            int i = 0;
             foreach (var item in res)
             {
+                if (i++ > STOP_LOADING_VIDEOS)
+                    break;
                 dur = await durationReq(item.Snippet.ResourceId.VideoId);
                 dur = extractDuration(dur);
                 if (dur != "0")
@@ -194,6 +206,8 @@ namespace YoutubeImporter
                         temp = new YoutubePlaylistVideo(item.Snippet.ResourceId.VideoId, item.Snippet.Title, dur, "", playlistId,"", episodeVal);
 
                     videoList.Add(temp);
+                    reporter.currentVideo++;
+
                     System.Diagnostics.Debug.WriteLine(videoList.Count);
                 }
             }
@@ -236,7 +250,6 @@ namespace YoutubeImporter
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
@@ -283,15 +296,17 @@ namespace YoutubeImporter
                 if (DateTime.Now.Subtract(channel.LastUpdated).Days > 7 || channel.VideoList == null)     // check if one week has passed since last update
                 {
                     reporter.TotalProgressAmount++;
+
+                    reporter.TotalVideos += STOP_LOADING_VIDEOS;
                 }
             }
-
             List<YoutubePlaylistChannel> ytbPlsChannels = db.getPlaylistChannels();
             foreach (YoutubePlaylistChannel plschannel in ytbPlsChannels)
             {
                 if (DateTime.Now.Subtract(plschannel.LastUpdated).Days > 7 || plschannel.Playlist_list == null)     // check if one week has passed since last update
                 {
                     reporter.TotalProgressAmount++;
+                    reporter.TotalVideos += plschannel.Playlist_list.Count * 60;
                 }
             }
             return reporter.TotalProgressAmount;
@@ -307,22 +322,13 @@ namespace YoutubeImporter
 
             while (reporter.TotalProgressAmount > 0  && reporter.CurrentProgressAmount > 0)
             {
-         
                 await Task.Delay(sleepTime);
-
-                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = reporter.TotalProgressAmount - reporter.CurrentProgressAmount, TotalProgressAmount = reporter.TotalProgressAmount, CurrentProgressMessage = "Number of channels left: " + reporter.CurrentProgressAmount.ToString() });
-
-
+                progress.Report(new MyTaskProgressReport { CurrentProgressAmount = reporter.currentVideo, TotalProgressAmount = reporter.TotalVideos, CurrentProgressMessage = "Number of videos left: " + (reporter.TotalVideos - reporter.currentVideo).ToString() });
             }
+            reporter.TaskYouTubeFinish = true;
+            progress.Report(reporter);// new MyTaskProgressReport { CurrentProgressAmount = reporter.currentVideo, TotalProgressAmount = reporter.TotalVideos, CurrentProgressMessage = "Number of channel left: " + (reporter.TotalVideos - reporter.currentVideo).ToString() });
 
         }
-
-
-
-
-
-
-
 
         // sync all regular channels - check if need to update and get videos if needed
         public async Task<bool> syncYoutubeChannels()
@@ -369,7 +375,6 @@ namespace YoutubeImporter
                     db.updateYoutubePlaylistChannel(plsChannel);
                 }
                 reporter.CurrentProgressAmount--;
-
             }
             return true;
         }

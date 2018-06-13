@@ -14,6 +14,8 @@
     <xctk:BusyIndicator 
         IsBusy="False" x:Name="loader" BusyContent="Please Wait while creating channels" Background="White" Foreground="DarkBlue" >
         <Grid>
+            <!-- ************************************************* -->
+
             <Grid x:Name="firstWin" Visibility="Visible" >
 
                 <Grid.RowDefinitions>
@@ -62,7 +64,7 @@
             <Grid x:Name="secondWin" Visibility="Hidden">
                 <Image x:Name="secondBackground" Margin="0,0,-0.4,0.4" Source="Resources/setTimeView.jpg" Grid.RowSpan="2" />
 
-                <CheckBox x:Name="isSetupAuto" Content="" HorizontalAlignment="Left" Margin="31,93,0,0" VerticalAlignment="Top" Checked="isSetupAuto_Checked" Unchecked="isSetupAuto_Checked" />
+                <CheckBox x:Name="isSetupAuto" Content="" HorizontalAlignment="Left" Margin="31,88,0,0" VerticalAlignment="Top" Checked="isSetupAuto_Checked" Unchecked="isSetupAuto_Checked" />
 
                 <Button x:Name="btnSubmit" Content="Start" HorizontalAlignment="Left" Margin="391,422,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnSubmit_Click" BorderBrush="Black">
                     <Button.Background>
@@ -74,7 +76,7 @@
                 </Button>
 
 
-                <Button x:Name="back_btn" Content="Back" HorizontalAlignment="Left" Margin="301,425,0,0" VerticalAlignment="Top" Width="75" Click="btnBack_Click" >
+                <Button x:Name="back_btn" Content="Back" HorizontalAlignment="Left" Margin="311,422,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="btnBack_Click" BorderBrush="#FF020202" >
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                             <GradientStop Color="#FF3650DD" Offset="1"/>
@@ -106,12 +108,15 @@
             <!-- second win grid-->
 
             <Grid x:Name="thirdWin" Visibility="Hidden">
-                <Label Content="Local Media Progress" HorizontalAlignment="Left" Margin="34,257,0,0" VerticalAlignment="Top"/>
-                <Label Content="Youtube progress" HorizontalAlignment="Left" Margin="36,339,0,0" VerticalAlignment="Top" Width="116"/>
-                <ProgressBar x:Name="pbar_local" HorizontalAlignment="Left" Height="19" Margin="40,315,0,0" VerticalAlignment="Top" Width="314"/>
-                <ProgressBar x:Name="pbar_youtube" HorizontalAlignment="Left" Height="19" Margin="44,399,0,0" VerticalAlignment="Top" Width="314"/>
-                <TextBlock x:Name="local_message_block" HorizontalAlignment="Left" Margin="44,286,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="19" Width="156"/>
-                <TextBlock x:Name="youtube_message_block" HorizontalAlignment="Left" Margin="44,366,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="19" Width="156"/>
+                <Grid.Background>
+                    <ImageBrush ImageSource="Resources/loading file.jpg"/>
+                </Grid.Background>
+                <Label Content="Local Media Progress" HorizontalAlignment="Left" Margin="26,105,0,0" VerticalAlignment="Top" Width="142"/>
+                <Label Content="Youtube progress" HorizontalAlignment="Left" Margin="26,211,0,0" VerticalAlignment="Top" Width="116"/>
+                <ProgressBar x:Name="pbar_local" HorizontalAlignment="Left" Height="36" Margin="26,136,0,0" VerticalAlignment="Top" Width="442" Foreground="#FF00FF2F"/>
+                <ProgressBar x:Name="pbar_youtube" HorizontalAlignment="Left" Height="36" Margin="26,237,0,0" VerticalAlignment="Top" Width="442" Foreground="#FFFF2626"/>
+                <TextBlock x:Name="local_message_block" HorizontalAlignment="Left" Margin="33,142,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="24" Width="330" Foreground="Black"/>
+                <TextBlock x:Name="youtube_message_block" HorizontalAlignment="Left" Margin="33,242,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="24" Width="330" Foreground="Black"/>
 
 
             </Grid>
