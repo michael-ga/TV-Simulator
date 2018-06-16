@@ -160,7 +160,6 @@ namespace TVSimulator
         {
             if (!isMuted)
             {
-                redX.Visibility = Visibility.Visible;
                 lastVolume = mediaPlayer.Volume;
                 lastSliderValue = volumeSlider.Value;
                 volumeSlider.Value = 0;
@@ -169,7 +168,6 @@ namespace TVSimulator
             }
             else
             {
-                redX.Visibility = Visibility.Hidden;
                 volumeSlider.Value = lastSliderValue;
                 mediaPlayer.Volume = lastVolume;
             }
@@ -224,12 +222,11 @@ namespace TVSimulator
 
         private void playVideoFromPosition(string path, TimeSpan t)
         {
-            imageMessage.Visibility = Visibility.Hidden;
-
+            errorMessage(false, "");
             mediaPlayer.Source = new Uri(path);
             if(!File.Exists(path))
             {
-                imageMessage.Visibility = Visibility.Visible;
+                errorMessage(true,"This file do not exists");
                 return;
             }
             else
@@ -256,6 +253,11 @@ namespace TVSimulator
             {
                 youtubePlayer.Volume = (int)volumeSlider.Value;
             }
+            if (volumeSlider.Value == 0)
+                redX.Visibility = Visibility.Visible;
+            else
+                redX.Visibility = Visibility.Hidden;
+
         }
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -388,7 +390,7 @@ namespace TVSimulator
             catch (Exception)
             {
                 // handle here load error screen
-                System.Windows.MessageBox.Show("handle here load error screen");
+                errorMessage(true, "handle here load error screen");
             }
         }
 
@@ -396,14 +398,14 @@ namespace TVSimulator
         {
             if (curChannel == null)
             {
-                System.Windows.MessageBox.Show("Error playing channel");
+                errorMessage(true,"Error playing channel");
                 return;
             }
 
             DateTime timeNow = DateTime.Now;
             if(curChannel.BoardSchedule == null)
             {
-                System.Windows.MessageBox.Show("error playing channel");
+                errorMessage(true, "Error playing channel");
                 return;
             }
             DateTime lastDayInBoard = curChannel.BoardSchedule.Keys.Last();
@@ -429,8 +431,7 @@ namespace TVSimulator
             if (i==0) // incase this time is earlier than the first show in the broad scedule
             {
                 playNext = curChannel.BoardSchedule.ElementAt(i).Value;
-
-                System.Windows.MessageBox.Show("the program will start tommorow acordiing to your views setting");
+                errorMessage(true, "The program will start tommorow acording to your views setting");
                 return;
             }
             else
@@ -584,6 +585,7 @@ namespace TVSimulator
                 int index = parseChanneltoIndex(num);
                 var c = chanList[index];
                 playFromChannel(c);
+                curChannelNum = c.ChannelNumber;
             }
             catch(Exception ex)
             {
@@ -778,7 +780,21 @@ namespace TVSimulator
             infoPressed = !infoPressed;
         }
 
-        
+        private void errorMessage(bool toShow,string msg)
+        {
+            if (toShow)
+            {
+                imageMessage.Visibility = Visibility.Visible;
+                lblError.Visibility = Visibility.Visible;
+                lblError.Content = msg;
+            }
+            else
+            {
+                imageMessage.Visibility = Visibility.Hidden;
+                lblError.Visibility = Visibility.Hidden;
+            }
+        }
+
 
         #endregion helper methods
     }

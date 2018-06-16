@@ -9,12 +9,30 @@
         WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown" ShowInTaskbar="False">
 
     <Grid x:Name="mainWindow" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel" Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="17*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="37*"/>
+        </Grid.ColumnDefinitions>
 
-        <MediaElement x:Name="mediaPlayer" MediaEnded="mediaPlayer_MediaEnded"  LoadedBehavior="Manual" Margin="0,0,0,0" StretchDirection="Both" Stretch="Fill"/>
-        <Cef1:CefYoutubeController x:Name="youtubePlayer"   Margin="5,5,5,0" Visibility="Hidden" />
-        <Image x:Name="imageMessage" Source="Resources/error.png" Visibility="Hidden"/>
+        <MediaElement x:Name="mediaPlayer" MediaEnded="mediaPlayer_MediaEnded"  LoadedBehavior="Manual" Margin="0,0,0,0" StretchDirection="Both" Stretch="Fill" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Cef1:CefYoutubeController x:Name="youtubePlayer"   Margin="5,5,5,0" Visibility="Hidden" Grid.RowSpan="2" Grid.ColumnSpan="2" />
+        <Image x:Name="imageMessage" Source="Resources/error.png" Visibility="Hidden" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblError" Content="Error message" Visibility="Hidden" Margin="6.4,3.6,459,0" FontFamily="Arial Black" FontSize="30" VerticalContentAlignment="Center" Foreground="White" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Height="50" VerticalAlignment="Top" Grid.Column="1">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.042"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
 
-        <Grid x:Name="menuBar" Margin="0,0,1,-2" Height="161" VerticalAlignment="Bottom" >
+        <Grid x:Name="menuBar" Margin="0,0,1,-2" Height="161" VerticalAlignment="Bottom" Grid.Row="1" Grid.ColumnSpan="2" >
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -58,7 +76,7 @@
 
         </Grid>
         <Label x:Name="lblChannelNumber" Content="" HorizontalAlignment="Left" Margin="18,20,0,0" Opacity="0.75" FontFamily="Arial Black" FontSize="36" Foreground="White" Width="48" Height="45" VerticalAlignment="Top"/>
-        <Label x:Name="fullScreenlbl" Content="Press F11 for Full Screen" Margin="455,30,405,0" VerticalAlignment="Top" Height="40" FontSize="20" FontFamily="Arial Black" Background="#FF574F4F" Foreground="#FFDFDFDF" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="Black" Visibility="Hidden">
+        <Label x:Name="fullScreenlbl" Content="Press F11 for Full Screen" Margin="365.4,30,405,0" VerticalAlignment="Top" Height="40" FontSize="20" FontFamily="Arial Black" Background="#FF574F4F" Foreground="#FFDFDFDF" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="Black" Visibility="Hidden" Grid.Column="1">
             <Label.Style>
                 <Style TargetType="{x:Type Label}">
                     <Style.Triggers>

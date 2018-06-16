@@ -29,7 +29,6 @@ namespace TVSimulator
         private int channelNum;
         private DateTime specDay;
         private MainWindow m;
-        private bool isEmpty = false;
 
         public boardWindow(MainWindow main)
         {
