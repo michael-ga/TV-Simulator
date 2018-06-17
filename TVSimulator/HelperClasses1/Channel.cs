@@ -424,8 +424,7 @@ namespace HelperClasses
                 }
                 if (tempList.Count() == 0 || tempList.Values.Last() == null )
                 {
-                    MessageBox.Show("errr creating dict");
-                    return null;
+                    tempList.Add(board.Keys.ElementAt(0), board.Values.ElementAt(0));
                 }
                 temp = tempList.Keys.Last().Add(tempList.Values.Last().getDurationTimespan());      // start time to add repeat media
 

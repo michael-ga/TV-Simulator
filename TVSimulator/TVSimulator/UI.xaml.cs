@@ -429,7 +429,7 @@ namespace TVSimulator
             }
             var sec = 0;
             var dateShow = new DateTime();
-            if (i==0) // incase this time is earlier than the first show in the broad scedule
+            if (i==0) // incase this time is earlier than the first show in the broad schedule
             {
                 playNext = curChannel.BoardSchedule.ElementAt(i).Value;
                 errorMessage(true, "The program will start tommorow acording to your views setting");

@@ -21,7 +21,7 @@
         <MediaElement x:Name="mediaPlayer" MediaEnded="mediaPlayer_MediaEnded"  LoadedBehavior="Manual" Margin="0,0,0,0" StretchDirection="Both" Stretch="Fill" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
         <Cef1:CefYoutubeController x:Name="youtubePlayer"   Margin="5,5,5,0" Visibility="Hidden" Grid.RowSpan="2" Grid.ColumnSpan="2" />
         <Image x:Name="imageMessage" Source="Resources/error.png" Visibility="Hidden" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblError" Content="Error message" Visibility="Hidden" Margin="6.4,3.6,459,0" FontFamily="Arial Black" FontSize="30" VerticalContentAlignment="Center" Foreground="White" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Height="50" VerticalAlignment="Top" Grid.Column="1">
+        <Label x:Name="lblError" Content="Error message" Margin="6.4,3.4,67,0" FontFamily="Arial Black" FontSize="30" VerticalContentAlignment="Center" Foreground="White" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Height="50" VerticalAlignment="Top" Grid.Column="1" Visibility="Hidden">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -47,8 +47,8 @@
                 <Label x:Name="lblBroadcastNow" Content="Now: ???? - ????" HorizontalAlignment="Left" Margin="0,0,0,41" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="365"/>
                 <Label x:Name="lblBroadcastNext" Content="Next: ???? - ????" HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="White" FontSize="18" FontFamily="Arial" FontWeight="Bold" Height="31" Width="570" Margin="0,0,0,4"/>
                 <ProgressBar x:Name="mediaProgressBar" HorizontalAlignment="Left" Height="19" Margin="424,0,-147,47" VerticalAlignment="Bottom" Width="303" ValueChanged="ProgressBar_ValueChanged" Foreground="#FF01062F"/>
-                <Label x:Name="lblStartTime" Content="12:35" Margin="370,0,0,42" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
-                <Label x:Name="lblEndTime" Content="14:50" Margin="728,0,-212,43" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
+                <Label x:Name="lblStartTime" Content="00:00" Margin="370,0,0,42" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
+                <Label x:Name="lblEndTime" Content="00:00" Margin="728,0,-212,43" VerticalAlignment="Bottom" FontFamily="Arial Black" Foreground="White" FontSize="14" HorizontalAlignment="Left" Width="64" Height="26"/>
             </Grid>
 
             <TextBlock x:Name="txtDescription" HorizontalAlignment="Left" Height="85" Margin="10,50,0,0" TextWrapping="Wrap" Text="Johnny and a couple pals kidnap Jake's 15-year-old brother, Zach, then assigns his buddy Frankie to be Zach's minder. They develop a brotherly friendship. Zach parties with his captors as things begin to spin out of control." VerticalAlignment="Top" Width="595" Foreground="White" FontSize="16" FontFamily="Arial" Visibility="Hidden"/>
