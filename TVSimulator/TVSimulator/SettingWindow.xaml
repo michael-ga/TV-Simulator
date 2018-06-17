@@ -63,6 +63,7 @@
                     <Label Content="Change your YouTube channels/playlists" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="21,75,0,0" Width="240" FontWeight="Bold"/>
                     <Label Content="Here you could change your favorite YouTube Channels &amp; your playlists.&#xD;&#xA;Press on the Browse button below to add/remove your YouTube channels/playlists.&#xD;&#xA; &#xD;&#xA;Launch manually sync for YouTube channels to get the newest contents for best experience&#xA;NOTE: auto sync each channel is being launched every week" HorizontalAlignment="Left" Margin="21,106,0,0" VerticalAlignment="Top" Width="539" Height="122"/>
                     <Label x:Name="progress_syncLBL" Content="" HorizontalAlignment="Left" Margin="46,344,0,0" VerticalAlignment="Top" Height="55" Width="448"/>
+                    <ProgressBar x:Name="yt_progressbar" HorizontalAlignment="Left" Height="31" Margin="70,414,0,0" VerticalAlignment="Top" Width="408" Visibility="Hidden"/>
 
                 </Grid>
 

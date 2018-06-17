@@ -203,10 +203,10 @@ namespace TVSimulator
         private void ReportProgress(MyTaskProgressReport progress)
         {
             progress_syncLBL.Content = progress.CurrentProgressMessage;
-            prog_bar.Visibility = Visibility.Visible;
-            prog_bar.Minimum = 0;
-            prog_bar.Maximum = progress.TotalProgressAmount;
-            prog_bar.Value = progress.CurrentProgressAmount;
+            yt_progressbar.Visibility = Visibility.Visible;
+            yt_progressbar.Minimum = 0;
+            yt_progressbar.Maximum = progress.TotalProgressAmount;
+            yt_progressbar.Value = progress.CurrentProgressAmount;
         }
 
         private void launch_youtube_browser_click(object sender, RoutedEventArgs e)
