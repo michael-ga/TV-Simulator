@@ -373,6 +373,7 @@ namespace TVSimulator
         private void playFromChannel(Channel curChannel)
         {
             currentChannel = curChannel;
+            curChannelNum = curChannel.ChannelNumber;
             try
             {
                 if (curChannel.TypeOfMedia.Equals(Constants.MOVIE) || curChannel.TypeOfMedia.Equals(Constants.TVSERIES))// local media..
