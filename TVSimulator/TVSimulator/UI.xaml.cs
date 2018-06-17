@@ -795,6 +795,10 @@ namespace TVSimulator
             }
         }
 
+        private void title_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
 
         #endregion helper methods
     }

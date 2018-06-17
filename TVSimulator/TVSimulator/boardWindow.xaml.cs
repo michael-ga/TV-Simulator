@@ -69,7 +69,7 @@ namespace TVSimulator
             var zero = "0";
             var min = "";
             string time = "";
-            for(;i<board.Items.Count;i++)
+            for(;j<board.Items.Count;j++)
             {
                 if (i == board.Items.Count) // prevent exceeding from range
                     break;
@@ -91,7 +91,7 @@ namespace TVSimulator
                     board.SelectedItem = item;
                     return;
                 }
-                j++;
+                i++;
             }
         }
 
@@ -257,6 +257,11 @@ namespace TVSimulator
         private void close_btn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void title_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

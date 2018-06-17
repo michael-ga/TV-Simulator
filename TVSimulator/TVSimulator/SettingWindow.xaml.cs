@@ -267,6 +267,11 @@ namespace TVSimulator
                 UI_caller.Focus();
         }
 
+        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
         private async void sync_local_btn_click(object sender, RoutedEventArgs e)
         {
             if (pathes.Count() == 0)
@@ -280,4 +285,6 @@ namespace TVSimulator
             await fileImporter.syncAllAsyncReportProgress(1000, progressIndicator_local, pathes);
         }
     }
+
+
 }
