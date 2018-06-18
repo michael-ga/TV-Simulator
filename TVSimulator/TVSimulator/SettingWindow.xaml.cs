@@ -259,6 +259,7 @@ namespace TVSimulator
             if (isYoutubeChannelSynced || isLocalChannelsSynced)
             {
                 MainWindow s = new MainWindow();
+                s.isWinBusy = true;
                 s.forceRebuildChannels();
                 s.Show();
                 UI_caller.Close();

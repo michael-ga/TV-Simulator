@@ -23,6 +23,7 @@ namespace TVSimulator
         #region fields
         public bool isSubfolders = true, IsFullscreen=true;
         private bool isLocal = true;
+        public bool isWinBusy = false;
         private FileImporter fileImporter;
         private bool infoPressed = true;
         private bool promoIsPlay = false;
@@ -54,6 +55,8 @@ namespace TVSimulator
             InitializeComponent();
             db = new Database();
             cb = new ChannelsBuilder();
+            if (!isWinBusy)
+                Window_Loaded();
         }
 
         public MainWindow(Database _db)
@@ -61,17 +64,21 @@ namespace TVSimulator
             InitializeComponent();
             cb = new ChannelsBuilder();
             db = _db;
+            if (!isWinBusy)
+                Window_Loaded();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded()
         {
+            if (isWinBusy)
+                return;
             initMainWindow();
             if (chanList == null || chanList.Count() < 1)
                 chanList = db.getChannelList();
 
             if (chanList == null || chanList.Count() < 1)
             {
-                System.Windows.MessageBox.Show("error: loading channel list has been failed");
+                errorMessage(true, "Loading channel list has been failed");
                 return;
             }
             var index = parseChanneltoIndex(curChannelNum);
@@ -86,12 +93,13 @@ namespace TVSimulator
             timer.Tick += tickevent;
             timer.Start();
         }
-
-
-
+        
         public void forceRebuildChannels()
         {
+            isWinBusy = true;
             cb.rebuildAllChannels();
+            isWinBusy = false;
+            Window_Loaded();
         }
 
         private void removeEmtpyScheduleChannels()
@@ -176,9 +184,11 @@ namespace TVSimulator
 
         private void Channel_Up_Click(object sender, RoutedEventArgs e)
         {
-            if(chanList == null|| chanList.Count() == 0)
+            errorMessage(false, "");
+
+            if (chanList == null|| chanList.Count() == 0)
             {
-                System.Windows.MessageBox.Show("no channels");
+                errorMessage(true, "Channel do not exists");
                 return;
             }
 
@@ -191,9 +201,11 @@ namespace TVSimulator
 
         private void Channel_Down_Click(object sender, RoutedEventArgs e)
         {
-            if(chanList == null || chanList.Count() == 0)
+            errorMessage(false, "");
+
+            if (chanList == null || chanList.Count() == 0)
             {
-                System.Windows.MessageBox.Show("no channels");
+                errorMessage(true, "Channel do not exists");
                 return;
             }
             curChannelNum = switchChannel(curChannelNum, -1);    // second paramter -1 for decreament

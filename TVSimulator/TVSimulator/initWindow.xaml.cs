@@ -80,7 +80,7 @@ namespace TVSimulator
             }
             secondWin.Visibility = Visibility.Hidden;
             thirdWin.Visibility = Visibility.Visible;
-            
+
             if (!db.isYoutubeChannelListEmpty())// youtube channels needed to be added
             {
                 ytStarted = true;
@@ -154,6 +154,7 @@ namespace TVSimulator
             || (localStarted && !ytStarted && LocalDone))
             {
                 MainWindow s = new MainWindow();
+                s.isWinBusy = true;
                 s.forceRebuildChannels();
                 s.Show();
             }

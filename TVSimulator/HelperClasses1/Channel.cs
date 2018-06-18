@@ -21,7 +21,6 @@ namespace HelperClasses
         private string typeOfMedia;       //movies,tv serias,music or youtube stream
         private string genre;             //the name should be channel main genre
         private List<Media> media;
-        private List<double> durationList;
         private Database db;
         private DateTime StartCycleTime;
         private string youtubeChannelID;
@@ -35,7 +34,6 @@ namespace HelperClasses
         public const int PROMO_TIME = 7;
 
         public List<Media> Media { get => media; set => media = value; }
-        public List<double> DurationList { get => durationList; set => durationList = value; }
         public int ChannelNumber { get => channelNumber; set => channelNumber = value; }
         public string Genre { get => genre; set => genre = value; }
         public string TypeOfMedia { get => typeOfMedia; set => typeOfMedia = value; }
@@ -61,7 +59,6 @@ namespace HelperClasses
             this.typeOfMedia = typeOfMedia;
 
             this.media = new List<Media>();
-            this.durationList = new List<double>();
 
             this.db = new Database();
             this.StartCycleTime = DateTime.Parse(Constants.START_CYCLE);
@@ -91,33 +88,19 @@ namespace HelperClasses
         public void buildMovieSchedule()
         {
             List<Movie> movies = db.getMovieList();
-            double sum = 0;
-            var durTime = new TimeSpan();
 
             foreach (Movie m in movies)
                 if (m.getFirstGenre().Equals(genre))
-                {
                     media.Add((Media)m);
-                    durTime = m.getDurationTimespan();
-                    sum += durTime.TotalSeconds;
-                    durationList.Add(sum);
-                }
         }
 
         public void buildTVSchedule()
         {
             List<TvSeries> tvs = db.getTVList();
-            double sum = 0;
-            var durTime = new TimeSpan();
 
             foreach (TvSeries t in tvs)
                 if (t.getFirstGenre().Equals(genre))
-                {
                     media.Add((Media)t);
-                    durTime = t.getDurationTimespan();
-                    sum += durTime.TotalSeconds;
-                    durationList.Add(sum);
-                }
         }
 
 
@@ -126,17 +109,10 @@ namespace HelperClasses
             var ytbVideos = db.getYoutubeVideosfromChannel(YoutubeChannelID);
             if (ytbVideos == null || ytbVideos.Count() == 0)
                 return -1;
-            double sum = 0;
-
-            var durTime = new TimeSpan();
-
+        
             foreach (YoutubeVideo ytbvid in ytbVideos)
-            {
                 media.Add(ytbvid);
-                durTime = ytbvid.getDurationTimespan();
-                sum += durTime.TotalSeconds;
-                durationList.Add(sum);
-            }
+         
             return 0;
         }
 
@@ -154,7 +130,6 @@ namespace HelperClasses
                 media.Add(ytbPlsVid);
                 durTime = ytbPlsVid.getDurationTimespan();
                 sum += durTime.TotalSeconds;
-                durationList.Add(sum);
             }
             return 0;
         }

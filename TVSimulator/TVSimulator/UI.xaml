@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TVSimulator"
         xmlns:Cef1="clr-namespace:YoutubeImporter.Cef;assembly=YoutubeImporter"
-        mc:Ignorable="d" Height="700" Width="1200" WindowStyle="None" ResizeMode="NoResize" Loaded="Window_Loaded"  
+        mc:Ignorable="d" Height="700" Width="1200" WindowStyle="None" ResizeMode="NoResize"   
         WindowStartupLocation="CenterScreen" WindowState="Maximized" KeyDown="Window_KeyDown" ShowInTaskbar="False">
 
     <Grid x:Name="mainWindow" MouseMove="mainWindow_MouseMove" MouseWheel="mainWindow_MouseWheel" MouseLeftButtonDown="title_MouseLeftButtonDown" Background="Black">

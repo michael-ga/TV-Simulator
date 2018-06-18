@@ -118,7 +118,6 @@
                 <TextBlock x:Name="local_message_block" HorizontalAlignment="Left" Margin="33,142,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="24" Width="330" Foreground="Black"/>
                 <TextBlock x:Name="youtube_message_block" HorizontalAlignment="Left" Margin="33,242,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="24" Width="330" Foreground="Black"/>
 
-
             </Grid>
         </Grid>
 

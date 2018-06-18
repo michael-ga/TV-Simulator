@@ -65,6 +65,7 @@ namespace TVSimulator
         public async Task<int> getAllMediaFromDirectory(string path, bool isIncludeSubfolders)  // get files paths from folder List<string>(folder path) 
         {
             string[] mediaExtStarrd = { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mpeg", "*.mpg", "*.3gp", "*.mp3", "*.flac", "*.ogg", "*.wav", "*.wma" };
+            await Task.Run(() => addFiles(path, allPathes, mediaExtStarrd, isIncludeSubfolders));
 
             String[] fileListArr;
             foreach (String extension in mediaExtStarrd)
@@ -98,7 +99,7 @@ namespace TVSimulator
             {
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
                 Regex TVSeriesRegex = new Regex(@"([\. \w']+?)([sS]([0-9]{2})[eE]([0-9]{2})( \..)*)");
-
+               
                 if (movieRegex.IsMatch(fileInfo.Name))
                     await videoHandler(fileInfo.Name, Constants.MOVIE, filePath);
                 else if (TVSeriesRegex.IsMatch(fileInfo.Name) || fileInfo.Name.ToLower().Contains("season"))
@@ -338,11 +339,28 @@ namespace TVSimulator
             }
             return listsSaved;
         }
+        private void addFiles(string path, IList<string> files, string[] extensions, bool includeSubfolders)
+        {
+            try
+            {
+                Directory.GetFiles(path)
+                    .ToList()
+                    .FindAll(s => extensions.Contains(Path.GetExtension(s)))
+                    .ForEach(s => files.Add(s));
 
-
+                if (includeSubfolders)
+                {
+                    Directory.GetDirectories(path)
+                    .ToList()
+                    .ForEach(s => addFiles(s, files, extensions, includeSubfolders));
+                }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // ok, so we are not allowed to dig into that directory. Move on.
+            }
+        }
     }
-
-    
 }
 
 
