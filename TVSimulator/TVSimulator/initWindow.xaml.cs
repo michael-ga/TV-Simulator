@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-
+using System.Windows.Input;
 
 namespace TVSimulator
 {
@@ -97,7 +97,7 @@ namespace TVSimulator
                 var progressIndicator_local = new Progress<MyTaskProgressReport>(ReportLocalProgress);
 
                fileImporter.syncAllAsyncReportProgress(1000, progressIndicator_local, list);
-               
+
                 //var t = new Task(() =>
                 //{//(new Action(() => youtubePlayer.AutoPlay = true));
                 //    Dispatcher.Invoke(new Action(() => loader.IsBusy = true));
@@ -108,8 +108,8 @@ namespace TVSimulator
                 ////    loader.IsBusy = false;
                 ////}, TaskScheduler.FromCurrentSynchronizationContext());
                 //t.Start();
-             }
-             
+            }
+
 
         }
 

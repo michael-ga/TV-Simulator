@@ -19,7 +19,7 @@
             <RowDefinition Height="35*"/>
             <RowDefinition Height="147*"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="mListView" ItemsSource="{Binding Channels}" Margin="15,2.4,400.6,111.2" Grid.Row="2" Grid.Column="1" SelectionChanged="mListView_SelectionChanged">
+        <ListView x:Name="mListView" ItemsSource="{Binding Channels}" Margin="15,2.4,400.6,111.2" Grid.Row="2" Grid.Column="1" SelectionChanged="mListView_SelectionChanged" FontSize="8">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="5" HorizontalAlignment="Stretch"/>

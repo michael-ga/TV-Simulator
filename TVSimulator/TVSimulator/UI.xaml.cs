@@ -73,6 +73,7 @@ namespace TVSimulator
             if (isWinBusy)
                 return;
             initMainWindow();
+
             if (chanList == null || chanList.Count() < 1)
                 chanList = db.getChannelList();
 
