@@ -93,7 +93,7 @@ namespace TVSimulator
             }
 
             // add general channels
-            if (mediaVideos == null)
+            if (mediaVideos == null || mediaVideos.Count()==0)
                 return;
             var gChan = new Channel(channelNumber, Constants.MOVIE, "General");
             localChannels.Add(gChan);
