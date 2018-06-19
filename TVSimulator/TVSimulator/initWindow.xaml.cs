@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -155,7 +156,15 @@ namespace TVSimulator
             {
                 MainWindow s = new MainWindow();
                 s.isWinBusy = true;
+
                 s.forceRebuildChannels();
+                loader.IsBusy = true;
+                while(s.isWinBusy)
+                {
+                    Thread.Sleep(1000);
+                }
+                loader.IsBusy = false;
+
                 s.Show();
             }
         }
