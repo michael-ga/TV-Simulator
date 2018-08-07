@@ -43,9 +43,9 @@ namespace TVSimulator
             if (curChar.TypeOfMedia.Equals(Constants.MOVIE) || curChar.TypeOfMedia.Equals(Constants.TVSERIES))
                 channelName.Content = channelNum + " - " + curChar.Genre;
             else if (curChar.TypeOfMedia.Equals("YouTubeChannel"))
-                channelName.Content = channelNum + " - " + "YouTube";
+                channelName.Content = channelNum + " - " + curChar.YoutubeChannelName;
             else
-                channelName.Content = channelNum + " - " + "YouTube Playlist";
+                channelName.Content = channelNum + " - " + curChar.YoutubeChannelName;
 
             specDay = DateTime.Now;         //only here specDay = today
             specDay = specDay.AddHours(-specDay.Hour);
@@ -229,9 +229,9 @@ namespace TVSimulator
             if (curChar.TypeOfMedia.Equals(Constants.MOVIE) || curChar.TypeOfMedia.Equals(Constants.TVSERIES))
                 channelName.Content = channelNum + " - " + curChar.Genre;
             else if (curChar.TypeOfMedia.Equals("YouTubeChannel"))
-                    channelName.Content = channelNum + " - " + "YouTube";
+                    channelName.Content = channelNum + " - " + curChar.YoutubeChannelName;
             else
-                channelName.Content = channelNum + " - " + "YouTube Playlist";
+                channelName.Content = channelNum + " - " + curChar.YoutubeChannelName;
             buildBoardByDay(m, curChar, specDay);
         }
 
@@ -243,9 +243,9 @@ namespace TVSimulator
             if (curChar.TypeOfMedia.Equals(Constants.MOVIE) || curChar.TypeOfMedia.Equals(Constants.TVSERIES))
                 channelName.Content = channelNum + " - " + curChar.Genre;
             else if (curChar.TypeOfMedia.Equals("YouTubeChannel"))
-                channelName.Content = channelNum + " - " + "YouTube";
+                channelName.Content = channelNum + " - " + curChar.YoutubeChannelName;
             else
-                channelName.Content = channelNum + " - " + "YouTube Playlist";
+                channelName.Content = channelNum + " - " + curChar.YoutubeChannelName;
             buildBoardByDay(m, curChar, specDay);
         }
 
