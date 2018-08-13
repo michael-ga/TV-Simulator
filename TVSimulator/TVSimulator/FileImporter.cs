@@ -13,7 +13,7 @@ using WMPLib;
 
 namespace TVSimulator
 {
-    class FileImporter : EventArgs, IFileImporter
+    class FileImporter : EventArgs
     {
         #region fields
         public delegate void videoLoaded(Object o, List<Media> arg);
@@ -64,22 +64,29 @@ namespace TVSimulator
         }
         public async Task<int> getAllMediaFromDirectory(string path, bool isIncludeSubfolders)  // get files paths from folder List<string>(folder path) 
         {
-            string[] mediaExtStarrd = { "*.mkv", "*.avi", "*.wmv", "*.mp4", "*.mpeg", "*.mpg", "*.3gp", "*.mp3", "*.flac", "*.ogg", "*.wav", "*.wma" };
-            await Task.Run(() => addFiles(path, allPathes, mediaExtStarrd, isIncludeSubfolders));
-
-            String[] fileListArr;
-            foreach (String extension in mediaExtStarrd)
+            string[] mediaExtStarrd = { "*.mkv", "*.avi", "*.mp4", "*.mpeg", "*.mpg" };
+            reporter.TotalProgressAmount = 100;
+            if (!isIncludeSubfolders)
             {
-                if (isIncludeSubfolders) // include subfolders
-                    fileListArr = Directory.GetFiles(path, extension, System.IO.SearchOption.AllDirectories);
-                else
-                    fileListArr = Directory.GetFiles(path, extension);
-
-                foreach (String file in fileListArr)
-                    allPathes.Add(file);
+                try
+                {
+                    allPathes.AddRange(Directory.GetFiles(path, SearchOption.TopDirectoryOnly.ToString()).ToList());
+                }
+                catch (Exception e) { MessageBox.Show("Error: selected folder is not accessible"); }
+            }
+            else
+            {
+                foreach (var ext in mediaExtStarrd)
+                {
+                    try
+                    {
+                        DirSearch(path, ext);
+                    }
+                    catch { }
+                }
             }
             if (allPathes.Count() == 0)
-                return -1;
+                reporter.TotalProgressAmount = 0;
 
             // all pathes added - update total progress ammount here
             reporter.TotalProgressAmount = allPathes.Count();
@@ -90,6 +97,67 @@ namespace TVSimulator
             return 0;
         }
 
+        //
+        public class CustomSearcher
+        {
+            public static List<string> GetDirectories(string path, string searchPattern,
+                SearchOption searchOption = SearchOption.TopDirectoryOnly)
+            {
+                if (searchOption == SearchOption.TopDirectoryOnly)
+                    return Directory.GetDirectories(path, searchPattern).ToList();
+
+                var directories = new List<string>(GetDirectories(path, searchPattern));
+
+                for (var i = 0; i < directories.Count; i++)
+                    directories.AddRange(GetDirectories(directories[i], searchPattern));
+
+                return directories;
+            }
+
+            private static List<string> GetDirectories(string path, string searchPattern)
+            {
+                try
+                {
+                    return Directory.GetDirectories(path, searchPattern).ToList();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return new List<string>();
+                }
+            }
+        }
+        private void DirSearch(string sDir, string ext)
+        {
+            try
+            {
+                foreach (string f in Directory.GetFiles(sDir))
+                {
+                    if (getExt(f).Equals(ext))
+                        allPathes.Add(f);
+                }
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    DirSearch(d, ext);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                //MessageBox.Show(excpt.Message);
+            }
+        }
+
+        private string getExt(string path)
+        {
+            try
+            {
+                var x = path.LastIndexOf(".");
+                return "*" + path.Substring(x, path.Length - x);
+            }
+            catch { return ""; }
+
+        }
+
+        //
         private async Task<bool> SortMediaToTypes(string filePath)        // check file type(movie/music/tv series)  :: (String filePath) 
         {
             FileInfo fileInfo = new FileInfo(System.IO.Path.GetFileName(filePath));     // holds fileName and extenstion
@@ -99,7 +167,7 @@ namespace TVSimulator
             {
                 Regex movieRegex = new Regex(@"([\.\w']+?)(\.[0-9]{4}\..*)");
                 Regex TVSeriesRegex = new Regex(@"([\. \w']+?)([sS]([0-9]{2})[eE]([0-9]{2})( \..)*)");
-               
+
                 if (movieRegex.IsMatch(fileInfo.Name))
                     await videoHandler(fileInfo.Name, Constants.MOVIE, filePath);
                 else if (TVSeriesRegex.IsMatch(fileInfo.Name) || fileInfo.Name.ToLower().Contains("season"))
@@ -267,7 +335,7 @@ namespace TVSimulator
             {
                 await SortMediaToTypes(item);        //await = dont move on until answer from OMDB server - ASYNC
                 reporter.CurrentProgressAmount++;
-                reporter.CurrentProgressMessage = "loading " + reporter.CurrentProgressAmount.ToString()+ " out of "+reporter.TotalProgressAmount.ToString() +" media files";
+                reporter.CurrentProgressMessage = "loading " + reporter.CurrentProgressAmount.ToString() + " out of " + reporter.TotalProgressAmount.ToString() + " media files";
             }
 
 
@@ -329,8 +397,8 @@ namespace TVSimulator
         {
             var t = new Task(() => { var res = addDirectoryList(dirs); });
             t.Start();
-            
-            while(!listsSaved)
+
+            while (!listsSaved)
             {
                 await Task.Delay(sleepTime);
 
@@ -339,20 +407,18 @@ namespace TVSimulator
             }
             return listsSaved;
         }
-        private void addFiles(string path, IList<string> files, string[] extensions, bool includeSubfolders)
+        private void addFiles(string path, string[] extensions, bool includeSubfolders)
         {
             try
             {
-                Directory.GetFiles(path)
+                allPathes.AddRange(Directory.GetFiles(path)
                     .ToList()
-                    .FindAll(s => extensions.Contains(Path.GetExtension(s)))
-                    .ForEach(s => files.Add(s));
+                    .FindAll(s => extensions.Contains(Path.GetExtension(s))));
 
                 if (includeSubfolders)
                 {
-                    Directory.GetDirectories(path)
-                    .ToList()
-                    .ForEach(s => addFiles(s, files, extensions, includeSubfolders));
+                    allPathes.AddRange(Directory.GetDirectories(path)
+                    .ToList());
                 }
             }
             catch (UnauthorizedAccessException ex)

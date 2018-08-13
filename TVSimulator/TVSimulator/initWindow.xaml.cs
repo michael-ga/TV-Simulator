@@ -24,6 +24,8 @@ namespace TVSimulator
         private bool ytStarted, ytDone;
         private Task youtubeTask;
 
+        private int cnt = 0;
+
         public initWindow()
         {
             InitializeComponent();
@@ -43,7 +45,7 @@ namespace TVSimulator
         private void chooseFolderBtn_Click(object sender, RoutedEventArgs e)
         {
             using (var folderDialog = new FolderBrowserDialog())
-                
+
             {
                 if (Properties.Settings.Default.Init_fd_lastPath != "")// remember the last selected path
                 {
@@ -60,18 +62,18 @@ namespace TVSimulator
 
         private async void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-     
+
             if (getAllTimes() == -1)
             {
                 System.Windows.MessageBox.Show("Please select hours for all the days or setup time automatically");
                 return;
             }
-            if(!CheckForInternetConnection())
+            if (!CheckForInternetConnection())
             {
                 System.Windows.MessageBox.Show("Please check your internt connection");
                 return;
-            }   
-            
+            }
+
             if (pathTextBox.Text == "" && db.isYoutubeChannelListEmpty())
             {
                 System.Windows.MessageBox.Show("path not contains any media, please enter A path with media files");
@@ -90,14 +92,14 @@ namespace TVSimulator
                 youtubeTask = new Task(() => { a.syncAllAsyncReportProgress(1000, progressIndicator); });
                 youtubeTask.Start();
             }
-            if(pathTextBox.Text != "")
+            if (pathTextBox.Text != "")
             {
                 localStarted = true;
                 costumPath tmp = new costumPath(pathTextBox.Text, SubfoldersCheckBox.IsChecked.Value);
-                var list = new List<costumPath>();list.Add(tmp);
+                var list = new List<costumPath>(); list.Add(tmp);
                 var progressIndicator_local = new Progress<MyTaskProgressReport>(ReportLocalProgress);
 
-               fileImporter.syncAllAsyncReportProgress(1000, progressIndicator_local, list);
+                fileImporter.syncAllAsyncReportProgress(1000, progressIndicator_local, list);
 
                 //var t = new Task(() =>
                 //{//(new Action(() => youtubePlayer.AutoPlay = true));
@@ -122,12 +124,12 @@ namespace TVSimulator
             {
                 Debug.WriteLine("yt loaded");
                 ytDone = true;
-                if( checkIfDone())
+                if (checkIfDone())
                     this.Close();
             }
 
             pbar_youtube.Minimum = 0;
-            Dispatcher.Invoke(new Action(() => pbar_youtube.Maximum = progress.TotalProgressAmount ));
+            Dispatcher.Invoke(new Action(() => pbar_youtube.Maximum = progress.TotalProgressAmount));
             Dispatcher.Invoke(new Action(() => pbar_youtube.Value = progress.CurrentProgressAmount));
             Dispatcher.Invoke(new Action(() => youtube_message_block.Text = progress.CurrentProgressMessage));
         }
@@ -139,13 +141,20 @@ namespace TVSimulator
                 Debug.WriteLine("local loaded");
                 LocalDone = true;
                 if (checkIfDone())
+                {
+                    if (progress.CurrentProgressAmount == 0 && progress.TotalProgressAmount == 0)
+                    {
+                        System.Windows.MessageBox.Show("no media files have been found in given path");
+                        LocalDone = false;
+                    }
                     this.Close();
+                }
             }
             pbar_local.Minimum = 0;
 
             pbar_local.Maximum = progress.TotalProgressAmount;
             pbar_local.Value = progress.CurrentProgressAmount;
-            local_message_block.Text= progress.CurrentProgressMessage;
+            local_message_block.Text = progress.CurrentProgressMessage;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -159,7 +168,7 @@ namespace TVSimulator
 
                 s.forceRebuildChannels();
                 loader.IsBusy = true;
-                while(s.isWinBusy)
+                while (s.isWinBusy)
                 {
                     Thread.Sleep(1000);
                 }
@@ -171,9 +180,9 @@ namespace TVSimulator
 
         private bool checkIfDone()
         {
-            if( (localStarted && ytStarted && LocalDone && ytDone)
+            if ((localStarted && ytStarted && LocalDone && ytDone)
             || (!localStarted && ytStarted && ytDone)
-            || (localStarted && !ytStarted && LocalDone) )
+            || (localStarted && !ytStarted && LocalDone))
             {
                 return true;
             }
@@ -215,7 +224,7 @@ namespace TVSimulator
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             var ytChanels = db.getYoutubeChannelList();
-            if ((pathTextBox.Text == "") && ( ytChanels == null || ytChanels.Count < 1 ))
+            if ((pathTextBox.Text == "") && (ytChanels == null || ytChanels.Count < 1))
             {
                 System.Windows.MessageBox.Show("Please select your media");
                 return;
@@ -238,7 +247,7 @@ namespace TVSimulator
         private void isSetupAuto_Checked(object sender, RoutedEventArgs e)
         {
             int length = 7;
-            for(var i=1;i<=length; i++)     //  run all over the comboBoxs 
+            for (var i = 1; i <= length; i++)     //  run all over the comboBoxs 
             {
                 string st = "ST" + i;
                 string et = "ET" + i;
@@ -282,16 +291,16 @@ namespace TVSimulator
             int numValue = Int32.Parse(value.Substring(0, index));     // parse value to int
 
             var name = (sender as System.Windows.Controls.ComboBox).Name; // get the name of combobox
-            var numComboBox = Int32.Parse(name.Substring(2));                   
-            
+            var numComboBox = Int32.Parse(name.Substring(2));
+
             string et = "ET" + numComboBox;
             var itemEnd = timeFieldsGrid.FindName(et) as System.Windows.Controls.ComboBox;
             itemEnd.Items.Clear();
             int hours = 24;
-            for (var j = numValue+1; j <= hours; j++)
+            for (var j = numValue + 1; j <= hours; j++)
             {
-                    var str = j + ":00";
-                    itemEnd.Items.Add(str);
+                var str = j + ":00";
+                itemEnd.Items.Add(str);
             }
         }
 
@@ -306,8 +315,8 @@ namespace TVSimulator
             {
                 if (isSetupAuto.IsChecked.Value)    //automatically from 00:00 - 24:00 
                 {
-                    startTime[i-1] = 0;
-                    endTime[i-1] = 24;
+                    startTime[i - 1] = 0;
+                    endTime[i - 1] = 24;
                 }
                 else
                 {
@@ -337,11 +346,11 @@ namespace TVSimulator
             DateTime startCycle = new DateTime();
             startCycle = DateTime.Now;
 
-            BroadcastTime bt = new BroadcastTime(startCycle,startTime,endTime);
+            BroadcastTime bt = new BroadcastTime(startCycle, startTime, endTime);
             db.insertBroadcastTime(bt);     // check if need to be single value!!!!!!!!!!!
             return 0;
         }
 
-       
+
     }
 }

@@ -1,5 +1,4 @@
 ﻿using HelperClasses;
-using MediaClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,8 +12,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
-using System.Windows.Media;
-
+using MediaClasses;
 
 namespace TVSimulator
 {
