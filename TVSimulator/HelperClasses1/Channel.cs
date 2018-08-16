@@ -524,12 +524,15 @@ namespace HelperClasses
                     all.Add(newTvSeries);
                 }
             }
-
-            for(var j=0;j<all.Count;j++)    //sorted by seasons and episodes - order by desc
+            try
             {
-                all[j] = all[j].OrderByDescending(o => int.Parse(o.Episode)).ToList();
-                all[j] = all[j].OrderByDescending(o => int.Parse(o.Season)).ToList();
+                for (var j = 0; j < all.Count; j++)    //sorted by seasons and episodes - order by desc
+                {
+                    all[j] = all[j].OrderByDescending(o => int.Parse(o.Episode)).ToList();
+                    all[j] = all[j].OrderByDescending(o => int.Parse(o.Season)).ToList();
+                }
             }
+            catch (Exception) { }
             return all;
         }
 
